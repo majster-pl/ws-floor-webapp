@@ -6,6 +6,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import apiClient from "../../service/api/api";
 // import axios from 'axios';
 import { useHistory } from "react-router";
+import Cookies from "js-cookie";
+
 
 // const logout = (e) => {
 //     e.preventDefault();
@@ -40,7 +42,8 @@ const Header = ({ isLoggedIn, setLoggedIn }) => {
     apiClient.post("/logout").then((response) => {
       if (response.status === 204) {
         setLoggedIn(false);
-        sessionStorage.setItem("loggedIn", false);
+        // sessionStorage.setItem("loggedIn", false);
+        Cookies.remove('logged-in', { path: '' })
         history.push('/login')
       }
     });

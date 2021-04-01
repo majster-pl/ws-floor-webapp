@@ -5,10 +5,12 @@ import Calendar from "./routes/calendar/Calendar";
 import Page404 from "./routes/page404/Page404";
 import { useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(
-    sessionStorage.getItem("loggedIn") == "true" || false
+    // localStorage.getItem("loggedIn") == "true" || false
+    Cookies.get('logged-in') == 'true' || false
   );
 
   return (

@@ -2,22 +2,23 @@ import { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import apiClient from "../../../service/api/api";
 import IsLoggedIn from "../../../components/CheckIfLoggedIn";
+import Cookies from "js-cookie";
 
 const LoginLogic = ({ setLoggedIn }) => {
   const [username, setUsername] = useState("admin@gmail.com");
   const [password, setPassword] = useState("password");
 
-//   IsLoggedIn(); 
+  //   IsLoggedIn();
 
   const history = useHistory();
 
-//   useEffect(() => {
-//     if (sessionStorage.getItem("loggedIn") == "true") {
-//       history.push("/dashboard");
-//     } else {
-//       history.push("/login");
-//     }
-//   }, []);
+  //   useEffect(() => {
+  //     if (sessionStorage.getItem("loggedIn") == "true") {
+  //       history.push("/dashboard");
+  //     } else {
+  //       history.push("/login");
+  //     }
+  //   }, []);
 
   const sendGetRequest = (e) => {
     e.preventDefault();
@@ -29,8 +30,9 @@ const LoginLogic = ({ setLoggedIn }) => {
         })
         .then((response) => {
           setLoggedIn(true);
-          sessionStorage.setItem("loggedIn", true);
+          localStorage.setItem("loggedIn", true);
           console.log(response);
+          Cookies.set("logged-in", "true", { path: "" });
           history.push("/dashboard");
         })
         .catch((err) => {

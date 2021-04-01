@@ -1,24 +1,28 @@
 import { useHistory } from "react-router";
 import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
 import apiClient from "../service/api/api";
+import Cookies from "js-cookie";
 
 const CheckIfLoggedIn = ({ setLoggedIn }) => {
   const history = useHistory();
+
+  const logout = () => {
+    setLoggedIn(false);
+    history.push("/login");
+    Cookies.remove("logged-in", { path: "" });
+  }
 
   const isUserLoggedIn = () => {
     apiClient
       .get("/api/v1/logged-in", { withCredentials: true })
       .catch((err) => {
-        setLoggedIn(false);
-        history.push("/login");
+        logout();
       });
   };
   useEffect(() => {
     isUserLoggedIn();
-    if (sessionStorage.getItem("loggedIn") == "false") {
-      // setLoggedIn(false);
-      history.push("/login");
+    if (Cookies.get("looged-in") == "false") {
+      logout();
     }
   }, []);
 };
