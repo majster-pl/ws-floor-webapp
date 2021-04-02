@@ -6,11 +6,13 @@ import Page404 from "./routes/page404/Page404";
 import { useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Cookies from "js-cookie";
+import Dashboard from "./routes/dashboard/Dashboard";
+import Workshop from "./routes/workshop/Workshop";
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(
     // localStorage.getItem("loggedIn") == "true" || false
-    Cookies.get('logged-in') == 'true' || false
+    Cookies.get("logged-in") == "true" || false
   );
 
   return (
@@ -25,8 +27,16 @@ const App = () => {
           <Login setLoggedIn={setLoggedIn} />
         </Route>
 
+        <Route path="/dashboard">
+          <Dashboard setLoggedIn={setLoggedIn} />
+        </Route>
+
         <Route path="/calendar">
           <Calendar setLoggedIn={setLoggedIn} />
+        </Route>
+
+        <Route path="/workshop">
+          <Workshop setLoggedIn={setLoggedIn} />
         </Route>
 
         <Route path="/*">
@@ -35,6 +45,6 @@ const App = () => {
       </Switch>
     </Router>
   );
-}
+};
 
 export default App;

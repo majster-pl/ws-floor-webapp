@@ -8,6 +8,7 @@ import apiClient from "../../service/api/api";
 import { useHistory } from "react-router";
 import Cookies from "js-cookie";
 
+import './Header.css';
 
 // const logout = (e) => {
 //     e.preventDefault();
@@ -43,11 +44,38 @@ const Header = ({ isLoggedIn, setLoggedIn }) => {
       if (response.status === 204) {
         setLoggedIn(false);
         // sessionStorage.setItem("loggedIn", false);
-        Cookies.remove('logged-in', { path: '' })
-        history.push('/login')
+        Cookies.remove("logged-in", { path: "" });
+        history.push("/login");
       }
     });
   };
+
+  const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+    <a
+    href=""
+    ref={ref}
+    onClick={(e) => {
+      e.preventDefault();
+      onClick(e);
+    }}
+    className="nav-link p-0"
+    id="navbarDropdownMenuLink"
+    role="button"
+    data-toggle="dropdown"
+    aria-haspopup="true"
+    aria-expanded="false"
+  >
+    <img
+      src="img/avatar.png"
+      width="32"
+      height="32"
+      className="rounded-circle shadow-sm"
+      alt="User avatar"
+    ></img>
+  </a>
+
+  ));
+  
 
   return (
     <Navbar
@@ -71,7 +99,7 @@ const Header = ({ isLoggedIn, setLoggedIn }) => {
         <Nav className="mr-auto">
           {isLoggedIn && (
             <>
-              <Nav.Link eventKey="2" as={Link} to="/dashboard">
+              <Nav.Link active={window.location === '/dashboard'} eventKey="2" as={Link} to="/dashboard">
                 Dashboard
               </Nav.Link>
               <Nav.Link eventKey="3" as={Link} to="/calendar">
@@ -80,48 +108,35 @@ const Header = ({ isLoggedIn, setLoggedIn }) => {
               <Nav.Link eventKey="4" as={Link} to="/workshop">
                 Workshop
               </Nav.Link>
-              <Button onClick={logout}>
-                Logout!
-              </Button>
+              <Button onClick={logout}>Logout!</Button>
             </>
           )}
         </Nav>
         <Nav>
           {isLoggedIn && (
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link p-0"
-                id="navbarDropdownMenuLink"
-                role="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
+            <Dropdown >
+              <Dropdown.Toggle
+                as={CustomToggle}
+                id="dropdown-custom-components"
+                menuAlign="right"
+                drop="left"
               >
-                <img
-                  src="img/avatar.png"
-                  width="32"
-                  height="32"
-                  className="rounded-circle shadow-sm"
-                  alt="User avatar"
-                ></img>
-              </a>
+                Custom toggle
+              </Dropdown.Toggle>
 
-              <div
-                className="dropdown-menu dropdown-menu-right shadow "
-                aria-labelledby="navbarDropdown"
-              >
-                <Dropdown.Item eventKey="10" as={Link} to="/add-user">
+              <Dropdown.Menu>
+              <Dropdown.Item eventKey="10" as={Link} to="/add-user">
                   Add User
                 </Dropdown.Item>
                 <Dropdown.Item eventKey="11" as={Link} to="/settings">
                   Settings
                 </Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item eventKey="12" as={Link} to="/logout">
+                <Dropdown.Item eventKey="12" as={Link} onClick={logout}>
                   Logout
                 </Dropdown.Item>
-              </div>
-            </li>
+              </Dropdown.Menu>
+            </Dropdown>
           )}
         </Nav>
       </Navbar.Collapse>
