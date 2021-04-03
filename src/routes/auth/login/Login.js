@@ -1,37 +1,49 @@
 import { Form, Button, Row, Col } from "react-bootstrap";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Login.css";
-import LoginLogic from './LoginLogic'
-
+import LoginLogic from "./LoginLogic";
 
 const Login = (setLoggedIn) => {
+  const {
+    username,
+    password,
+    sendGetRequest,
+    setUsername,
+    setPassword,
+    errorMessage,
+    isLoading,
+  } = LoginLogic(setLoggedIn);
+  // const [validated, setValidated] = useState(false);
 
-    const {username, password, sendGetRequest, setUsername, setPassword} = LoginLogic(setLoggedIn);
+
 
   return (
     <div className="center">
       <Form
+        noValidate
+        // validated={validated}
         onSubmit={(e) => {
           sendGetRequest(e);
         }}
       >
         <Form.Group controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
+          <Form.Label>Email address:</Form.Label>
           <Form.Control
             type="email"
+            // className="is-invalid"
             placeholder="Enter email"
             defaultValue={username}
             onChange={(e) => {
               setUsername(e.target.value);
             }}
           />
-          <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text>
+          <Form.Control.Feedback type="invalid">
+            Please enter user email address.
+          </Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
+          <Form.Label>Password:</Form.Label>
           <Form.Control
             type="password"
             placeholder="Password"
@@ -40,12 +52,21 @@ const Login = (setLoggedIn) => {
               setPassword(e.target.value);
             }}
           />
+          <Form.Control.Feedback type="invalid" className="is-invalid d-inline">
+            {errorMessage}
+          </Form.Control.Feedback>
         </Form.Group>
-        <Form.Group controlId="formBasicCheckbox">
+        {/* <Form.Group controlId="formBasicCheckbox">
           <Form.Check type="checkbox" label="Check me out" />
-        </Form.Group>
-        <Button variant="primary" type="submit">
-          Submit
+        </Form.Group> */}
+        {/* <p className="primary">{errorMessage}</p> */}
+        <Button
+          variant="primary"
+          type="submit"
+          block
+          disabled={isLoading}
+        >
+          {isLoading ? 'Logging in...' : 'Login'}
         </Button>
       </Form>
     </div>

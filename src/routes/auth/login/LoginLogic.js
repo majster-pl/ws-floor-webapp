@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useHistory } from "react-router";
 import apiClient from "../../../service/api/api";
-import IsLoggedIn from "../../../components/CheckIfLoggedIn";
+// import IsLoggedIn from "../../../components/CheckIfLoggedIn";
 import Cookies from "js-cookie";
 
 const LoginLogic = ({ setLoggedIn }) => {
   const [username, setUsername] = useState("admin@gmail.com");
   const [password, setPassword] = useState("password");
-
-  //   IsLoggedIn();
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setLoading] = useState(false);
 
   const history = useHistory();
 
@@ -22,6 +22,8 @@ const LoginLogic = ({ setLoggedIn }) => {
 
   const sendGetRequest = (e) => {
     e.preventDefault();
+    setErrorMessage("");
+    setLoading(true);
     apiClient.get("/sanctum/csrf-cookie").then((response) => {
       apiClient
         .post("/login", {
@@ -36,11 +38,31 @@ const LoginLogic = ({ setLoggedIn }) => {
           history.push("/dashboard");
         })
         .catch((err) => {
-          console.log("Error: ", err);
+          setLoading(false);
+          // console.log("Error: ", err.response.data);
+          // console.log("Message: ", err.response.data.message);
+          // console.log("Error: ", err.response.status);
+          // console.log("Email Error: ", err.response.data.errors.email);
+          // console.log("Password Error: ", err.response.data.errors.password);
+          if (err.response.data.errors.email !== undefined) {
+            setErrorMessage(err.response.data.errors.email);
+          }
+          if (err.response.data.errors.password !== undefined) {
+            setErrorMessage(err.response.data.errors.password);
+          }
+
         });
     });
   };
-  return { username, password, sendGetRequest, setUsername, setPassword };
+  return {
+    username,
+    password,
+    sendGetRequest,
+    setUsername,
+    setPassword,
+    errorMessage,
+    isLoading,
+  };
 };
 
 export default LoginLogic;
