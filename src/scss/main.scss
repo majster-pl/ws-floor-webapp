@@ -1,0 +1,10 @@
+// Override default variables before the import
+$navbar-dark-color:        #c4c4c4;
+$navbar-dark-hover-color:   #fff;
+$navbar-dark-active-color:   #eb53cc;
+.bg-black {
+    background-color:black;
+}
+
+// Import Bootstrap and its default variables
+@import '~bootstrap/scss/bootstrap.scss';
