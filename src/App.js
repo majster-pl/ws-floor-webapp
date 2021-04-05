@@ -1,7 +1,12 @@
 import { useState } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+} from "react-router-dom";
 import Cookies from "js-cookie";
-import './scss/main.scss';
+import "./scss/main.scss";
+// import apiClient from "./service/api/api";
 
 import Header from "./components/header/Header";
 import Home from "./routes/home/Home";
@@ -10,7 +15,6 @@ import Calendar from "./routes/calendar/Calendar";
 import Dashboard from "./routes/dashboard/Dashboard";
 import Workshop from "./routes/workshop/Workshop";
 import Page404 from "./routes/page404/Page404";
-
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(
@@ -25,7 +29,7 @@ const App = () => {
         <Route exact path="/">
           <Home />
         </Route>
-
+        
         <Route path="/login">
           <Login setLoggedIn={setLoggedIn} />
         </Route>

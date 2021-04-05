@@ -6,7 +6,7 @@ const Home = () => {
     <div className="m-5">
       Home page! <br></br>
       {/* <Button className="m-3" to="/login">Login</Button> */}
-      <Nav.Link eventKey="2" as={Link} to="/dashboard">Login</Nav.Link>
+      <Nav.Link eventKey="2" as={Link} to="/login">Login</Nav.Link>
     </div>
   );
 };
