@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Navbar, Nav, Dropdown, Button } from "react-bootstrap";
+import { Navbar, Nav, Dropdown } from "react-bootstrap";
 import apiClient from "../../service/api/api";
 import { useHistory } from "react-router";
 import Cookies from "js-cookie";
@@ -42,6 +42,7 @@ const Header = ({ isLoggedIn, setLoggedIn }) => {
         setLoggedIn(false);
         // sessionStorage.setItem("loggedIn", false);
         Cookies.remove("logged-in", { path: "" });
+        sessionStorage.clear();
         history.push("/login");
       }
     });
@@ -49,7 +50,6 @@ const Header = ({ isLoggedIn, setLoggedIn }) => {
 
   const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     <a
-      href=""
       ref={ref}
       onClick={(e) => {
         e.preventDefault();
@@ -115,7 +115,7 @@ const Header = ({ isLoggedIn, setLoggedIn }) => {
                   Custom toggle
                 </Dropdown.Toggle>
 
-                <Dropdown.Menu>
+                <Dropdown.Menu className="navbar-user-dropdown">
                   <Dropdown.Item eventKey="10" as={Link} to="/add-user">
                     Add User
                   </Dropdown.Item>

@@ -1,4 +1,6 @@
 // Override default variables before the import
+
+// Navbar colors
 $navbar-dark-color:        #c4c4c4;
 $navbar-dark-hover-color:   #fff;
 $navbar-dark-active-color:   #eb53cc;
@@ -6,5 +8,30 @@ $navbar-dark-active-color:   #eb53cc;
     background-color:black;
 }
 
+
+// default colors:
+:root {
+  --color-pink: #F00FA6;
+  --color-blue-light: #0FA6F0;
+  --color-yellow: #F0CA0F;
+  --color-green: #47B848;
+  --color-blue: #0F35F0;
+ }
+
+
+.div-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 87vh;
+  }
+
+
 // Import Bootstrap and its default variables
 @import '~bootstrap/scss/bootstrap.scss';
+
+// Awesome Fonts
+@import '~@fortawesome/fontawesome-free/scss/brands';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import apiClient from "../../../service/api/api";
-import Cookies from "js-cookie";
 import * as EmailValidator from "email-validator";
 
 const LoginLogic = ({ setLoggedIn }) => {
@@ -15,7 +14,7 @@ const LoginLogic = ({ setLoggedIn }) => {
   const history = useHistory();
 
   useEffect(() => {
-    apiClient.get("/api/v1/logged-in", { withCredentials: true }).then(() => {
+    apiClient.get("/api/v1/logged-in").then(() => {
       history.push("/dashboard");
     });
   }, []);
@@ -34,32 +33,46 @@ const LoginLogic = ({ setLoggedIn }) => {
       setIsPasswordValid(false);
       err = true;
     }
-    if(err) {
+    if (err) {
       return false;
     }
+    sessionStorage.setItem("loginError", "");
     setLoading(true);
-    apiClient.get("/sanctum/csrf-cookie").then((response) => {
-      apiClient
-        .post("/login", {
-          email: username,
-          password: password,
-        })
-        .then((response) => {
-          setLoggedIn(true);
-          console.log(response);
-          Cookies.set("logged-in", "true", { path: "" });
-          history.push("/dashboard");
-        })
-        .catch((err) => {
-          setLoading(false);
-          if (err.response.data.errors.email !== undefined) {
-            setErrorMessage(err.response.data.errors.email);
-          }
-          if (err.response.data.errors.password !== undefined) {
-            setErrorMessage(err.response.data.errors.password);
-          }
-        });
-    });
+    apiClient
+      .get("/sanctum/csrf-cookie")
+      .then(() => {
+        apiClient
+          .post("/login", {
+            email: username,
+            password: password,
+          })
+          .then((response) => {
+            setLoggedIn(true);
+            console.log(response);
+            sessionStorage.setItem("isLoggedIn", "true");
+            history.push("/dashboard");
+          })
+          .catch((err) => {
+            setLoading(false);
+            if (typeof err.response.data.errors === "object") {
+              // check if email error present
+              if (typeof err.response.data.errors.email === "object") {
+                setErrorMessage(err.response.data.errors.email);
+              }
+              // check if password error message present
+              if (typeof err.response.data.errors.password === "object") {
+                setErrorMessage(err.response.data.errors.password);
+              }
+            } else {
+              // any other error
+              setErrorMessage(err.response.data.message);
+            }
+          });
+      })
+      .catch(() => {
+        setLoading(false);
+        setErrorMessage("ERR_CONNECTION_REFUSED");
+      });
   };
   return {
     username,

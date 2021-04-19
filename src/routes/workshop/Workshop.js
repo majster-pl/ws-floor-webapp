@@ -1,8 +1,13 @@
-import CheckIfLoggedIn from "../../components/CheckIfLoggedIn";
+import IsLoggedInLogic from "../../components/IsLoggedInLogic";
 
 const Workshop = (setLoggedIn) => {
-    CheckIfLoggedIn(setLoggedIn);
-    return <div>Workshop page! :-)</div>
-}
+  const { isLoading, SpinnerComponent } = IsLoggedInLogic(setLoggedIn);
+  //if still waiting response from server then display spinner
+  if (isLoading) {
+    return <SpinnerComponent />;
+  }
+
+  return <div>Workshop page! :-)</div>;
+};
 
 export default Workshop;

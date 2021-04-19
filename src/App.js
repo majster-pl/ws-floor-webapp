@@ -4,7 +4,7 @@ import {
   Route,
   Switch,
 } from "react-router-dom";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import "./scss/main.scss";
 // import apiClient from "./service/api/api";
 
@@ -17,10 +17,7 @@ import Workshop from "./routes/workshop/Workshop";
 import Page404 from "./routes/page404/Page404";
 
 const App = () => {
-  const [loggedIn, setLoggedIn] = useState(
-    // localStorage.getItem("loggedIn") == "true" || false
-    Cookies.get("logged-in") === "true" || false
-  );
+  const [loggedIn, setLoggedIn] = useState(false);
 
   return (
     <Router>
