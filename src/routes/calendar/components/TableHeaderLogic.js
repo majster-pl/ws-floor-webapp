@@ -1,7 +1,7 @@
 import moment from "moment";
 // import apiClient from "../../../service/api/api";
 
-const HeaderLogic = (currentDate, setCurrentDate, numberOfDays, setNumberOfDays) => {
+const TableHeaderLogic = (currentDate, setCurrentDate, numberOfDays, setNumberOfDays) => {
   // disable all days enable only mondays to be selected on calendar picker
   const isMonday = (date) => {
     const day = moment(date).day();
@@ -34,4 +34,4 @@ const HeaderLogic = (currentDate, setCurrentDate, numberOfDays, setNumberOfDays)
   };
 };
 
-export default HeaderLogic;
+export default TableHeaderLogic;

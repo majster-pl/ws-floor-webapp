@@ -3,7 +3,7 @@ import moment from "moment";
 import React, { forwardRef } from "react";
 import Moment from "react-moment";
 import { Button, Nav, Dropdown, DropdownButton } from "react-bootstrap";
-import HeaderLogic from "./HeaderLogic";
+import TableHeaderLogic from "./TableHeaderLogic";
 import "react-datepicker/dist/react-datepicker.css";
 
 const Header = ({
@@ -22,7 +22,7 @@ const Header = ({
     handleClickNext,
     handleClickPrevious,
     handleNumberOfDaysChange,
-  } = HeaderLogic(currentDate, setCurrentDate, numberOfDays, setNumberOfDays);
+  } = TableHeaderLogic(currentDate, setCurrentDate, numberOfDays, setNumberOfDays);
 
   // Date picker custom button
   const ref = React.createRef();
@@ -43,12 +43,17 @@ const Header = ({
               <div className="form-inline justify-content-start">
                 <ul className="pagination d-flex justify-content-center m-0">
                   <li className="page-item">
-                    <a className="page-link py-1" onClick={handleClickPrevious}>
+                    <a
+                      key="nav-1"
+                      className="page-link py-1"
+                      onClick={handleClickPrevious}
+                    >
                       <i className="fas fa-angle-left"></i>
                     </a>
                   </li>
                   <li id="datepicker-group" className="page-item">
                     <DatePicker
+                      key="nav-2"
                       style={{ display: "revert" }}
                       peekNextMonth
                       showMonthDropdown
@@ -64,7 +69,11 @@ const Header = ({
                     />
                   </li>
                   <li className="page-item">
-                    <a className="page-link py-1" onClick={handleClickNext}>
+                    <a
+                      key="nav-3"
+                      className="page-link py-1"
+                      onClick={handleClickNext}
+                    >
                       <i className="fas fa-angle-right"></i>
                     </a>
                   </li>
@@ -74,12 +83,27 @@ const Header = ({
                     variant="secondary"
                     size="sm"
                     id="dropdown-item-button"
-                    title={numberOfDays+" Days"}
+                    title={numberOfDays + " Days"}
                   >
                     <Dropdown.ItemText>Days per page</Dropdown.ItemText>
-                    <Dropdown.Item as="button" onClick={() => handleNumberOfDaysChange(7)}>7 Days</Dropdown.Item>
-                    <Dropdown.Item as="button" onClick={() => handleNumberOfDaysChange(14)}>14 Days</Dropdown.Item>
-                    <Dropdown.Item as="button" onClick={() => handleNumberOfDaysChange(28)}>28 Days</Dropdown.Item>
+                    <Dropdown.Item
+                      as="button"
+                      onClick={() => handleNumberOfDaysChange(7)}
+                    >
+                      7 Days
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      as="button"
+                      onClick={() => handleNumberOfDaysChange(14)}
+                    >
+                      14 Days
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      as="button"
+                      onClick={() => handleNumberOfDaysChange(28)}
+                    >
+                      28 Days
+                    </Dropdown.Item>
                   </DropdownButton>
                 </ul>
               </div>
@@ -121,41 +145,41 @@ const Header = ({
         </th>
       </tr>
 
-      <tr className="">
+      <tr className="table-head-row">
         {_numberOfDays.map((item, index) => {
           return (
-            <>
-              <th key={index}>
+            <React.Fragment key={index}>
+              <th>
                 <Moment format="dddd" add={{ days: index }}>
                   {currentDate}
                 </Moment>
               </th>
               <th className="day-info1">Capacity: 100</th>
-            </>
+            </React.Fragment>
           );
         })}
       </tr>
       <tr>
         {_numberOfDays.map((item, index) => {
           return (
-            <>
-              <th key={index}>
+            <React.Fragment key={index}>
+              <th>
                 <Moment format="DD/MM/YYYY" add={{ days: index }}>
                   {currentDate}
                 </Moment>
               </th>
               <th className="day-info2">Remaining: 30</th>
-            </>
+            </React.Fragment>
           );
         })}
       </tr>
       <tr>
         {_numberOfDays.map((item, index) => {
           return (
-            <>
+            <React.Fragment key={index}>
               <td></td>
               <td className="day-info3">Alocated: 20</td>
-            </>
+            </React.Fragment>
           );
         })}
       </tr>
@@ -163,10 +187,10 @@ const Header = ({
       <tr>
         {_numberOfDays.map((item, index) => {
           return (
-            <>
+            <React.Fragment key={index}>
               <td></td>
               <td className="day-info4">Unallocated: 30</td>
-            </>
+            </React.Fragment>
           );
         })}
       </tr>

@@ -1,17 +1,15 @@
-import CalendarEvent from "./Event";
+import CalendarEvent from "./CalendarEvent";
 // import moment from "moment";
 
 const CalendarBody = ({
-  data,
-  setModalEditData,
-  handleShowModal,
-  handleCloseModal,
+  tableData,
+  handleModalOpen,
   query,
 }) => {
   // search function
   function search(event) {
     // console.log(event);
-    if (event.isUsed) {
+    if (event.isUsed && query.length > 1) {
       var val = Object.values(event);
       var valid = false;
       for (const key of val) {
@@ -32,24 +30,22 @@ const CalendarBody = ({
 
   return (
     <tbody>
-      {data.map((row, index) => (
+      {tableData.map((row, index) => (
         <tr key={index}>
-          {row.map((cell, index) => (
+          {row.map((cell, index2) => (
             <CalendarEvent
-              key={index}
-              // eventId={cell[0].event_id}
-              isUsed={search(cell)}
-              // isUsed={true}
+              key={index+"."+index2}
+              eventId={cell.event_id}
+              isHighlighted={search(cell)}
+              isUsed={cell.isUsed}
               vehicleId={cell.reg}
-              // bookedDate={cell[0].booked_at}
+              // bookedDate={cell.booked_at}
               customerName={cell.customer}
               description={cell.description + "rere"}
               allowedTime={cell.allowed_time}
               others={cell.others === null ? "" : "n/a"}
               status={cell.status}
-              // setModalEditData={setModalEditData}
-              // showModal={handleShowModal}
-              // handleCloseModal={handleCloseModal}
+              handleModalOpen={handleModalOpen}
             />
           ))}
         </tr>

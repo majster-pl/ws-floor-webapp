@@ -1,6 +1,6 @@
 import IsLoggedInLogic from "../../components/IsLoggedInLogic";
 import CalendarLogic from "./CalendarLogic";
-import Header from "./components/Header";
+import TableHeader from "./components/TableHeader";
 import Modal from "./components/Modal";
 import TableBody from "./components/TableBody";
 import "./Calendar.css";
@@ -15,13 +15,14 @@ const Calendar = (setLoggedIn) => {
     setSearchQuery,
     handleModalOpen,
     showModal,
-    setModalEditData,
+    setModalEventId,
     handleCloseModal,
     handleShowModal,
     tableData,
     numberOfDays,
     setNumberOfDays,
     isCalendarLoading,
+    modalData,
   } = CalendarLogic();
   //   const { Header } = CalendarHeader();
   //if still waiting response from server then display spinner
@@ -32,7 +33,7 @@ const Calendar = (setLoggedIn) => {
   return (
     <div className="calendar-main">
       <table className="calendar-table">
-        <Header
+        <TableHeader
           currentDate={currentDate}
           setCurrentDate={setCurrentDate}
           searchQuery={searchQuery}
@@ -43,18 +44,19 @@ const Calendar = (setLoggedIn) => {
         />
 
         {isCalendarLoading ? (
-          <CalendarSpinner />
+          <CalendarSpinner numberOfDays={numberOfDays} />
         ) : (
           <TableBody
-            data={tableData}
-            setModalEditData={setModalEditData}
+            tableData={tableData}
+            setModalEditData={setModalEventId}
+            handleModalOpen={handleModalOpen}
             handleShowModal={handleShowModal}
             handleCloseModal={handleCloseModal}
             query={searchQuery}
           />
         )}
       </table>
-      <Modal showModal={showModal} handleCloseModal={handleCloseModal} />
+      <Modal showModal={showModal} handleCloseModal={handleCloseModal} modalData={modalData} />
     </div>
   );
 };

@@ -10,9 +10,9 @@
     width          : 100%;
     border-collapse: collapse;
     /* font-size      : 0.9em !important; */
-    min-width      : 1600px;
+    /* min-width      : 2600px; */
     font-size      : 12px !important;
-    table-layout   : fixed;
+    /* table-layout   : fixed; */
 }
 .calendar-table thead {
 	/* background-color: var(--color-blue-light); */
@@ -28,6 +28,10 @@ tr,
 .card-body-row {
     padding-left : 4px !important;
     padding-right: 4px !important;
+}
+
+.card {
+	min-width: 200px;
 }
 
 .text-truncate-3 {
@@ -95,7 +99,10 @@ table thead tr:nth-child(6) th {
 }
 
 
-
+.bg-highlight {
+	background-color: burlywood;
+  }
+ 
 /* table thead .thead_nav th {
 	font-weight: 400;
 	font-size: 1.2em;
@@ -117,6 +124,9 @@ table thead .thead_nav th ul {
 
 td {
     max-width: 5em !important;
+}
+.table-head-row th {
+	min-width: 10vw;
 }
 
 .day-info1 {

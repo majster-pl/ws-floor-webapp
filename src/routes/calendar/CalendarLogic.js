@@ -11,19 +11,17 @@ const CalendarLogic = () => {
   const [isCalendarLoading, setIsCalendarLoading] = useState(true);
   const [dateFormat, setDateFormat] = useState("YYYY-MM-DD");
   // modal
-  const [modalEditData, setModalEditData] = useState([]);
+  const [modalData, setModalData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const handleCloseModal = () => {
-    setModalEditData([]);
+    setModalData([]);
     setShowModal(false);
   };
-  
 
   // function to turn off spinner
   useEffect(() => {
     setIsCalendarLoading(false);
   }, [tableData]);
-
 
   // useEffect(() => {
   //   console.log("=====================================================");
@@ -38,7 +36,12 @@ const CalendarLogic = () => {
   // Loading calendar from api when currentDate changes
   useEffect(() => {
     setIsCalendarLoading(true);
-    const url = "/api/v1/events?days="+numberOfDays+"&from="+moment(currentDate).format('YYYY-MM-DD') +"&format=grid";
+    const url =
+      "/api/v1/events?days=" +
+      numberOfDays +
+      "&from=" +
+      moment(currentDate).format("YYYY-MM-DD") +
+      "&format=grid";
 
     apiClient.get(url).then((response) => {
       setTableData(response.data.data);
@@ -47,22 +50,28 @@ const CalendarLogic = () => {
   }, [currentDate, numberOfDays, dateFormat]);
 
   // Modal handler
-  const handleModalOpen = (date) => {
-    console.log("add new pressed");
-    const initialFormData = Object.freeze({
-      id: undefined,
-      veh_id: "",
-      customer_id: "",
-      description: "",
-      others: "",
-      allowed_time: "",
-      booked_date: date,
-      status: "",
-    });
+  const handleModalOpen = (date, eventId) => {
+    if (!date) {
+      let url = "/api/v1/events/" + eventId;
+
+      apiClient.get(url).then((response) => {
+        // setTableData(response.data.data);
+        console.log(response.data);
+        setModalData(response.data.data);
+        setShowModal(true);
+      });
+    } else {
+      setModalData({
+        new_booking: true,
+        booked_date: date,
+      });
+      setShowModal(true);
+    }
+
     // console.log(initialFormData);
-    setModalEditData(initialFormData);
+    // setModalEventId(initialFormData);
     // showModal();
-    setShowModal(true);
+    // setShowModal(true);
     // console.log('show modal here?');
   };
 
@@ -73,12 +82,12 @@ const CalendarLogic = () => {
     setSearchQuery,
     handleModalOpen,
     showModal,
-    setModalEditData,
     handleCloseModal,
     tableData,
     numberOfDays,
     setNumberOfDays,
     isCalendarLoading,
+    modalData,
   };
 };
 

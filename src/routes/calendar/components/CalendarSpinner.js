@@ -1,8 +1,8 @@
-const CalendarSpinner = ({ }) => {
+const CalendarSpinner = ({numberOfDays }) => {
     return (
         <tbody className={""}>
-            <tr colSpan="14">
-                <td colSpan="14">
+            <tr colSpan={numberOfDays*2}>
+                <td colSpan={numberOfDays*2}>
                     <div
                         className="jumbotron d-flex align-items-center p-0 m-0 bg-transparent"
                         style={{ height: "76vh" }}
