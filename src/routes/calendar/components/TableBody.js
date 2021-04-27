@@ -8,10 +8,10 @@ const CalendarBody = ({
 }) => {
   // search function
   function search(event) {
-    // console.log(event);
-    if (event.isUsed && query.length > 1) {
+    console.log(event);
+    if (event.isUsed && query.length > 0) {
       var val = Object.values(event);
-      var valid = false;
+      var valid = true;
       for (const key of val) {
         if (key !== null) {
           if (
@@ -20,7 +20,7 @@ const CalendarBody = ({
               .toLocaleLowerCase()
               .indexOf(query.toString().toLocaleLowerCase()) > -1
           ) {
-            valid = true;
+            valid = false;
           }
         }
       }

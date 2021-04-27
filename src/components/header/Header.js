@@ -78,14 +78,14 @@ const Header = ({ isLoggedIn, setLoggedIn }) => {
       expand="lg"
       bg="black"
       variant="dark"
-      className="sticky-top"
+      className="navbar-fixed-top bg-sendary-extra"
     >
       <Navbar.Brand eventkey="1" href="/">
         <img
           alt=""
           src="/img/logo-full.png"
-          width="250"
-          height="60"
+          width="230"
+          // height="60"
           className="d-inline-block align-top sticky-top"
         />
       </Navbar.Brand>
@@ -104,7 +104,14 @@ const Header = ({ isLoggedIn, setLoggedIn }) => {
                 Workshop
               </Nav.Link>
             </Nav>
-            <Nav>
+
+            <Nav className="d-block d-lg-none mr-auto">
+              <Nav.Link eventKey="4" as={Link} onClick={logout}>
+                Logout{" "}
+              </Nav.Link>
+            </Nav>
+
+            <Nav className="d-none d-lg-block">
               <Dropdown>
                 <Dropdown.Toggle
                   as={CustomToggle}

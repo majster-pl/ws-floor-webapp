@@ -31,7 +31,7 @@ const Calendar = (setLoggedIn) => {
   }
 
   return (
-    <div className="calendar-main">
+    <div className="calendar-main scroll">
       <table className="calendar-table">
         <TableHeader
           currentDate={currentDate}

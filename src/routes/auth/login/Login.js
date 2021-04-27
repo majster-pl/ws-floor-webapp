@@ -63,7 +63,7 @@ const Login = (setLoggedIn) => {
             {sessionStorage.getItem('isLoggedIn') === "false" ? sessionStorage.getItem("loginError") : ""}
           </Form.Control.Feedback>
         </Form.Group>
-        <Button variant="primary" type="submit" block disabled={isLoading}>
+        <Button variant="success" type="submit" block disabled={isLoading}>
           {isLoading ? (
             <Spinner
               as="span"

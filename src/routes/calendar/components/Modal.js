@@ -14,9 +14,15 @@ const CalendarModal = ({ showModal, handleCloseModal, modalData }) => {
   //   const [assetSelections, setAssetSelections] = useState([]);
 
   // // Date picker
-  // const CustomInput = ({ onClick }) => (
-  //     <Form.Control name="booked_at" onClick={onClick} placeholder="Booked date" defaultValue={moment(bookedDate).format('DD-MM-YYYY')} />
-  // );
+  const CustomInput = ({ onClick }) => (
+    <Form.Control
+      name="booked_at"
+      size="sm" 
+      onClick={onClick}
+      placeholder="Booked date"
+      defaultValue={moment(modalData.booked_date).format("DD-MM-YYYY")}
+    />
+  );
   // // When new date selected from date picker
   // const handleDateChange = (currentDate, event) => {
   //     setBookedDate(currentDate);
@@ -175,6 +181,7 @@ const CalendarModal = ({ showModal, handleCloseModal, modalData }) => {
               <Fragment>
                 <Form.Group>
                   <Typeahead
+                  size="sm" 
                     id="asset-typeahead"
                     labelKey="name"
                     allowNew
@@ -203,6 +210,7 @@ const CalendarModal = ({ showModal, handleCloseModal, modalData }) => {
                     id="customer-typeahead"
                     labelKey="name"
                     allowNew
+                    size="sm" 
                     // onChange={setCustomerSelections}
                     // onInputChange={handleCustomerChange}
                     // options={customerOptions}
@@ -240,6 +248,7 @@ const CalendarModal = ({ showModal, handleCloseModal, modalData }) => {
             <Col sm="10">
               <Form.Control
                 name="allowed_time"
+                size="sm" 
                 placeholder="Number of hours allowed for a job"
                 // onChange={handleChange}
                 defaultValue={modalData.allowed_time}
@@ -257,6 +266,7 @@ const CalendarModal = ({ showModal, handleCloseModal, modalData }) => {
             <Col sm="10">
               <Form.Control
                 name="status"
+                size="sm" 
                 placeholder="Current status"
                 // onChange={handleChange}
                 defaultValue={modalData.status}
@@ -280,7 +290,7 @@ const CalendarModal = ({ showModal, handleCloseModal, modalData }) => {
                 showYearDropdown
                 dateFormat="dd/MM/yyyy"
                 // openToDate={new Date(moment(bookedDate))}
-                // customInput={<CustomInput />}
+                customInput={<CustomInput />}
                 closeOnScroll={true}
                 todayButton="This Week"
                 // filterDate={isWeekday}
@@ -301,6 +311,7 @@ const CalendarModal = ({ showModal, handleCloseModal, modalData }) => {
             <Col sm="10">
               <Form.Control
                 name="others"
+                size="sm" 
                 placeholder="Other informations"
                 // onChange={handleChange}
                 defaultValue={modalData.others}
@@ -317,11 +328,12 @@ const CalendarModal = ({ showModal, handleCloseModal, modalData }) => {
         {/* <Button variant="danger" className="mr-auto" onClick={handleDelete}>
           Remove
         </Button> */}
-        <Button variant="secondary" onClick={handleCloseModal}>
+        <Button variant="secondary" size="sm" onClick={handleCloseModal}>
           Close
         </Button>
         <Button
-          variant="primary"
+          variant="success"
+          size="sm"
           onClick={() => {
             console.log("handleSubmit");
           }}

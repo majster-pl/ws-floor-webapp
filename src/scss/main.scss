@@ -1,36 +1,153 @@
 // Override default variables before the import
 
 // Navbar colors
-$navbar-dark-color:        #c4c4c4;
-$navbar-dark-hover-color:   #fff;
-$navbar-dark-active-color:   #eb53cc;
-.bg-black {
-    background-color:black;
+
+// .bg-black {
+//   background-color: black;
+// }
+
+$theme-colors: (
+  "sendary-extra": #141518,
+  "secondary": #2d3238,
+  "success": #39a883,
+  "danger": #ff4136,
+  "info": #ffbb00,
+);
+
+$color-white: #ffffff;
+$color-black: #000000;
+$color-gray: #313436;
+$color-gray-dark: #1b2025;
+$color-gray-light: #a7a9ab;
+$color-pink: #f00fa6;
+$color-green: #39a883;
+$color-orange: #ffbb00;
+$color-green-light: #dfea87;
+// default colors:
+:root {
+  --color-orange: #{$color-orange};
+  --color-pink: #{$color-pink};
+  --color-green: #{$color-green};
+  --color-green-light: #{$color-green-light};
+
+  --color-gray-light: #{$color-gray-light};
+  --color-gray-darker: #{$color-gray-dark};
+}
+
+@font-face {
+  font-family: "Comfortaa";
+  src: local("Comfortaa"), url(../fonts/Comfortaa/static/Comfortaa-SemiBold.ttf) format("SemiBold");
+}
+
+.div-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 87vh;
+}
+body,
+html {
+  height: 100%;
+  width: 100%;
+  color: white !important;
+  overflow: hidden;
+  // background-color: var(--color-gray-darker) !important;
+  // font-family: "Arial" !important;
+  // font-weight: black;
+}
+
+$body-bg: $color-gray-dark;
+
+// navbar
+$navbar-dark-hover-color: $color-white;
+$navbar-dark-active-color: $color-pink;
+$navbar-dark-color: #c4c4c4;
+
+label {
+  color: var(--color-gray-light) !important;
+}
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+.scroll {
+  overflow: auto;
+  height: calc(100% - 74px);
+  width: 100%;
 }
 
 
-// default colors:
-:root {
-  --color-pink: #F00FA6;
-  --color-blue-light: #0FA6F0;
-  --color-yellow: #F0CA0F;
-  --color-green: #47B848;
-  --color-blue: #0F35F0;
- }
+// .form-control::placeholder {
+//   color: rgb(170, 170, 170) !important;
+// }
+// .form-control:focus {
+//   border-color: hsl(320, 88%, 50%) !important;
+//   box-shadow: 0px 1px 1px rgba(163, 2, 2, 0.075) inset, 0px 0px 8px rgba(240, 15, 166, 0) !important;
+// }
 
-.div-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 87vh;
-  }
+// BUTTON
+// .btn {
+//   border-radius: 15px !important;
+//   font-weight: 100 !important;
+// }
 
+// // CARD
+.card {
+  background-color: $color-gray !important;
+  border-radius: 10px !important;
+}
+
+// GENERAL
+$border-color: $color-gray;
+$border-radius: 0.75rem;
+$border-radius-sm: 1rem;
+$border-radius-lg: 0.75rem;
+
+// $dropdown-link-hover-bg: red;
+$dropdown-padding-y: 1rem;
+
+// pagination
+$pagination-color: $color-white;
+$pagination-bg: $color-gray;
+$pagination-border-color: $color-gray-dark;
+$pagination-hover-bg: darken($pagination-bg, 3%);
+$pagination-hover-color: $color-pink;
+$pagination-hover-border-color: $pagination-hover-bg;
+
+//modal
+$modal-content-bg: $color-gray-dark;
+$modal-content-border-color: $color-gray;
+$modal-header-padding-y: 0.6rem;
+
+//input
+$input-bg: $color-gray;
+$input-border-color: $color-green;
+$input-border-width: 0.1rem;
+$input-color: $color-white;
+$input-focus-border-color: $color-pink;
+$input-transition: border-color .35s ease-in-out, box-shadow .35s ease-in-out;
+
+//form group
+$form-group-margin-bottom: 0.6rem;
+
+// button
+$input-btn-focus-box-shadow: 0px 1px 1px rgba(163, 2, 2, 0.075) inset, 0px 0px 8px rgba(240, 15, 166, 0);
+
+// $dropdown-item-padding-x: 30px;
+
+// //.dropdown-menu
+// .dropdown-menu {
+//   border-radius: 10px !important;
+// }
 
 // Import Bootstrap and its default variables
-@import '~bootstrap/scss/bootstrap.scss';
+@import "~bootstrap/scss/bootstrap.scss";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
 
 // Awesome Fonts
-@import '~@fortawesome/fontawesome-free/scss/brands';
-@import '~@fortawesome/fontawesome-free/scss/regular';
-@import '~@fortawesome/fontawesome-free/scss/solid';
-@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import "~@fortawesome/fontawesome-free/scss/brands";
+@import "~@fortawesome/fontawesome-free/scss/regular";
+@import "~@fortawesome/fontawesome-free/scss/solid";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";

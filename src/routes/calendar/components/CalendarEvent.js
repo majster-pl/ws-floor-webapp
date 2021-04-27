@@ -18,7 +18,6 @@ const CalendarEvent = ({
 }) => {
   // Date navigation buttons
   const handleModalOpen2 = () => {
-
     setModalEventId(eventId);
     // let url = "/api/v1/events/"+eventId;
 
@@ -46,28 +45,37 @@ const CalendarEvent = ({
       <div
         // data-toggle="modal"
         // data-target="#modalEditEvent"
-        className={(!isUsed ? "d-none " : "card h-100 ") + (isHighlighted ? " bg-highlight" : "")}
+        className={
+          (!isUsed ? "d-none " : "card h-100 ") +
+          (!isHighlighted ? "" : "d-none")
+        }
         onClick={() => handleModalOpen(null, eventId)}
-        style={{ minHeight: "150px", maxHeight: "150px" }}
+        style={{ minHeight: "150px", maxHeight: "250px" }}
       >
+        <div className="card-header p-0 pl-2 text-success">
+          <div className="card-text font-weight-bold">{vehicleId}</div>
+        </div>
         <div className="card-body p-0">
           <div className="row card-body-row">
             <div className="col-5 card-text">Customer:</div>
-            <div className="col-7 card-text text-truncate">{customerName}</div>
-            <div className="col-5 card-text">Reg:</div>
-            <div className="col-7 card-text font-weight-bold">{vehicleId}</div>
+            <div className="col-7 card-text text-white text-truncate">{customerName}</div>
+            {/* <div className="col-5 card-text">Reg:</div>
+            <div className="col-7 card-text font-weight-bold">{vehicleId}</div> */}
             <div className="col-5 card-text">Desc:</div>
-            <div className="col-7">
-              <div className="text-truncate-3">{description}</div>
+            <div className="col-7 text-truncate-3 text-white ">
+              {description}
+              {/* <div className="text-truncate-3">{description}</div> */}
             </div>
             <div className="col-5 card-text">Allowed:</div>
-            <div className="col-7">{allowedTime} h</div>
+            <div className="col-7 text-white ">{allowedTime} h</div>
             <div className="col-5 card-text">Others:</div>
-            <div className="col-7">{others}</div>
+            <div className="col-7 text-white ">{others}</div>
           </div>
         </div>
         <div className="card-footer p-0 card-body-row">
-          <small className="text-muted">Status: <i>{status}</i></small>
+          <small className="text-info font-italic pl-1">
+            {status}
+          </small>
         </div>
       </div>
     </td>

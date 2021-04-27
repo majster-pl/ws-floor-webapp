@@ -1,48 +1,71 @@
 .calendar-main {
-    /* width   : 100%;
-    overflow-x: scroll;
-    overflow-y: hidden; */
-	/* height: 95vh; */
+	/* width   : 100%; */
+	/* overflow-x: scroll; */
+	/* overflow-y: hidden; */
+	/* height: 93vh; */
+	padding: 0;
 }
 
 .calendar-table {
-    /* overflow-x: hidden; */
-    width          : 100%;
-    border-collapse: collapse;
-    /* font-size      : 0.9em !important; */
-    /* min-width      : 2600px; */
-    font-size      : 12px !important;
-    /* table-layout   : fixed; */
+	/* overflow-x: hidden; */
+	width                : 100%;
+	border-collapse      : collapse;
+	/* font-size         : 0.9em !important; */
+	min-width            : 1300px;
+	font-size            : 12px !important;
+	/* table-layout      : fixed; */
 }
+
 .calendar-table thead {
 	/* background-color: var(--color-blue-light); */
+	background-color: var(--color-gray-darker);
 }
 
 .react-datepicker-popper {
-    z-index: 10005 !important;
+	z-index: 10005 !important;
 }
+
+.date-range {
+	color: white;
+}
+
+.nav {
+	border-bottom: 0.2px groove rgb(139, 139, 139) !important;
+}
+
+.thead_nav th {
+	padding: 0 !important;
+}
+
 
 th,
 td,
 tr,
 .card-body-row {
-    padding-left : 4px !important;
-    padding-right: 4px !important;
+	padding-left : 4px !important;
+	padding-right: 1px !important;
+	margin       : 1px;
 }
 
-.card {
-	min-width: 200px;
+.card-body-row div {
+	padding     : 0 3px;
+	/* margin   : 0; */
+	/* min-width: 200px; */
 }
 
 .text-truncate-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3 !important;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+	display           : -webkit-box;
+	-webkit-line-clamp: 3 !important;
+	-webkit-box-orient: vertical;
+	overflow          : hidden;
 }
 
 .page-item:hover {
-    cursor: pointer;
+	cursor: pointer;
+}
+
+.btn-sm {
+	padding: 0.1rem 0.5rem !important;
 }
 
 /* table thead {
@@ -69,87 +92,84 @@ th {
 	
 } */
 table thead tr:nth-child(2) th {
-    background-color: white;
-    position        : sticky !important;
-    top             : 86px !important;
-    border-style    : none !important;
-    z-index         : 10 !important;
+	/* background-color: white; */
+	background-color: var(--color-gray-darker);
+	/* color        : var(--color-gray-light) ; */
+	color           : white;
+	position        : sticky !important;
+	top             : 0px !important;
+	border-style    : none !important;
+	z-index         : 10 !important;
 
 }
 
 table thead tr:nth-child(3) th {
-    background-color: white;
-    position        : sticky;
-    height          : 25px;
-    top             : 105px;
-    z-index         : 10;
+	/* background-color: white; */
+	background-color   : var(--color-gray-darker);
+	color              : var(--color-gray-light);
+	position           : sticky;
+	/* height          : 25px; */
+	top                : 15px;
+	z-index            : 10;
 
 }
 
 
 table thead tr:nth-child(6) th {
-    background-color: white;
-    position        : sticky;
-    height          : 25px;
-    top             : 129px;
-    z-index         : 10;
-	padding: 0 0.5px !important;
-	/* margin: 3px 3px; */
-    /* box-shadow      : 0 3px 3px -1px rgba(0, 0, 0, 0.5); */
+	/* background-color: var(--color-gray-dark); */
+	/* background-color   : white; */
+	background-color   : var(--color-gray-darker);
+	position           : sticky;
+	height             : 25px;
+	top                : 33px;
+	z-index            : 10;
+	padding            : 0.3rem 0.2rem !important;
+	/* margin          : 3px 3px; */
+	/* box-shadow      : 0 3px 3px -1px rgba(0, 0, 0, 0.5); */
 }
 
 
 .bg-highlight {
-	background-color: burlywood;
-  }
- 
-/* table thead .thead_nav th {
-	font-weight: 400;
-	font-size: 1.2em;
-	text-align: center;
-	border-style: none;
+	background-color: var(--color-pink) !important;
 }
-table thead .thead_nav th ul {
-	margin: 0 0;
-	margin-top: 5px;
-} */
 
-
-/*HEADER OF THE TALBE DATE AND DAY NAME*/
-/*table thead th {
-	position: sticky;
-	top: 0;
-}
-*/
 
 td {
-    max-width: 5em !important;
+	max-width: 5rem !important;
 }
-.table-head-row th {
-	min-width: 10vw;
+
+.table-head-row th,
+td {
+	min-width: 100px;
 }
 
 .day-info1 {
-    background-color: var(--color-green) !important;
-    /* border       : 0.02px solid black !important; */
+	/* background-color: var(--color-orange) !important; */
+	color           : var(--color-orange) !important;
+	/* border       : 0.02px solid black !important; */
+	font-weight     : normal !important;
 
 }
 
 .day-info2 {
-    background-color: var(--color-green) !important;
-    /* border       : 0.02px solid black !important; */
+	color                 : var(--color-pink) !important;
+	font-weight           : normal !important;
+	/* color              : white !important; */
+	/* background-color   : #136775 !important; */
+	/* border             : 0.02px solid black !important; */
 }
 
 .day-info3 {
-    background-color: var(--color-blue) !important;
-	color: white;
-    /* border       : 0.02px solid black !important; */
+	color              : var(--color-green) !important;
+	/* font-weight     : bold; */
+	/* color           : white; */
+	/* border          : 0.02px solid black !important; */
 }
 
 .day-info4 {
-    background-color: var(--color-yellow) !important;
-	/* color: white; */
-    /* border       : 0.02px solid black !important; */
+	color           : var(--color-green-light) !important;
+	/* color        : white; */
+	/* border       : 0.02px solid black !important; */
 }
 
 
@@ -158,162 +178,68 @@ td {
 
 
 /* events */
-
-.calendar-table .card-body:hover {
-    /* color: white; */
-    background-color: #3CC39A;
-    cursor          : pointer;
+.calendar-table .card {
+	background-color: var(--color-gray-dark);
+	color           : var(--color-gray-light);
+	margin-top      : 3px;
 }
+
+.calendar-table .card:hover {
+	/* color           : black; */
+	background-color: var(--color-gray-darker) !important;
+	cursor          : pointer;
+	border-color    : var(--color-green) !important;
+}
+
+.calendar-table tbody {
+	background-color: var(--color-gray-darker);
+}
+
 
 
 /* date picker */
 .react-datepicker-wrapper {
-    display: block !important;
+	display: block !important;
 }
 
-/* 
-table thead .head_day th {
-	background-color: #7f7f7f;
-	color: white;
-	text-align: center;
-}
-table thead .head_day th div label {
-	font-size: 1.0em;
-	font-weight: 550;
-	margin-bottom: 3px;
-	margin-top: 1px;
-	margin-right: 5px;
-}
-table thead .head_day .thead_day_weekend {
-	background-color: #ff7f7f;
-	color: white;
-	text-align: center;
-}
-table thead .thead_date th {  
-	background-color: transparent;
-	text-align: center;
-	font-weight: 400;
-	font-size: 1.3em;
-}
-table thead .thead_date .thead_date_weekend {
-	background-color: transparent;
-	text-align: center;
-	font-weight: 400;
-	font-size: 1.3em;
-	color: #ff7f7f;
-}
-.head_planned_day th {
-	background-color: #e9e5dd;
-	color: #6d6d6d;
-	text-align: center;
-}
-table thead .head_planned_day th div:hover, table thead .head_planned_day th div label:hover {
-	cursor: pointer;
-	color: white;
-	background-color: dodgerblue;
-}
-table thead .head_planned_day th div span {
-	padding-bottom: 0px;
-	padding: 1px 5px;
-	font-weight: 900;
-	font-size: 0.9em;
-} */
-
-/*TIME ON THE LEFT*/
-/* table tbody tr .tbody_time_am {
-	background-color: #e9e5dd;
-	color: #7f7f7f;
-	position: sticky;
-	left: 0;
-	z-index: 9;
-	text-align: center;
-	font-weight: 400;
-	font-size: 1.3em;	
-
-}
-table tbody tr .tbody_time_pm {
-	background-color: #7f7f7f;
-	color: white;
-	position: sticky;
-	left: 0;
-	z-index: 9;
-	text-align: center;
-	font-weight: 400;
-	font-size: 1.3em;	
-}
- */
-
-
-/*TIME SLOTS IN THE CALLENDAR*/
-/* table tbody tr td {
-	border-right: 0.02px solid #6c6c6c;
-	border-left: 0.02px solid #6c6c6c;
-}
-.calendar-slot {
-	border: 0.02px solid #6c6c6c;
-	text-align: center;
-}
-.calendar-slot:hover {
-	background-color: dodgerblue;
-	cursor: pointer;
-}
-.calendar-slot-empty {
-	opacity: 0;
-	border: 0.02px solid #6c6c6c;
-	text-align: center;	
-	border-style: none;
-	border-right: 0.02px solid #6c6c6c;
-	border-left: 0.02px solid #6c6c6c;
-}
-.calendar-slot-empty:hover {
-	opacity: 1;
-	background-color: dodgerblue;
-	cursor: pointer;
-	color: white;
-}
-
-.calendar-slot-empty-current {
-	height: 100%;
-	opacity: 0;
-}
-.calendar-slot-empty-current:hover {
-	opacity: 1;
-	background-color: dodgerblue;
-	cursor: pointer;
-	color: white;
-
-} */
-
-
-/*LOADER STYLE + ANIMATION*/
-/* .loader {
-	border: 4px solid #f3f3f3;
-	border-radius: 50%;
-	border-top: 4px solid #3498db;
-	width: 40px;
-	height: 40px;
-	-webkit-animation: spin 2s linear infinite;
-	animation: spin 2s linear infinite;
-} */
 
 
 /* Safari */
 @-webkit-keyframes spin {
-    0% {
-        -webkit-transform: rotate(0deg);
-    }
+	0% {
+		-webkit-transform: rotate(0deg);
+	}
 
-    100% {
-        -webkit-transform: rotate(360deg);
-    }
+	100% {
+		-webkit-transform: rotate(360deg);
+	}
 }
 
 @keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
+	0% {
+		transform: rotate(0deg);
+	}
 
-    100% {
-        transform: rotate(360deg);
-    }
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.modal .close {
+	color: white !important;
+}
+
+/* styling adjustments... */
+/* Change autocomplete styles in WebKit */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: white;
+  transition: background-color 5000s ease-in-out 0s;
 }

@@ -19,9 +19,9 @@ const IsLoggedIn = ({setLoggedIn}) => {
         setLoggedIn(true);
       })
       .catch(() => {
-        setLoading(false);
+        // setLoading(false);
         setLoggedIn(false);
-        history.push("/login");
+        // history.push("/login");
         // _setIsLoggedIn(false);
       });
   }, []);

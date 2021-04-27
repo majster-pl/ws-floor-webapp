@@ -6,6 +6,12 @@ const apiClient = axios.create({
   withCredentials: true,
 });
 
+const redirectToLogin = () => {
+  if (window.location.pathname !== "/login") {
+    window.location.href = "/login";
+  }
+};
+
 apiClient.interceptors.response.use(
   function (response) {
     return response;
@@ -14,14 +20,15 @@ apiClient.interceptors.response.use(
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     sessionStorage.setItem("loginError", "");
+    // check if server responding... if so check for errors
     if (typeof error.response === "object") {
       if (typeof error.response.status !== "undefined") {
         if (sessionStorage.getItem("isLoggedIn") === "true") {
-          if (error.response.status === 401) {
             sessionStorage.setItem("isLoggedIn", "false");
+            if (error.response.status === 401) {
             sessionStorage.setItem(
               "loginError",
-              "You've been logged out, please log back in again."
+              "You are no longer logged in, please log in again."
             );
           } else {
             sessionStorage.setItem(
@@ -31,16 +38,25 @@ apiClient.interceptors.response.use(
                 "] occurred, please try again again."
             );
           }
-          window.location.href = "/login";
+          redirectToLogin();
+        } else {
+          sessionStorage.removeItem("isLoggedIn")
+          sessionStorage.removeItem("loginError")
+          // sessionStorage.setItem(
+          //   "loginError",
+          //   "You are no longer logged in, please log in again."
+          // );
+          redirectToLogin();
         }
       }
     } else {
-      console.log("oooo error!!");
+      // console.log("oooo error!!");
       sessionStorage.setItem("isLoggedIn", "false");
       sessionStorage.setItem(
         "loginError",
         "Error: API Network Error, please try again again later."
       );
+      redirectToLogin();
       // error = new Error("connection error!")
     }
     return Promise.reject(error);
