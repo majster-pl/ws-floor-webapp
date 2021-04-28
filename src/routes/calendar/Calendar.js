@@ -23,6 +23,7 @@ const Calendar = (setLoggedIn) => {
     setNumberOfDays,
     isCalendarLoading,
     modalData,
+    setModalData,
   } = CalendarLogic();
   //   const { Header } = CalendarHeader();
   //if still waiting response from server then display spinner
@@ -56,7 +57,7 @@ const Calendar = (setLoggedIn) => {
           />
         )}
       </table>
-      <Modal showModal={showModal} handleCloseModal={handleCloseModal} modalData={modalData} />
+      <Modal showModal={showModal} handleCloseModal={handleCloseModal} modalData={modalData} setModalData={setModalData} />
     </div>
   );
 };

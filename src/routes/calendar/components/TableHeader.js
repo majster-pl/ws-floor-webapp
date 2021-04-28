@@ -50,8 +50,8 @@ const Header = ({
     <thead>
       <tr className="thead_nav">
         <th colSpan={numberOfDays * 2}>
-          <Nav justify defaultActiveKey="/home">
-            <Nav.Item className="pl-4 my-auto">
+          <Nav justify>
+            <Nav.Item className="pl-3 my-auto py-2">
               <div className="form-inline justify-content-start">
                 <ul className="pagination d-flex justify-content-center m-0">
                   <li className="page-item">
@@ -121,7 +121,7 @@ const Header = ({
             </Nav.Item>
             {/* text to display current date range */}
             <Nav.Item className="pl-4 my-auto">
-              <div className="text-left font-italic h4 date-range">
+              <div className="text-left font-italic h4 date-range m-0">
                 <Moment format="ddd DD MMMM YYYY" add={{ days: 0 }}>
                   {currentDate}
                 </Moment>{" "}
@@ -136,37 +136,26 @@ const Header = ({
               </div>
             </Nav.Item>
             {/* add new and search field */}
-            <Nav.Item className="p-2 my-auto">
-              <Form.Row className="justify-content-end">
-                <Col className="text-right my-auto">
-                  <Button
-                    size="sm"
-                    variant="success"
-                    onClick={() => {
-                      console.log("handleModalOpen()");
-                    }}
-                  >
-                    <b>Add new</b>
-                  </Button>
-                </Col>
-                <Col className="my-auto" style={{ maxWidth: "250px" }}>
-                  <Form.Control
-                    size="sm"
-                    type="text"
-                    placeholder="search page"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </Col>
-              </Form.Row>
-              <div className="form-inline justify-content-end mr-2 my-1">
-                {/* <input
-                  className="form-control mr-sm-1"
-                  type="search"
+            <Nav.Item className="pr-3 my-auto">
+              <div className="form-inline justify-content-end">
+                <Button
+                  className="mr-3"
+                  size="sm"
+                  variant="success"
+                  onClick={() => {
+                    console.log("handleModalOpen()");
+                  }}
+                >
+                  <b>Add new</b>
+                </Button>
+                <Form.Control
+                  size="sm"
+                  style={{ maxWidth: "250px" }}
+                  type="text"
+                  placeholder="search page"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search"
-                /> */}
+                />
               </div>
             </Nav.Item>
           </Nav>
@@ -178,7 +167,11 @@ const Header = ({
           return (
             <React.Fragment key={index}>
               <th>
-                <Moment format="dddd" add={{ days: index }}>
+                <Moment
+                  className="day-name"
+                  format="dddd"
+                  add={{ days: index }}
+                >
                   {currentDate}
                 </Moment>
               </th>
@@ -192,7 +185,11 @@ const Header = ({
           return (
             <React.Fragment key={index}>
               <th>
-                <Moment format="DD/MM/YYYY" add={{ days: index }}>
+                <Moment
+                  className="day-date"
+                  format="DD/MM/YYYY"
+                  add={{ days: index }}
+                >
                   {currentDate}
                 </Moment>
               </th>
@@ -228,12 +225,11 @@ const Header = ({
           return (
             <th key={index} colSpan="2">
               <Button
-                className="m-0 p-1"
                 variant="success"
                 size="sm"
                 block
                 onClick={() =>
-                  handleModalOpen(moment(currentDate).add(index, "days"))
+                  handleModalOpen(moment(currentDate).add(index, "days").format("YYYY-MM-DD"))
                 }
               >
                 {" "}

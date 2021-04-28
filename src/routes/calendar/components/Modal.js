@@ -1,13 +1,19 @@
-import axios from "axios";
+// import axios from "axios";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import moment from "moment";
 import React, { useState, useEffect, Fragment } from "react";
 import DatePicker from "react-datepicker";
 import { Typeahead } from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.css";
+import apiClient from "../../../service/api/api";
 
 // const CalendarModal = ({ modalData, setmodalData, showModal, handleCloseModal, reloadCalendar, assetsOptions, customerOptions }) => {
-const CalendarModal = ({ showModal, handleCloseModal, modalData }) => {
+const CalendarModal = ({
+  showModal,
+  handleCloseModal,
+  modalData,
+  setModalData,
+}) => {
   // set booked_at date as state
   //   const [bookedDate, setBookedDate] = useState(modalData.booked_at);
   //   const [customerSelections, setCustomerSelections] = useState([]);
@@ -17,7 +23,6 @@ const CalendarModal = ({ showModal, handleCloseModal, modalData }) => {
   const CustomInput = ({ onClick }) => (
     <Form.Control
       name="booked_at"
-      size="sm" 
       onClick={onClick}
       placeholder="Booked date"
       defaultValue={moment(modalData.booked_date).format("DD-MM-YYYY")}
@@ -77,15 +82,15 @@ const CalendarModal = ({ showModal, handleCloseModal, modalData }) => {
   //     });
   // }, [customerSelections]);
 
-  // // handle change of form input
-  // const handleChange = (e, d) => {
-  //     setmodalData({
-  //         ...modalData,
-  //         // Trimming any whitespace
-  //         [e.target.name]: e.target.value.trim()
-  //     });
-  //     // console.log('change!!', e);
-  // };
+  // handle change of form input
+  const handleChange = (e, d) => {
+    setModalData({
+      ...modalData,
+      // Trimming any whitespace
+      [e.target.name]: e.target.value.trim(),
+    });
+    // console.log('change!!', e);
+  };
 
   // const handleSubmit = (e) => {
   //     e.preventDefault()
@@ -159,6 +164,19 @@ const CalendarModal = ({ showModal, handleCloseModal, modalData }) => {
 
   const handleSubmit = () => {
     console.log("handleSubmit");
+
+    let url = "/api/v1/events/";
+
+    apiClient.post(url, modalData)
+    .then((response) => {
+      // setTableData(response.data.data);
+      console.log(response.data);
+      // setModalData(response.data.data);
+      // setShowModal(true);
+    })
+    .catch((err) => {
+      console.log("error:", err);
+    });
   };
 
   return (
@@ -181,7 +199,6 @@ const CalendarModal = ({ showModal, handleCloseModal, modalData }) => {
               <Fragment>
                 <Form.Group>
                   <Typeahead
-                  size="sm" 
                     id="asset-typeahead"
                     labelKey="name"
                     allowNew
@@ -210,7 +227,6 @@ const CalendarModal = ({ showModal, handleCloseModal, modalData }) => {
                     id="customer-typeahead"
                     labelKey="name"
                     allowNew
-                    size="sm" 
                     // onChange={setCustomerSelections}
                     // onInputChange={handleCustomerChange}
                     // options={customerOptions}
@@ -232,7 +248,7 @@ const CalendarModal = ({ showModal, handleCloseModal, modalData }) => {
                 rows={3}
                 name="description"
                 placeholder="Visit description"
-                // onChange={handleChange}
+                onChange={handleChange}
                 defaultValue={modalData.description}
               />
               <Form.Text className="text-muted d-none">
@@ -248,9 +264,8 @@ const CalendarModal = ({ showModal, handleCloseModal, modalData }) => {
             <Col sm="10">
               <Form.Control
                 name="allowed_time"
-                size="sm" 
                 placeholder="Number of hours allowed for a job"
-                // onChange={handleChange}
+                onChange={handleChange}
                 defaultValue={modalData.allowed_time}
               />
               <Form.Text className="text-muted d-none">
@@ -266,9 +281,8 @@ const CalendarModal = ({ showModal, handleCloseModal, modalData }) => {
             <Col sm="10">
               <Form.Control
                 name="status"
-                size="sm" 
                 placeholder="Current status"
-                // onChange={handleChange}
+                onChange={handleChange}
                 defaultValue={modalData.status}
               />
               <Form.Text className="text-muted d-none">
@@ -311,9 +325,8 @@ const CalendarModal = ({ showModal, handleCloseModal, modalData }) => {
             <Col sm="10">
               <Form.Control
                 name="others"
-                size="sm" 
                 placeholder="Other informations"
-                // onChange={handleChange}
+                onChange={handleChange}
                 defaultValue={modalData.others}
               />
               <Form.Text className="text-muted d-none">
@@ -328,14 +341,14 @@ const CalendarModal = ({ showModal, handleCloseModal, modalData }) => {
         {/* <Button variant="danger" className="mr-auto" onClick={handleDelete}>
           Remove
         </Button> */}
-        <Button variant="secondary" size="sm" onClick={handleCloseModal}>
+        <Button variant="secondary" onClick={handleCloseModal}>
           Close
         </Button>
         <Button
           variant="success"
-          size="sm"
+          // size="sm"
           onClick={() => {
-            console.log("handleSubmit");
+            handleSubmit()
           }}
         >
           Save

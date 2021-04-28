@@ -8,7 +8,7 @@ const CalendarBody = ({
 }) => {
   // search function
   function search(event) {
-    console.log(event);
+    // console.log(event);
     if (event.isUsed && query.length > 0) {
       var val = Object.values(event);
       var valid = true;
@@ -43,7 +43,7 @@ const CalendarBody = ({
               customerName={cell.customer}
               description={cell.description + "rere"}
               allowedTime={cell.allowed_time}
-              others={cell.others === null ? "" : "n/a"}
+              others={typeof(cell.others) === 'object' ? "-----" : cell.others}
               status={cell.status}
               handleModalOpen={handleModalOpen}
             />

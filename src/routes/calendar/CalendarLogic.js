@@ -45,7 +45,7 @@ const CalendarLogic = () => {
 
     apiClient.get(url).then((response) => {
       setTableData(response.data.data);
-      console.log(response.data);
+      // console.log(response.data);
     });
   }, [currentDate, numberOfDays, dateFormat]);
 
@@ -56,7 +56,7 @@ const CalendarLogic = () => {
 
       apiClient.get(url).then((response) => {
         // setTableData(response.data.data);
-        console.log(response.data);
+        // console.log(response.data);
         setModalData(response.data.data);
         setShowModal(true);
       });
@@ -88,6 +88,7 @@ const CalendarLogic = () => {
     setNumberOfDays,
     isCalendarLoading,
     modalData,
+    setModalData,
   };
 };
 

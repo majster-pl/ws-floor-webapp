@@ -63,10 +63,10 @@ tr,
 .page-item:hover {
 	cursor: pointer;
 }
-
+/* 
 .btn-sm {
 	padding: 0.1rem 0.5rem !important;
-}
+} */
 
 /* table thead {
 	background: white;
@@ -92,10 +92,7 @@ th {
 	
 } */
 table thead tr:nth-child(2) th {
-	/* background-color: white; */
 	background-color: var(--color-gray-darker);
-	/* color        : var(--color-gray-light) ; */
-	color           : white;
 	position        : sticky !important;
 	top             : 0px !important;
 	border-style    : none !important;
@@ -104,28 +101,22 @@ table thead tr:nth-child(2) th {
 }
 
 table thead tr:nth-child(3) th {
-	/* background-color: white; */
-	background-color   : var(--color-gray-darker);
-	color              : var(--color-gray-light);
-	position           : sticky;
-	/* height          : 25px; */
-	top                : 15px;
-	z-index            : 10;
+	background-color: var(--color-gray-darker);
+	color           : var(--color-gray-light);
+	position        : sticky;
+	top             : 20px;
+	z-index         : 10;
 
 }
 
 
 table thead tr:nth-child(6) th {
-	/* background-color: var(--color-gray-dark); */
-	/* background-color   : white; */
-	background-color   : var(--color-gray-darker);
-	position           : sticky;
-	height             : 25px;
-	top                : 33px;
-	z-index            : 10;
-	padding            : 0.3rem 0.2rem !important;
-	/* margin          : 3px 3px; */
-	/* box-shadow      : 0 3px 3px -1px rgba(0, 0, 0, 0.5); */
+	background-color: var(--color-gray-darker);
+	position        : sticky;
+	height          : 25px;
+	top             : 40px;
+	z-index         : 10;
+	padding         : 0.3rem 0.2rem !important;
 }
 
 
@@ -143,33 +134,34 @@ td {
 	min-width: 100px;
 }
 
-.day-info1 {
-	/* background-color: var(--color-orange) !important; */
-	color           : var(--color-orange) !important;
-	/* border       : 0.02px solid black !important; */
-	font-weight     : normal !important;
+th .day-name {
+	font-size  : 0.9rem;
+}
 
+th .day-date {
+	font-size  : 0.8rem;
+}
+
+.day-info1 {
+	color      : var(--color-orange) !important;
+	font-weight: normal !important;
+	font-size  : 0.8rem;
 }
 
 .day-info2 {
-	color                 : var(--color-pink) !important;
-	font-weight           : normal !important;
-	/* color              : white !important; */
-	/* background-color   : #136775 !important; */
-	/* border             : 0.02px solid black !important; */
+	color      : var(--color-pink) !important;
+	font-weight: normal !important;
+	font-size  : 0.8rem;
 }
 
 .day-info3 {
-	color              : var(--color-green) !important;
-	/* font-weight     : bold; */
-	/* color           : white; */
-	/* border          : 0.02px solid black !important; */
+	color: var(--color-green) !important;
+	font-size  : 0.8rem;
 }
 
 .day-info4 {
-	color           : var(--color-green-light) !important;
-	/* color        : white; */
-	/* border       : 0.02px solid black !important; */
+	color: var(--color-green-light) !important;
+	font-size  : 0.8rem;
 }
 
 
@@ -193,6 +185,10 @@ td {
 
 .calendar-table tbody {
 	background-color: var(--color-gray-darker);
+}
+
+.card-header {
+	font-size: 0.8rem;
 }
 
 
@@ -232,7 +228,7 @@ td {
 /* styling adjustments... */
 /* Change autocomplete styles in WebKit */
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
+input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 textarea:-webkit-autofill,
 textarea:-webkit-autofill:hover,
@@ -240,6 +236,6 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  -webkit-text-fill-color: white;
-  transition: background-color 5000s ease-in-out 0s;
+	-webkit-text-fill-color: white;
+	transition             : background-color 5000s ease-in-out 0s;
 }
