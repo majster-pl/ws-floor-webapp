@@ -11,9 +11,9 @@ const apiClient = axios.create({
 });
 
 const redirectToLogin = () => {
-  // if (window.location.pathname !== "/login") {
-  //   window.location.href = "/login";
-  // }
+  if (window.location.pathname !== "/login") {
+    window.location.href = "/login";
+  }
   console.log("ERROR!!!");
 };
 
