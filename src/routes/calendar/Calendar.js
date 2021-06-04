@@ -31,6 +31,8 @@ const Calendar = (setLoggedIn) => {
     return <SpinnerComponent />;
   }
 
+  console.log('rendering calendar.js');
+
   return (
     <div className="calendar-main scroll">
       <table className="calendar-table">
@@ -57,7 +59,9 @@ const Calendar = (setLoggedIn) => {
           />
         )}
       </table>
+      {showModal == true &&
       <Modal showModal={showModal} handleCloseModal={handleCloseModal} modalData={modalData} setModalData={setModalData} />
+      }
     </div>
   );
 };

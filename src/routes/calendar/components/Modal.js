@@ -14,8 +14,23 @@ const CalendarModal = ({
   modalData,
   setModalData,
 }) => {
+  const getAssets = () => {
+    console.log("getAssets function...");
+    let url = "/api/v1/assets";
+
+    apiClient
+      .get(url)
+      .then((response) => {
+        console.log(response.data.data);
+        setAssets(response.data.data);
+      })
+      .catch((err) => {
+        console.log("error:", err);
+      });
+  };
+
   // set booked_at date as state
-  //   const [bookedDate, setBookedDate] = useState(modalData.booked_at);
+  const [assets, setAssets] = useState([]);
   //   const [customerSelections, setCustomerSelections] = useState([]);
   //   const [assetSelections, setAssetSelections] = useState([]);
 
@@ -29,13 +44,13 @@ const CalendarModal = ({
     />
   );
   // // When new date selected from date picker
-  // const handleDateChange = (currentDate, event) => {
-  //     setBookedDate(currentDate);
-  //     setmodalData({
-  //         ...modalData,
-  //         ['booked_at']: moment(currentDate).format('YYYY-MM-DD')
-  //     });
-  // };
+  const handleDateChange = (currentDate, event) => {
+    // setBookedDate(currentDate);
+    setModalData({
+      ...modalData,
+      ["booked_date"]: moment(currentDate).format("YYYY-MM-DD"),
+    });
+  };
   // // disable weeknd on calendar picker (in future to days off to be able to be set)
   // const isWeekday = date => {
   //     const day = moment(date).day();
@@ -157,27 +172,44 @@ const CalendarModal = ({
   const handleOnShow = () => {
     console.log("handleOnShow");
     console.log("oooo:", modalData);
+
+    getAssets();
+
     //   setBookedDate(modalData.booked_at);
     //   setAssetSelections([modalData.veh_id]);
     //   setCustomerSelections([modalData.customer_id]);
   };
 
+  const setAssetSelections = () => {
+    console.log('ello!');
+  }
+
   const handleSubmit = () => {
     console.log("handleSubmit");
 
-    let url = "/api/v1/events/";
+    let url = "/api/v1/events/" + modalData.event_id;
 
-    apiClient.post(url, modalData)
-    .then((response) => {
-      // setTableData(response.data.data);
-      console.log(response.data);
-      // setModalData(response.data.data);
-      // setShowModal(true);
-    })
-    .catch((err) => {
-      console.log("error:", err);
-    });
+    apiClient
+      .get("/sanctum/csrf-cookie")
+      .then(() => {
+        apiClient
+          .patch(url, modalData)
+          .then((response) => {
+            // setTableData(response.data.data);
+            console.log(response.data);
+            // setModalData(response.data.data);
+            // setShowModal(true);
+          })
+          .catch((err) => {
+            console.log("error:", err);
+          });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
+
+  // getAssets();
 
   return (
     <Modal show={showModal} onHide={handleCloseModal} onShow={handleOnShow}>
@@ -200,11 +232,11 @@ const CalendarModal = ({
                 <Form.Group>
                   <Typeahead
                     id="asset-typeahead"
-                    labelKey="name"
+                    // labelKey="name"
                     allowNew
-                    // onChange={setAssetSelections}
+                    onChange={setAssetSelections}
                     // onInputChange={handleAssetChange}
-                    // options={assetsOptions}
+                    options={assets}
                     placeholder="Vehicle Reg..."
                     // selected={assetSelections}
                   />
@@ -302,7 +334,9 @@ const CalendarModal = ({
                 peekNextMonth
                 showMonthDropdown
                 showYearDropdown
-                dateFormat="dd/MM/yyyy"
+                showTimeSelect
+                // dateFormat="dd/MM/yyyy h:mm aa"
+                dateFormat="MMMM d, yyyy h:mm aa"
                 // openToDate={new Date(moment(bookedDate))}
                 customInput={<CustomInput />}
                 closeOnScroll={true}
@@ -310,7 +344,7 @@ const CalendarModal = ({
                 // filterDate={isWeekday}
                 // locale="en-GB"
                 calendarClassName="rasta-stripes"
-                // onChange={handleDateChange}
+                onChange={handleDateChange}
               />
               <Form.Text className="text-muted d-none">
                 We'll never share your email with anyone else.
@@ -348,7 +382,7 @@ const CalendarModal = ({
           variant="success"
           // size="sm"
           onClick={() => {
-            handleSubmit()
+            handleSubmit();
           }}
         >
           Save

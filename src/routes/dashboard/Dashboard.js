@@ -11,25 +11,55 @@ const Dashboard = (setLoggedIn) => {
   }
 
   const getAssets = () => {
-    apiClient.get("/api/v1/assets").then((response) => {
+    apiClient.get("/api/v1/assets/1").then((response) => {
       console.log(response.data);
     });
   };
 
   const getEvents = () => {
     apiClient
-      .get("/api/v1/events?days=10&from=2021-04-12&format=grid")
+      .get("/api/v1/events?days=7&from=2021-06-1&format=grid")
       .then((response) => {
         console.log(response.data);
       });
   };
 
+  const getEvent = () => {
+    apiClient
+      .get("/api/v1/events/10")
+      .then((response) => {
+        console.log(response.data);
+      });
+  };
+  const saveEvent = () => {
+    let url = "/api/v1/events/119";
+
+    const data = {
+      description: "lol",
+      booked_date: "2021-05-29",
+      allowed_time: 2,
+      status: "booked"
+    };
+
+    apiClient
+      .patch(url, data)
+      .then((response) => {
+        // setTableData(response.data.data);
+        console.log(response.data);
+        // setModalData(response.data.data);
+        // setShowModal(true);
+      })
+      .catch((err) => {
+        console.log("error:", err);
+      });
+  };
+
   return (
     <div className="scroll">
-
       <Button onClick={getAssets}> Assets </Button>
       <Button onClick={getEvents}> get events </Button>
-
+      <Button onClick={getEvent}> get event 10 </Button>
+      <Button onClick={saveEvent}> Save events </Button>
     </div>
   );
 };

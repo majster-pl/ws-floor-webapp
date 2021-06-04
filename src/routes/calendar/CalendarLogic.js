@@ -4,8 +4,8 @@ import apiClient from "../../service/api/api";
 
 const CalendarLogic = () => {
   const todaysDate = moment().startOf("isoweek");
-  const [currentDate, setCurrentDate] = useState(todaysDate);
-  const [numberOfDays, setNumberOfDays] = useState(7);
+  const [currentDate, setCurrentDate] = useState(() => {return todaysDate});
+  const [numberOfDays, setNumberOfDays] = useState(() => {return 7});
   const [tableData, setTableData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isCalendarLoading, setIsCalendarLoading] = useState(true);
@@ -47,7 +47,7 @@ const CalendarLogic = () => {
       setTableData(response.data.data);
       // console.log(response.data);
     });
-  }, [currentDate, numberOfDays, dateFormat]);
+  }, [currentDate]);
 
   // Modal handler
   const handleModalOpen = (date, eventId) => {

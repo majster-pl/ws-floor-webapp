@@ -41,7 +41,7 @@ const CalendarBody = ({
               vehicleId={cell.reg}
               // bookedDate={cell.booked_at}
               customerName={cell.customer}
-              description={cell.description + "rere"}
+              description={cell.description}
               allowedTime={cell.allowed_time}
               others={typeof(cell.others) === 'object' ? "-----" : cell.others}
               status={cell.status}

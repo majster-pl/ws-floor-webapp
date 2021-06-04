@@ -239,3 +239,9 @@ select:-webkit-autofill:focus {
 	-webkit-text-fill-color: white;
 	transition             : background-color 5000s ease-in-out 0s;
 }
+
+.react-datepicker__time-container--with-today-button {
+	right: -87px;
+	border: 0px;
+}
+
