@@ -10,7 +10,7 @@ const CalendarSpinner = ({numberOfDays }) => {
                         <div className="container text-center">
                             <button className="btn btn-primary">
                                 <span className="spinner-grow spinner-grow-sm"></span>
-                                <span className="pl-2">Loading data...</span>
+                                <span className="ps-2">Loading data...</span>
                             </button>
                         </div>
                     </div>

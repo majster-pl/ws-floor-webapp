@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Navbar, Nav, Dropdown } from "react-bootstrap";
+import { Navbar, Nav, Dropdown, Container, Row, Col } from "react-bootstrap";
 import apiClient from "../../service/api/api";
 import { useHistory } from "react-router";
 import Cookies from "js-cookie";
@@ -93,49 +93,57 @@ const Header = ({ isLoggedIn, setLoggedIn }) => {
         <>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link eventKey="2" as={NavLink} to="/dashboard">
-                Dashboard
-              </Nav.Link>
-              <Nav.Link eventKey="3" as={NavLink} to="/calendar">
-                Calendar
-              </Nav.Link>
-              <Nav.Link eventKey="4" as={NavLink} to="/workshop">
-                Workshop
-              </Nav.Link>
-            </Nav>
+            <Container className="mx-0 px-0">
+              <Row>
+                <Col md={11}>
+                  <Nav className="me-auto">
+                    <Nav.Link eventKey="2" as={NavLink} to="/dashboard">
+                      Dashboard
+                    </Nav.Link>
+                    <Nav.Link eventKey="3" as={NavLink} to="/calendar">
+                      Calendar
+                    </Nav.Link>
+                    <Nav.Link eventKey="4" as={NavLink} to="/workshop">
+                      Workshop
+                    </Nav.Link>
+                  </Nav>
 
-            <Nav className="d-block d-lg-none mr-auto">
-              <Nav.Link eventKey="4" as={Link} onClick={logout}>
-                Logout{" "}
-              </Nav.Link>
-            </Nav>
+                  <Nav className="d-block d-lg-none me-auto">
+                    <Nav.Link eventKey="4" as={Link} onClick={logout}>
+                      Logout{" "}
+                    </Nav.Link>
+                  </Nav>
+                </Col>
 
-            <Nav className="d-none d-lg-block">
-              <Dropdown>
-                <Dropdown.Toggle
-                  as={CustomToggle}
-                  id="dropdown-custom-components"
-                  menuAlign="right"
-                  drop="left"
-                >
-                  Custom toggle
-                </Dropdown.Toggle>
+                <Col md={1}>
+                  <Nav className="d-none d-lg-block pull-right">
+                    <Dropdown align="end">
+                      <Dropdown.Toggle
+                        as={CustomToggle}
+                        id="dropdown-custom-components"
+                        // menuAlign="right"
+                        // drop="left"
+                      >
+                        Custom toggle
+                      </Dropdown.Toggle>
 
-                <Dropdown.Menu className="navbar-user-dropdown">
-                  <Dropdown.Item eventKey="10" as={Link} to="/add-user">
-                    Add User
-                  </Dropdown.Item>
-                  <Dropdown.Item eventKey="11" as={Link} to="/settings">
-                    Settings
-                  </Dropdown.Item>
-                  <Dropdown.Divider />
-                  <Dropdown.Item eventKey="12" as={Link} onClick={logout}>
-                    Logout
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </Nav>
+                      <Dropdown.Menu className="navbar-user-dropdown">
+                        <Dropdown.Item eventKey="10" as={Link} to="/add-user">
+                          Add User
+                        </Dropdown.Item>
+                        <Dropdown.Item eventKey="11" as={Link} to="/settings">
+                          Settings
+                        </Dropdown.Item>
+                        <Dropdown.Divider />
+                        <Dropdown.Item eventKey="12" as={Link} onClick={logout}>
+                          Logout
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </Nav>
+                </Col>
+              </Row>
+            </Container>
           </Navbar.Collapse>
         </>
       )}

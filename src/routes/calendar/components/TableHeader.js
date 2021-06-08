@@ -9,6 +9,9 @@ import {
   DropdownButton,
   Form,
   Col,
+  Row,
+  Container,
+  ButtonGroup,
 } from "react-bootstrap";
 import TableHeaderLogic from "./TableHeaderLogic";
 import "react-datepicker/dist/react-datepicker.css";
@@ -39,7 +42,7 @@ const Header = ({
   // Date picker custom button
   const ref = React.createRef();
   const CustomDateInput = forwardRef(({ onClick }, ref) => (
-    <a className="page-link py-1 link-calendar" onClick={onClick} ref={ref}>
+    <a className="page-link link-calendar" onClick={onClick} ref={ref}>
       <i className="fas fa-calendar-alt"></i>
     </a>
   ));
@@ -50,14 +53,14 @@ const Header = ({
     <thead>
       <tr className="thead_nav">
         <th colSpan={numberOfDays * 2}>
-          <Nav justify>
-            <Nav.Item className="pl-3 my-auto py-2">
-              <div className="form-inline justify-content-start">
-                <ul className="pagination d-flex justify-content-center m-0">
+          <Row className="my-auto py-1 text-center table_navbar justify-content-between d-flex flex-wrap">
+            <Col className="my-auto">
+              <ButtonGroup>
+                <ul className="pagination my-auto">
                   <li className="page-item">
                     <a
                       key="nav-1"
-                      className="page-link py-1"
+                      className="page-link"
                       onClick={handleClickPrevious}
                     >
                       <i className="fas fa-angle-left"></i>
@@ -83,45 +86,45 @@ const Header = ({
                   <li className="page-item">
                     <a
                       key="nav-3"
-                      className="page-link py-1"
+                      className="page-link"
                       onClick={handleClickNext}
                     >
                       <i className="fas fa-angle-right"></i>
                     </a>
                   </li>
                 </ul>
-                <DropdownButton
-                  className="ml-4"
-                  variant="success"
-                  size="sm"
-                  id="dropdown-item-button"
-                  title={numberOfDays + " Days"}
+              </ButtonGroup>
+            </Col>
+            <Col className="my-auto">
+              <DropdownButton
+                variant="success"
+                size="sm"
+                id="dropdown-item-button"
+                title={numberOfDays + " Days"}
+              >
+                <Dropdown.ItemText>Days per page</Dropdown.ItemText>
+                <Dropdown.Item
+                  as="button"
+                  onClick={() => handleNumberOfDaysChange(7)}
                 >
-                  <Dropdown.ItemText>Days per page</Dropdown.ItemText>
-                  <Dropdown.Item
-                    as="button"
-                    onClick={() => handleNumberOfDaysChange(7)}
-                  >
-                    7 Days
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    as="button"
-                    onClick={() => handleNumberOfDaysChange(14)}
-                  >
-                    14 Days
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    as="button"
-                    onClick={() => handleNumberOfDaysChange(28)}
-                  >
-                    28 Days
-                  </Dropdown.Item>
-                </DropdownButton>
-              </div>
-            </Nav.Item>
-            {/* text to display current date range */}
-            <Nav.Item className="pl-4 my-auto">
-              <div className="text-left font-italic h4 date-range m-0">
+                  7 Days
+                </Dropdown.Item>
+                <Dropdown.Item
+                  as="button"
+                  onClick={() => handleNumberOfDaysChange(14)}
+                >
+                  14 Days
+                </Dropdown.Item>
+                <Dropdown.Item
+                  as="button"
+                  onClick={() => handleNumberOfDaysChange(28)}
+                >
+                  28 Days
+                </Dropdown.Item>
+              </DropdownButton>
+            </Col>
+            <Col md="auto" className="my-auto">
+              <div className="text-left fst-italic h4 date-range m-0">
                 <Moment format="ddd DD MMMM YYYY" add={{ days: 0 }}>
                   {currentDate}
                 </Moment>{" "}
@@ -134,31 +137,30 @@ const Header = ({
                 </Moment>
                 <br></br>
               </div>
-            </Nav.Item>
-            {/* add new and search field */}
-            <Nav.Item className="pr-3 my-auto">
-              <div className="form-inline justify-content-end">
-                <Button
-                  className="mr-3"
-                  size="sm"
-                  variant="success"
-                  onClick={() => {
-                    console.log("handleModalOpen()");
-                  }}
-                >
-                  <b>Add new</b>
-                </Button>
-                <Form.Control
-                  size="sm"
-                  style={{ maxWidth: "250px" }}
-                  type="text"
-                  placeholder="search page"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-            </Nav.Item>
-          </Nav>
+            </Col>
+            <Col className="my-auto">
+              <Button
+                className="mr-3"
+                size="sm"
+                variant="success"
+                onClick={() => {
+                  console.log("handleModalOpen()");
+                }}
+              >
+                New Event
+              </Button>
+            </Col>
+            <Col className="my-auto">
+              <Form.Control
+                size="sm"
+                style={{ maxWidth: "250px" }}
+                type="text"
+                placeholder="search page"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </Col>
+          </Row>
         </th>
       </tr>
 
@@ -224,21 +226,27 @@ const Header = ({
         {_numberOfDays.map((item, index) => {
           return (
             <th key={index} colSpan="2">
-              <Button
-                variant="success"
-                size="sm"
-                block
-                onClick={() =>
-                  handleModalOpen(moment(currentDate).add(index, "days").format("YYYY-MM-DD"))
-                }
-              >
-                {" "}
-                Add new booking{" "}
-                <span>
+              <div className="d-grid">
+                <Button
+                  variant="success"
+                  size="sm"
+                  block
+                  onClick={() =>
+                    handleModalOpen(
+                      moment(currentDate)
+                        .add(index, "days")
+                        .format("YYYY-MM-DD")
+                    )
+                  }
+                >
                   {" "}
-                  <i className="far fa-calendar-plus"></i>{" "}
-                </span>{" "}
-              </Button>
+                  Add new booking{" "}
+                  <span>
+                    {" "}
+                    <i className="far fa-calendar-plus"></i>{" "}
+                  </span>{" "}
+                </Button>
+              </div>
             </th>
           );
         })}

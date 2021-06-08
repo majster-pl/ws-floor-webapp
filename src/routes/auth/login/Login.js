@@ -25,7 +25,7 @@ const Login = (setLoggedIn) => {
           sendGetRequest(e);
         }}
       >
-        <Form.Group controlId="formBasicEmail">
+        <Form.Group controlId="formBasicEmail" className="mb-3">
           <Form.Label>Email address:</Form.Label>
           <Form.Control
             type="email"
@@ -41,7 +41,7 @@ const Login = (setLoggedIn) => {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <Form.Group controlId="formBasicPassword">
+        <Form.Group controlId="formBasicPassword" className="mb-3">
           <Form.Label>Password:</Form.Label>
 
           <Form.Control
@@ -57,25 +57,29 @@ const Login = (setLoggedIn) => {
           <Form.Control.Feedback type="invalid">
             Password field can't be empty!
           </Form.Control.Feedback>
-          
+
           <Form.Control.Feedback type="invalid" className="is-invalid d-inline">
             {errorMessage} <br></br>
-            {sessionStorage.getItem('isLoggedIn') === "false" ? sessionStorage.getItem("loginError") : ""}
+            {sessionStorage.getItem("isLoggedIn") === "false"
+              ? sessionStorage.getItem("loginError")
+              : ""}
           </Form.Control.Feedback>
         </Form.Group>
-        <Button variant="success" type="submit" block disabled={isLoading}>
-          {isLoading ? (
-            <Spinner
-              as="span"
-              animation="border"
-              size="sm"
-              role="status"
-              aria-hidden="true"
-            />
-          ) : (
-            "Login"
-          )}
-        </Button>
+        <div className="d-grid">
+          <Button variant="success" type="submit" disabled={isLoading}>
+            {isLoading ? (
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+            ) : (
+              "Login"
+            )}
+          </Button>
+        </div>
       </Form>
     </div>
   );

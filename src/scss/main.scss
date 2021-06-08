@@ -7,11 +7,13 @@
 // }
 
 $theme-colors: (
+  "primary": #0d6efd,
   "sendary-extra": #141518,
   "secondary": #2d3238,
   "success": #39a883,
   "danger": #ff4136,
   "info": #ffbb00,
+  "warning": #ffc107,
 );
 
 $color-white: #ffffff;
@@ -33,6 +35,8 @@ $color-green-light: #dfea87;
   --color-gray-light: #{$color-gray-light};
   --color-gray-darker: #{$color-gray-dark};
 }
+
+$btn-close-color: $color-gray-light;
 
 @font-face {
   font-family: "Comfortaa";
@@ -63,6 +67,7 @@ $navbar-dark-hover-color: $color-white;
 $navbar-dark-active-color: $color-pink;
 $navbar-dark-color: #c4c4c4;
 $navbar-dark-toggler-border-color: transparent;
+$navbar-padding-x: 1rem;
 
 label {
   color: var(--color-gray-light) !important;
@@ -130,7 +135,8 @@ $input-focus-border-color: $color-pink;
 $input-transition: border-color .35s ease-in-out, box-shadow .35s ease-in-out;
 
 //form group
-$form-group-margin-bottom: 0.6rem;
+// $form-group-margin-bottom: 0.6rem;
+$form-label-margin-bottom: 0.3rem;
 
 // button
 $input-btn-focus-box-shadow: 0px 1px 1px rgba(163, 2, 2, 0.075) inset, 0px 0px 8px rgba(240, 15, 166, 0);

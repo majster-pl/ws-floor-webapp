@@ -6,6 +6,9 @@ import DatePicker from "react-datepicker";
 import { Typeahead } from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import apiClient from "../../../service/api/api";
+import { addDays, subDays, getDay } from "date-fns";
+import { Formik } from "formik";
+import * as yup from "yup";
 
 // const CalendarModal = ({ modalData, setmodalData, showModal, handleCloseModal, reloadCalendar, assetsOptions, customerOptions }) => {
 const CalendarModal = ({
@@ -31,9 +34,27 @@ const CalendarModal = ({
 
   // set booked_at date as state
   const [assets, setAssets] = useState([]);
+  const [isAssetInvalid, setIsAssetInvalid] = useState();
   //   const [customerSelections, setCustomerSelections] = useState([]);
-  //   const [assetSelections, setAssetSelections] = useState([]);
+  const [assetSelections, setAssetSelections] = useState(() => {
+    return [modalData.reg];
+  });
 
+  // Form validation
+  const reviewShema = yup.object({
+    reg: yup
+      .string()
+      .min(4)
+      .required()
+      .test("is-reg-valid", "Reg must be selected", (value, context) => {
+        // console.log("VALUE: "+value);
+        // console.log("CONTEXT: "+ JSON.stringify(context));
+        // console.log("VALUE: "+modalData.reg);
+        // setIsAssetInvalid(true);
+
+        return !isAssetInvalid;
+      }),
+  });
   // // Date picker
   const CustomInput = ({ onClick }) => (
     <Form.Control
@@ -58,24 +79,33 @@ const CalendarModal = ({
   // };
 
   // // on asset input changed, check if selected from list or created new
-  // const handleAssetChange = (s, e) => {
-  //     setAssetSelections([e.target.value]);
-  // }
-  // // When asset changed
-  // useEffect(() => {
-  //     if (assetSelections[0] !== undefined) {
-  //         var reg = '';
-  //         if (typeof (assetSelections[0]) == 'string') {
-  //             reg = assetSelections[0];
-  //         } else {
-  //             reg = assetSelections[0].name;
-  //         }
-  //     }
-  //     setmodalData({
-  //         ...modalData,
-  //         ['veh_id']: reg,
-  //     });
-  // }, [assetSelections]);
+  const handleAssetChange = (s, e) => {
+    console.log(e.target.value);
+    setIsAssetInvalid(true);
+    // setModalData({
+    //   ...modalData,
+    //   ["reg"]: '',
+    // });
+    // setAssetSelections([e.target.value]);
+  };
+  // When asset changed
+  useEffect(() => {
+    // console.log("Type: " + typeof assetSelections[0]);
+    // console.log('MODAL DATA: '+ JSON.stringify(modalData));
+    if (assetSelections[0] !== undefined) {
+      var asset_id = "";
+      if (typeof assetSelections[0].asset_id == "number") {
+        asset_id = assetSelections[0].asset_id;
+      } else {
+        asset_id = 0;
+      }
+      setIsAssetInvalid(false);
+    }
+    setModalData({
+      ...modalData,
+      ["asset_id"]: asset_id,
+    });
+  }, [assetSelections]);
 
   // // on customerSelections changed
   // const handleCustomerChange = (s, e) => {
@@ -170,8 +200,9 @@ const CalendarModal = ({
 
   // on modal displayed
   const handleOnShow = () => {
-    console.log("handleOnShow");
-    console.log("oooo:", modalData);
+    // console.log("handleOnShow");
+    // console.log("oooo:", modalData);
+    // console.log("selected... : " + modalData.reg);
 
     getAssets();
 
@@ -180,9 +211,26 @@ const CalendarModal = ({
     //   setCustomerSelections([modalData.customer_id]);
   };
 
-  const setAssetSelections = () => {
-    console.log('ello!');
-  }
+  // const setAssetSelections = (selected) => {
+  // console.log('ello!' +  JSON.stringify(selected, null, 2));
+  // console.log('Reg: ' +  selected[0].reg);
+
+  // Set new asset id in modalData
+  // check if not empy field
+  // if (selected[0] !== undefined) {
+  //   setModalData({
+  //     ...modalData,
+  //     ['asset_id']: selected[0].asset_id,
+  //   });
+
+  // } else {
+  //   setModalData({
+  //     ...modalData,
+  //     ['asset_id']: 0,
+  //   });
+
+  // }
+  // }
 
   const handleSubmit = () => {
     console.log("handleSubmit");
@@ -209,185 +257,222 @@ const CalendarModal = ({
       });
   };
 
+  const isWeekday = (date) => {
+    const day = getDay(date);
+    return day !== 0 && day !== 6;
+  };
+
   // getAssets();
 
   return (
-    <Modal show={showModal} onHide={handleCloseModal} onShow={handleOnShow}>
-      <Modal.Header closeButton>
-        {/* {modalData.id == undefined ? ( */}
-        {modalData.new_booking === true ? (
-          <Modal.Title>Add New Booking</Modal.Title>
-        ) : (
-          <Modal.Title>Edit booking</Modal.Title>
+    <Modal id="event-modal" show={showModal} onHide={handleCloseModal} onShow={handleOnShow} >
+      <Formik
+        initialValues={modalData}
+        validationSchema={reviewShema}
+        onSubmit={(values, actions) => {
+          handleSubmit();
+          // setTimeout(() => {
+          //   alert(JSON.stringify(values, null, 2));
+          //   actions.setSubmitting(false);
+          // }, 1000);
+        }}
+      >
+        {(props) => (
+          <Form onSubmit={props.handleSubmit}>
+            <Modal.Header>
+              {/* {modalData.id == undefined ? ( */}
+              {modalData.new_booking === true ? (
+                <Modal.Title>Add New Booking</Modal.Title>
+              ) : (
+                <Modal.Title>Edit booking</Modal.Title>
+              )}
+              <button type="button" className="btn-close" aria-label="Close" onClick={handleCloseModal}></button>
+            </Modal.Header>
+            <Modal.Body>
+              <Form.Group as={Row} controlId="formReg" className="mb-3">
+                <Form.Label column sm="2">
+                  Reg
+                </Form.Label>
+                <Col sm="10">
+                  <Fragment>
+                    <Form.Group>
+                      <Typeahead
+                        id="asset-typeahead"
+                        labelKey="reg"
+                        allowNew
+                        onChange={setAssetSelections}
+                        onInputChange={handleAssetChange}
+                        // onInputChange={props.handleChange('reg')}
+
+                        options={assets}
+                        isInvalid={isAssetInvalid}
+                        value={props.values.reg}
+                        // isLoading={true}
+                        placeholder="Vehicle Reg..."
+                        // selected={assetSelections}
+                        defaultSelected={[modalData]}
+                        // selected={['KG44AWH']}
+                      />
+                    </Form.Group>
+                  </Fragment>
+                  <Form.Text className="text-muted ">
+                    {isAssetInvalid ? props.errors.reg : ""}
+                  </Form.Text>
+                </Col>
+              </Form.Group>
+
+              <Form.Group as={Row} controlId="formCustomer" className="mb-3">
+                <Form.Label column sm="2">
+                  Customer
+                </Form.Label>
+                <Col sm="10">
+                  <Fragment>
+                    <Form.Group>
+                      <Typeahead
+                        id="customer-typeahead"
+                        labelKey="name"
+                        allowNew
+                        // onChange={setCustomerSelections}
+                        // onInputChange={handleCustomerChange}
+                        // options={customerOptions}
+                        placeholder="Customer"
+                        // selected={customerSelections}
+                      />
+                    </Form.Group>
+                  </Fragment>
+                </Col>
+              </Form.Group>
+
+              <Form.Group as={Row} controlId="formDescription" className="mb-3">
+                <Form.Label column sm="2">
+                  Description
+                </Form.Label>
+                <Col sm="10">
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    name="description"
+                    placeholder="Visit description"
+                    onChange={props.handleChange('description')}
+                    value={props.values.description}
+                    // defaultValue={modalData.description}
+                  />
+                  <Form.Text className="text-muted d-none">
+                    We'll never share your email with anyone else.
+                  </Form.Text>
+                </Col>
+              </Form.Group>
+
+              <Form.Group as={Row} controlId="formAllowedTime" className="mb-3">
+                <Form.Label column sm="2">
+                  Allowed time
+                </Form.Label>
+                <Col sm="10">
+                  <Form.Control
+                    name="allowed_time"
+                    placeholder="Number of hours allowed for a job"
+                    onChange={handleChange}
+                    defaultValue={modalData.allowed_time}
+                  />
+                  <Form.Text className="text-muted d-none">
+                    We'll never share your email with anyone else.
+                  </Form.Text>
+                </Col>
+              </Form.Group>
+
+              <Form.Group as={Row} controlId="formStatus" className="mb-3">
+                <Form.Label column sm="2">
+                  Status
+                </Form.Label>
+                <Col sm="10">
+                  <Form.Control
+                    name="status"
+                    placeholder="Current status"
+                    onChange={handleChange}
+                    defaultValue={modalData.status}
+                  />
+                  <Form.Text className="text-muted d-none">
+                    We'll never share your email with anyone else.
+                  </Form.Text>
+                </Col>
+              </Form.Group>
+
+              <Form.Group as={Row} controlId="formBookedAt" className="mb-3">
+                <Form.Label column sm="2">
+                  Booked date
+                </Form.Label>
+                <Col sm="10">
+                  {/* <Form.Control name="booked_at" placeholder="Current status" onChange={handleChange} defaultValue={modalData.booked_at} /> */}
+                  <DatePicker
+                    style={{ display: "revert" }}
+                    // peekNextMonth
+                    // showMonthDropdown
+                    // showYearDropdown
+
+                    // showTimeSelect
+                    // dateFormat="dd/MM/yyyy h:mm aa"
+
+                    dateFormat="MMMM d, yyyy"
+                    // openToDate={new Date(moment(bookedDate))}
+                    calendarStartDay={1}
+                    customInput={<CustomInput />}
+                    closeOnScroll={true}
+                    todayButton="This Week"
+                    filterDate={isWeekday}
+                    // highlightDates={[subDays(new Date(modalData.booked_date), 0)]}
+
+                    selected={new Date(modalData.booked_date)}
+                    // excludeDates={[new Date(), subDays(new Date(), 1)]}
+                    // locale="en-GB"
+                    // calendarClassName="rasta-stripes"
+                    onChange={handleDateChange}
+                    // minDate={subDays(new Date(), 1)} // to prevent from booking event in the past
+                  />
+                  <Form.Text className="text-muted d-none">
+                    We'll never share your email with anyone else.
+                  </Form.Text>
+                </Col>
+              </Form.Group>
+
+              <Form.Group as={Row} controlId="formOthers">
+                <Form.Label column sm="2">
+                  Others
+                </Form.Label>
+                <Col sm="10">
+                  <Form.Control
+                    name="others"
+                    placeholder="Other informations"
+                    onChange={handleChange}
+                    defaultValue={modalData.others}
+                  />
+                  <Form.Text className="text-muted d-none">
+                    We'll never share your email with anyone else.
+                  </Form.Text>
+                </Col>
+              </Form.Group>
+            </Modal.Body>
+
+            <Modal.Footer>
+              {/* <Button variant="danger" className="me-auto" onClick={handleDelete}>
+    Remove
+  </Button> */}
+              <Button variant="secondary" onClick={handleCloseModal}>
+                Close
+              </Button>
+              <Button
+                variant="success"
+                type="submit"
+                // size="sm"
+                // onClick={() => {
+                //   handleSubmit();
+                // }}
+              >
+                Save
+              </Button>
+            </Modal.Footer>
+          </Form>
         )}
-      </Modal.Header>
-      <Modal.Body>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group as={Row} controlId="formReg">
-            <Form.Label column sm="2">
-              Reg
-            </Form.Label>
-            <Col sm="10">
-              <Fragment>
-                <Form.Group>
-                  <Typeahead
-                    id="asset-typeahead"
-                    // labelKey="name"
-                    allowNew
-                    onChange={setAssetSelections}
-                    // onInputChange={handleAssetChange}
-                    options={assets}
-                    placeholder="Vehicle Reg..."
-                    // selected={assetSelections}
-                  />
-                </Form.Group>
-              </Fragment>
-              <Form.Text className="text-muted d-none">
-                We'll never share your email with anyone else.
-              </Form.Text>
-            </Col>
-          </Form.Group>
-
-          <Form.Group as={Row} controlId="formCustomer">
-            <Form.Label column sm="2">
-              Customer
-            </Form.Label>
-            <Col sm="10">
-              <Fragment>
-                <Form.Group>
-                  <Typeahead
-                    id="customer-typeahead"
-                    labelKey="name"
-                    allowNew
-                    // onChange={setCustomerSelections}
-                    // onInputChange={handleCustomerChange}
-                    // options={customerOptions}
-                    placeholder="Customer"
-                    // selected={customerSelections}
-                  />
-                </Form.Group>
-              </Fragment>
-            </Col>
-          </Form.Group>
-
-          <Form.Group as={Row} controlId="formDescription">
-            <Form.Label column sm="2">
-              Description
-            </Form.Label>
-            <Col sm="10">
-              <Form.Control
-                as="textarea"
-                rows={3}
-                name="description"
-                placeholder="Visit description"
-                onChange={handleChange}
-                defaultValue={modalData.description}
-              />
-              <Form.Text className="text-muted d-none">
-                We'll never share your email with anyone else.
-              </Form.Text>
-            </Col>
-          </Form.Group>
-
-          <Form.Group as={Row} controlId="formAllowedTime">
-            <Form.Label column sm="2">
-              Allowed time
-            </Form.Label>
-            <Col sm="10">
-              <Form.Control
-                name="allowed_time"
-                placeholder="Number of hours allowed for a job"
-                onChange={handleChange}
-                defaultValue={modalData.allowed_time}
-              />
-              <Form.Text className="text-muted d-none">
-                We'll never share your email with anyone else.
-              </Form.Text>
-            </Col>
-          </Form.Group>
-
-          <Form.Group as={Row} controlId="formStatus">
-            <Form.Label column sm="2">
-              Status
-            </Form.Label>
-            <Col sm="10">
-              <Form.Control
-                name="status"
-                placeholder="Current status"
-                onChange={handleChange}
-                defaultValue={modalData.status}
-              />
-              <Form.Text className="text-muted d-none">
-                We'll never share your email with anyone else.
-              </Form.Text>
-            </Col>
-          </Form.Group>
-
-          <Form.Group as={Row} controlId="formBookedAt">
-            <Form.Label column sm="2">
-              Booked date
-            </Form.Label>
-            <Col sm="10">
-              {/* <Form.Control name="booked_at" placeholder="Current status" onChange={handleChange} defaultValue={modalData.booked_at} /> */}
-              <DatePicker
-                style={{ display: "revert" }}
-                peekNextMonth
-                showMonthDropdown
-                showYearDropdown
-                showTimeSelect
-                // dateFormat="dd/MM/yyyy h:mm aa"
-                dateFormat="MMMM d, yyyy h:mm aa"
-                // openToDate={new Date(moment(bookedDate))}
-                customInput={<CustomInput />}
-                closeOnScroll={true}
-                todayButton="This Week"
-                // filterDate={isWeekday}
-                // locale="en-GB"
-                calendarClassName="rasta-stripes"
-                onChange={handleDateChange}
-              />
-              <Form.Text className="text-muted d-none">
-                We'll never share your email with anyone else.
-              </Form.Text>
-            </Col>
-          </Form.Group>
-
-          <Form.Group as={Row} controlId="formOthers">
-            <Form.Label column sm="2">
-              Others
-            </Form.Label>
-            <Col sm="10">
-              <Form.Control
-                name="others"
-                placeholder="Other informations"
-                onChange={handleChange}
-                defaultValue={modalData.others}
-              />
-              <Form.Text className="text-muted d-none">
-                We'll never share your email with anyone else.
-              </Form.Text>
-            </Col>
-          </Form.Group>
-        </Form>
-      </Modal.Body>
-
-      <Modal.Footer>
-        {/* <Button variant="danger" className="mr-auto" onClick={handleDelete}>
-          Remove
-        </Button> */}
-        <Button variant="secondary" onClick={handleCloseModal}>
-          Close
-        </Button>
-        <Button
-          variant="success"
-          // size="sm"
-          onClick={() => {
-            handleSubmit();
-          }}
-        >
-          Save
-        </Button>
-      </Modal.Footer>
+      </Formik>
     </Modal>
   );
 };

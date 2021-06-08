@@ -52,15 +52,15 @@ const CalendarEvent = ({
         onClick={() => handleModalOpen(null, eventId)}
         style={{ minHeight: "150px", maxHeight: "250px" }}
       >
-        <div className="card-header p-0 pl-2 text-success">
-          <div className="card-text font-weight-bold">{vehicleId}</div>
+        <div className="card-header p-0 text-success">
+          <div className="card-text fw-bold ps-2">{vehicleId}</div>
         </div>
         <div className="card-body p-0">
           <div className="row card-body-row">
             <div className="col-5 card-text">Customer:</div>
             <div className="col-7 card-text text-white text-truncate">{customerName}</div>
             {/* <div className="col-5 card-text">Reg:</div>
-            <div className="col-7 card-text font-weight-bold">{vehicleId}</div> */}
+            <div className="col-7 card-text fw-bold">{vehicleId}</div> */}
             <div className="col-5 card-text">Desc:</div>
             <div className="col-7 text-truncate-3 text-white ">
               {description}
@@ -73,7 +73,7 @@ const CalendarEvent = ({
           </div>
         </div>
         <div className="card-footer p-0 card-body-row">
-          <small className="text-info font-italic pl-1">
+          <small className="text-info fst-italic ps-1">
             {status}
           </small>
         </div>
