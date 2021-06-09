@@ -93,9 +93,9 @@ const Header = ({ isLoggedIn, setLoggedIn }) => {
         <>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
-            <Container className="mx-0 px-0">
+            <div className="mx-0 px-0 container-fluid">
               <Row>
-                <Col md={11}>
+                <Col className="col-auto me-auto">
                   <Nav className="me-auto">
                     <Nav.Link eventKey="2" as={NavLink} to="/dashboard">
                       Dashboard
@@ -115,17 +115,13 @@ const Header = ({ isLoggedIn, setLoggedIn }) => {
                   </Nav>
                 </Col>
 
-                <Col md={1}>
-                  <Nav className="d-none d-lg-block pull-right">
+                <Col className="col-auto">
+                  <Nav className="d-none d-lg-block justify-content-end">
                     <Dropdown align="end">
                       <Dropdown.Toggle
                         as={CustomToggle}
                         id="dropdown-custom-components"
-                        // menuAlign="right"
-                        // drop="left"
-                      >
-                        Custom toggle
-                      </Dropdown.Toggle>
+                      ></Dropdown.Toggle>
 
                       <Dropdown.Menu className="navbar-user-dropdown">
                         <Dropdown.Item eventKey="10" as={Link} to="/add-user">
@@ -143,7 +139,7 @@ const Header = ({ isLoggedIn, setLoggedIn }) => {
                   </Nav>
                 </Col>
               </Row>
-            </Container>
+            </div>
           </Navbar.Collapse>
         </>
       )}
