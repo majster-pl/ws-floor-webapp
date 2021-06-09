@@ -68,6 +68,7 @@ $navbar-dark-active-color: $color-pink;
 $navbar-dark-color: #c4c4c4;
 $navbar-dark-toggler-border-color: transparent;
 $navbar-padding-x: 1rem;
+$navbar-padding-y: 0rem;
 
 label {
   color: var(--color-gray-light) !important;
@@ -79,7 +80,7 @@ label {
 
 .scroll {
   overflow: auto;
-  height: calc(100% - 74px);
+  height: calc(100% - 58px);
   width: 100%;
 }
 

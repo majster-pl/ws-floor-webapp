@@ -1,6 +1,7 @@
 import IsLoggedInLogic from "../../components/IsLoggedInLogic";
 import CalendarLogic from "./CalendarLogic";
 import TableHeader from "./components/TableHeader";
+import CalendarNavbar from "./components/CalendarNavbar";
 import Modal from "./components/Modal";
 import TableBody from "./components/TableBody";
 import "./Calendar.css";
@@ -35,15 +36,24 @@ const Calendar = (setLoggedIn) => {
 
   return (
     <div className="calendar-main scroll">
-      <table className="calendar-table">
-        <TableHeader
+      <CalendarNavbar
           currentDate={currentDate}
           setCurrentDate={setCurrentDate}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
-          handleModalOpen={handleModalOpen}
           numberOfDays={numberOfDays}
           setNumberOfDays={setNumberOfDays}
+      />
+      <table className="calendar-table">
+        
+        <TableHeader
+          currentDate={currentDate}
+          // setCurrentDate={setCurrentDate}
+          // searchQuery={searchQuery}
+          // setSearchQuery={setSearchQuery}
+          handleModalOpen={handleModalOpen}
+          numberOfDays={numberOfDays}
+          // setNumberOfDays={setNumberOfDays}
         />
 
         {isCalendarLoading ? (
