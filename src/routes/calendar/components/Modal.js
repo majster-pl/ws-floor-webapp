@@ -35,6 +35,7 @@ const CalendarModal = ({
   // set booked_at date as state
   const [assets, setAssets] = useState([]);
   const [isAssetInvalid, setIsAssetInvalid] = useState();
+  const [selectedBookedDate, setSelectedBookedDate] = useState();
   //   const [customerSelections, setCustomerSelections] = useState([]);
   const [assetSelections, setAssetSelections] = useState(() => {
     return [modalData.reg];
@@ -56,12 +57,12 @@ const CalendarModal = ({
       }),
   });
   // // Date picker
-  const CustomInput = ({ onClick }) => (
+  const CustomInput = ({onClick }) => (
     <Form.Control
       name="booked_at"
       onClick={onClick}
       placeholder="Booked date"
-      defaultValue={moment(modalData.booked_date).format("DD-MM-YYYY")}
+      defaultValue={moment(selectedBookedDate).format("DD-MM-YYYY")}
     />
   );
   // // When new date selected from date picker
@@ -198,19 +199,6 @@ const CalendarModal = ({
   //   console.log("EEEE:", modalData.event_id);
   // }, [modalData]);
 
-  // on modal displayed
-  const handleOnShow = () => {
-    // console.log("handleOnShow");
-    // console.log("oooo:", modalData);
-    // console.log("selected... : " + modalData.reg);
-
-    getAssets();
-
-    //   setBookedDate(modalData.booked_at);
-    //   setAssetSelections([modalData.veh_id]);
-    //   setCustomerSelections([modalData.customer_id]);
-  };
-
   // const setAssetSelections = (selected) => {
   // console.log('ello!' +  JSON.stringify(selected, null, 2));
   // console.log('Reg: ' +  selected[0].reg);
@@ -232,16 +220,22 @@ const CalendarModal = ({
   // }
   // }
 
-  const handleSubmit = () => {
-    console.log("handleSubmit");
+  // Get all assets and customers when modal show
+  const handleOnShow = () => {
+    getAssets();
+  };
 
-    let url = "/api/v1/events/" + modalData.event_id;
+  const handleSubmit = (values) => {
+    console.log("handleSubmit");
+    console.log("MODAL: " + JSON.stringify(modalData));
+
+    let url = "/api/v1/events/" + values.event_id;
 
     apiClient
       .get("/sanctum/csrf-cookie")
       .then(() => {
         apiClient
-          .patch(url, modalData)
+          .patch(url, values)
           .then((response) => {
             // setTableData(response.data.data);
             console.log(response.data);
@@ -265,12 +259,19 @@ const CalendarModal = ({
   // getAssets();
 
   return (
-    <Modal id="event-modal" show={showModal} onHide={handleCloseModal} onShow={handleOnShow} >
+    <Modal
+      id="event-modal"
+      show={showModal}
+      onHide={handleCloseModal}
+      onShow={handleOnShow}
+    >
       <Formik
         initialValues={modalData}
         validationSchema={reviewShema}
         onSubmit={(values, actions) => {
-          handleSubmit();
+          handleSubmit(values);
+          console.log("values: " + JSON.stringify(values));
+          console.log("actions: " + JSON.stringify(actions));
           // setTimeout(() => {
           //   alert(JSON.stringify(values, null, 2));
           //   actions.setSubmitting(false);
@@ -286,7 +287,12 @@ const CalendarModal = ({
               ) : (
                 <Modal.Title>Edit booking</Modal.Title>
               )}
-              <button type="button" className="btn-close" aria-label="Close" onClick={handleCloseModal}></button>
+              <button
+                type="button"
+                className="btn-close"
+                aria-label="Close"
+                onClick={handleCloseModal}
+              ></button>
             </Modal.Header>
             <Modal.Body>
               <Form.Group as={Row} controlId="formReg" className="mb-3">
@@ -300,7 +306,26 @@ const CalendarModal = ({
                         id="asset-typeahead"
                         labelKey="reg"
                         allowNew
-                        onChange={setAssetSelections}
+                        // onChange={setAssetSelections}
+                        onChange={(selected) => {
+                          setAssetSelections(selected);
+                          if (typeof selected[0] !== "undefined") {
+                            console.log(
+                              "Selected: " + JSON.stringify(selected)
+                            );
+                            // check if selection is a new reg
+                            if (selected[0].customOption === true) {
+                              props.values.asset_id = 0;
+                              props.values.reg = selected[0].reg;
+                            } else {
+                              props.values.asset_id = selected[0].asset_id;
+                              props.values.reg = selected[0].reg;
+                            }
+                          } else {
+                            props.values.asset_id = 0;
+                            props.values.reg = "";
+                          }
+                        }}
                         onInputChange={handleAssetChange}
                         // onInputChange={props.handleChange('reg')}
 
@@ -353,7 +378,7 @@ const CalendarModal = ({
                     rows={3}
                     name="description"
                     placeholder="Visit description"
-                    onChange={props.handleChange('description')}
+                    onChange={props.handleChange("description")}
                     value={props.values.description}
                     // defaultValue={modalData.description}
                   />
@@ -371,7 +396,9 @@ const CalendarModal = ({
                   <Form.Control
                     name="allowed_time"
                     placeholder="Number of hours allowed for a job"
-                    onChange={handleChange}
+                    // onChange={handleChange}
+                    onChange={props.handleChange("allowed_time")}
+                    value={props.values.allowed_time}
                     defaultValue={modalData.allowed_time}
                   />
                   <Form.Text className="text-muted d-none">
@@ -388,7 +415,9 @@ const CalendarModal = ({
                   <Form.Control
                     name="status"
                     placeholder="Current status"
-                    onChange={handleChange}
+                    // onChange={handleChange}
+                    onChange={props.handleChange("status")}
+                    value={props.values.status}
                     defaultValue={modalData.status}
                   />
                   <Form.Text className="text-muted d-none">
@@ -415,17 +444,26 @@ const CalendarModal = ({
                     dateFormat="MMMM d, yyyy"
                     // openToDate={new Date(moment(bookedDate))}
                     calendarStartDay={1}
-                    customInput={<CustomInput />}
+                    customInput={<CustomInput selected={props.values.booked_date}/>}
                     closeOnScroll={true}
                     todayButton="This Week"
                     filterDate={isWeekday}
                     // highlightDates={[subDays(new Date(modalData.booked_date), 0)]}
 
-                    selected={new Date(modalData.booked_date)}
+                    selected={new Date(props.values.booked_date)}
                     // excludeDates={[new Date(), subDays(new Date(), 1)]}
                     // locale="en-GB"
                     // calendarClassName="rasta-stripes"
-                    onChange={handleDateChange}
+                    // onChange={handleDateChange}
+                    onChange={(selected) => { 
+                      console.log(selected);
+                      props.values.booked_date = moment(selected).format("YYYY-MM-DD");
+                      // this.selected = props.values.booked_date
+                      setSelectedBookedDate(selected);
+                      console.log(JSON.stringify(props.values));
+                    }}
+                    // onChange={props.handleChange("booked_date")}
+                    // value={props.values.booked_date}
                     // minDate={subDays(new Date(), 1)} // to prevent from booking event in the past
                   />
                   <Form.Text className="text-muted d-none">
