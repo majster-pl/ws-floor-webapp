@@ -16,7 +16,20 @@ const CalendarModal = ({
   handleCloseModal,
   modalData,
   setModalData,
+  reloadCalendar,
 }) => {
+  // set state hooks
+  const [assets, setAssets] = useState([]);
+  const [isAssetInvalid, setIsAssetInvalid] = useState();
+  const [customers, setCustomers] = useState([]);
+  const [selectedBookedDate, setSelectedBookedDate] = useState(() => {
+    return moment(modalData.booked_date).format("YYYY-MM-DD");
+  });
+  //   const [customerSelections, setCustomerSelections] = useState([]);
+  const [assetSelections, setAssetSelections] = useState(() => {
+    return [modalData.reg];
+  });
+
   const getAssets = () => {
     console.log("getAssets function...");
     let url = "/api/v1/assets";
@@ -32,14 +45,21 @@ const CalendarModal = ({
       });
   };
 
-  // set booked_at date as state
-  const [assets, setAssets] = useState([]);
-  const [isAssetInvalid, setIsAssetInvalid] = useState();
-  const [selectedBookedDate, setSelectedBookedDate] = useState();
-  //   const [customerSelections, setCustomerSelections] = useState([]);
-  const [assetSelections, setAssetSelections] = useState(() => {
-    return [modalData.reg];
-  });
+  //fetching customers list
+  const getCustomers = () => {
+    console.log("getCustomers function...");
+    let url = "/api/v1/customer";
+
+    apiClient
+      .get(url)
+      .then((response) => {
+        console.log(response.data.data);
+        setCustomers(response.data.data);
+      })
+      .catch((err) => {
+        console.log("error:", err);
+      });
+  };
 
   // Form validation
   const reviewShema = yup.object({
@@ -55,9 +75,12 @@ const CalendarModal = ({
 
         return !isAssetInvalid;
       }),
+    description: yup.string().min(3).required(),
+    allowed_time: yup.number().required(),
+    booked_date: yup.date().required(),
   });
   // // Date picker
-  const CustomInput = ({onClick }) => (
+  const CustomInput = ({ onClick }) => (
     <Form.Control
       name="booked_at"
       onClick={onClick}
@@ -223,6 +246,8 @@ const CalendarModal = ({
   // Get all assets and customers when modal show
   const handleOnShow = () => {
     getAssets();
+    getCustomers();
+    console.log(JSON.stringify(modalData));
   };
 
   const handleSubmit = (values) => {
@@ -241,6 +266,10 @@ const CalendarModal = ({
             console.log(response.data);
             // setModalData(response.data.data);
             // setShowModal(true);
+            handleCloseModal();
+            setModalData([]);
+            reloadCalendar();
+            // setBookedDate();
           })
           .catch((err) => {
             console.log("error:", err);
@@ -270,12 +299,8 @@ const CalendarModal = ({
         validationSchema={reviewShema}
         onSubmit={(values, actions) => {
           handleSubmit(values);
-          console.log("values: " + JSON.stringify(values));
-          console.log("actions: " + JSON.stringify(actions));
-          // setTimeout(() => {
-          //   alert(JSON.stringify(values, null, 2));
-          //   actions.setSubmitting(false);
-          // }, 1000);
+          // console.log("values: " + JSON.stringify(values));
+          // console.log("actions: " + JSON.stringify(actions));
         }}
       >
         {(props) => (
@@ -295,18 +320,17 @@ const CalendarModal = ({
               ></button>
             </Modal.Header>
             <Modal.Body>
-              <Form.Group as={Row} controlId="formReg" className="mb-3">
-                <Form.Label column sm="2">
+              <Form.Group as={Row} controlId="formReg">
+                <Form.Label column sm="3" className="text-end">
                   Reg
                 </Form.Label>
-                <Col sm="10">
+                <Col sm="9">
                   <Fragment>
                     <Form.Group>
                       <Typeahead
                         id="asset-typeahead"
                         labelKey="reg"
                         allowNew
-                        // onChange={setAssetSelections}
                         onChange={(selected) => {
                           setAssetSelections(selected);
                           if (typeof selected[0] !== "undefined") {
@@ -315,45 +339,43 @@ const CalendarModal = ({
                             );
                             // check if selection is a new reg
                             if (selected[0].customOption === true) {
+                              // if new set id to 0
                               props.values.asset_id = 0;
                               props.values.reg = selected[0].reg;
                             } else {
+                              // if not new assign values accordingly
                               props.values.asset_id = selected[0].asset_id;
                               props.values.reg = selected[0].reg;
                             }
+                            // if no selection made set botw to 0
                           } else {
                             props.values.asset_id = 0;
                             props.values.reg = "";
                           }
                         }}
                         onInputChange={handleAssetChange}
-                        // onInputChange={props.handleChange('reg')}
-
                         options={assets}
                         isInvalid={isAssetInvalid}
                         value={props.values.reg}
-                        // isLoading={true}
                         placeholder="Vehicle Reg..."
-                        // selected={assetSelections}
                         defaultSelected={[modalData]}
-                        // selected={['KG44AWH']}
                       />
                     </Form.Group>
                   </Fragment>
-                  <Form.Text className="text-muted ">
-                    {isAssetInvalid ? props.errors.reg : ""}
+                  <Form.Text className="text-danger ms-2">
+                    {props.errors.reg}
                   </Form.Text>
                 </Col>
               </Form.Group>
 
-              <Form.Group as={Row} controlId="formCustomer" className="mb-3">
-                <Form.Label column sm="2">
+              <Form.Group as={Row} controlId="formCustomer">
+                <Form.Label column sm="3" className="text-end">
                   Customer
                 </Form.Label>
-                <Col sm="10">
+                <Col sm="9">
                   <Fragment>
                     <Form.Group>
-                      <Typeahead
+                      {/* <Typeahead
                         id="customer-typeahead"
                         labelKey="name"
                         allowNew
@@ -362,17 +384,56 @@ const CalendarModal = ({
                         // options={customerOptions}
                         placeholder="Customer"
                         // selected={customerSelections}
+                      /> */}
+
+                      <Typeahead
+                        id="customer-typeahead"
+                        labelKey="customer_name"
+                        allowNew
+                        onChange={(selected) => {
+                          setAssetSelections(selected);
+                          if (typeof selected[0] !== "undefined") {
+                            console.log(
+                              "Selected: " + JSON.stringify(selected)
+                            );
+                            // check if selection is a new reg
+                            if (selected[0].customOption === true) {
+                              // if new set id to 0
+                              props.values.customer_id = 0;
+                              props.values.customer = selected[0].customer;
+                            } else {
+                              // if not new assign values accordingly
+                              props.values.customer_id =
+                                selected[0].customer_id;
+                              props.values.customer = selected[0].customer;
+                            }
+                            // if no selection made set botw to 0
+                          } else {
+                            props.values.customer_id = 0;
+                            props.values.customer = "";
+                          }
+                        }}
+                        // onInputChange={handleAssetChange}
+                        options={customers}
+                        // isInvalid={isAssetInvalid}
+                        value={props.values.customer_name}
+                        placeholder="Customer..."
+                        defaultSelected={[modalData]}
                       />
                     </Form.Group>
                   </Fragment>
+                  <Form.Text className="text-danger ms-2">
+                    {props.errors.customer_name}
+                  </Form.Text>
                 </Col>
               </Form.Group>
 
-              <Form.Group as={Row} controlId="formDescription" className="mb-3">
-                <Form.Label column sm="2">
+              {/* DESCRIPTION */}
+              <Form.Group as={Row} controlId="formDescription">
+                <Form.Label column sm="3" className="text-end">
                   Description
                 </Form.Label>
-                <Col sm="10">
+                <Col sm="9">
                   <Form.Control
                     as="textarea"
                     rows={3}
@@ -382,17 +443,18 @@ const CalendarModal = ({
                     value={props.values.description}
                     // defaultValue={modalData.description}
                   />
-                  <Form.Text className="text-muted d-none">
-                    We'll never share your email with anyone else.
+                  <Form.Text className="text-danger ms-2">
+                    {props.errors.description}
                   </Form.Text>
                 </Col>
               </Form.Group>
 
-              <Form.Group as={Row} controlId="formAllowedTime" className="mb-3">
-                <Form.Label column sm="2">
+              {/* ALLOWED TIME */}
+              <Form.Group as={Row} controlId="formAllowedTime">
+                <Form.Label column sm="3" className="text-end">
                   Allowed time
                 </Form.Label>
-                <Col sm="10">
+                <Col sm="9">
                   <Form.Control
                     name="allowed_time"
                     placeholder="Number of hours allowed for a job"
@@ -400,89 +462,104 @@ const CalendarModal = ({
                     onChange={props.handleChange("allowed_time")}
                     value={props.values.allowed_time}
                     defaultValue={modalData.allowed_time}
+                    isInvalid={!!props.errors.allowed_time}
                   />
-                  <Form.Text className="text-muted d-none">
-                    We'll never share your email with anyone else.
+                  <Form.Text className="text-danger ms-2">
+                    {props.errors.allowed_time}
                   </Form.Text>
                 </Col>
               </Form.Group>
 
-              <Form.Group as={Row} controlId="formStatus" className="mb-3">
-                <Form.Label column sm="2">
+              {/* BOOKED DATE */}
+              <Form.Group as={Row} controlId="formBookedAt">
+                <Form.Label column sm="3" className="text-end">
+                  Booked date
+                </Form.Label>
+                <Col sm="9">
+                  <DatePicker
+                    style={{ display: "revert" }}
+                    dateFormat="dd-MM-yyyy"
+                    calendarStartDay={1}
+                    // disabledKeyboardNavigation
+                    customInput={
+                      <CustomInput selected={props.values.booked_date} />
+                    }
+                    closeOnScroll={true}
+                    todayButton="This Week"
+                    filterDate={isWeekday}
+                    // highlightDates={[subDays(new Date(selectedBookedDate), 1)]}
+                    selected={new Date(selectedBookedDate)}
+                    value={props.values.booked_date}
+                    onChange={(selected) => {
+                      // console.log(selected);
+                      props.values.booked_date =
+                        moment(selected).format("YYYY-MM-DD");
+                      setSelectedBookedDate(selected);
+                      // console.log(JSON.stringify(props.values));
+                    }}
+                  />
+                  <Form.Text className="text-danger ms-2">
+                    {props.errors.booked_date}
+                  </Form.Text>
+                </Col>
+              </Form.Group>
+
+              {/* OTHERS */}
+              <Form.Group as={Row} controlId="formOthers">
+                <Form.Label column sm="3" className="text-end">
+                  Others
+                </Form.Label>
+                <Col sm="9">
+                  <Form.Control
+                    name="others"
+                    placeholder="Other informations"
+                    onChange={props.handleChange("others")}
+                    defaultValue={modalData.others}
+                    value={props.values.others}
+                  />
+                  <Form.Text className="text-danger ms-2">
+                    {props.errors.booked_date}
+                  </Form.Text>
+                </Col>
+              </Form.Group>
+
+              {/* STATUS */}
+              <Form.Group as={Row} controlId="formStatus">
+                <Form.Label column sm="3" className="text-end">
                   Status
                 </Form.Label>
-                <Col sm="10">
+                <Col sm="9">
                   <Form.Control
+                    required
+                    as="select"
+                    type="select"
+                    name="payment_method"
+                    value={props.values.status}
+                    onChange={props.handleChange("status")}
+                    // onChange={setFormValue}
+                    // value={form.payment_method}
+                  >
+                    <option disabled>-- select status --</option>
+                    <option value="booked">Booked</option>
+                    <option value="arrived">Arrived</option>
+                    <option value="awaiting_workshop">Awaiting Workshop</option>
+                    <option value="awaiting_estimates">
+                      Awaiting Estimates
+                    </option>
+                    <option value="awaiting_part">Awaiting Parts</option>
+                    <option value="awaiting_authorisation">
+                      Awaiting Authorisation
+                    </option>
+                    <option value="work_in_progress">Work in Progress</option>
+                  </Form.Control>
+                  {/* <Form.Control
                     name="status"
                     placeholder="Current status"
                     // onChange={handleChange}
                     onChange={props.handleChange("status")}
                     value={props.values.status}
                     defaultValue={modalData.status}
-                  />
-                  <Form.Text className="text-muted d-none">
-                    We'll never share your email with anyone else.
-                  </Form.Text>
-                </Col>
-              </Form.Group>
-
-              <Form.Group as={Row} controlId="formBookedAt" className="mb-3">
-                <Form.Label column sm="2">
-                  Booked date
-                </Form.Label>
-                <Col sm="10">
-                  {/* <Form.Control name="booked_at" placeholder="Current status" onChange={handleChange} defaultValue={modalData.booked_at} /> */}
-                  <DatePicker
-                    style={{ display: "revert" }}
-                    // peekNextMonth
-                    // showMonthDropdown
-                    // showYearDropdown
-
-                    // showTimeSelect
-                    // dateFormat="dd/MM/yyyy h:mm aa"
-
-                    dateFormat="MMMM d, yyyy"
-                    // openToDate={new Date(moment(bookedDate))}
-                    calendarStartDay={1}
-                    customInput={<CustomInput selected={props.values.booked_date}/>}
-                    closeOnScroll={true}
-                    todayButton="This Week"
-                    filterDate={isWeekday}
-                    // highlightDates={[subDays(new Date(modalData.booked_date), 0)]}
-
-                    selected={new Date(props.values.booked_date)}
-                    // excludeDates={[new Date(), subDays(new Date(), 1)]}
-                    // locale="en-GB"
-                    // calendarClassName="rasta-stripes"
-                    // onChange={handleDateChange}
-                    onChange={(selected) => { 
-                      console.log(selected);
-                      props.values.booked_date = moment(selected).format("YYYY-MM-DD");
-                      // this.selected = props.values.booked_date
-                      setSelectedBookedDate(selected);
-                      console.log(JSON.stringify(props.values));
-                    }}
-                    // onChange={props.handleChange("booked_date")}
-                    // value={props.values.booked_date}
-                    // minDate={subDays(new Date(), 1)} // to prevent from booking event in the past
-                  />
-                  <Form.Text className="text-muted d-none">
-                    We'll never share your email with anyone else.
-                  </Form.Text>
-                </Col>
-              </Form.Group>
-
-              <Form.Group as={Row} controlId="formOthers">
-                <Form.Label column sm="2">
-                  Others
-                </Form.Label>
-                <Col sm="10">
-                  <Form.Control
-                    name="others"
-                    placeholder="Other informations"
-                    onChange={handleChange}
-                    defaultValue={modalData.others}
-                  />
+                  /> */}
                   <Form.Text className="text-muted d-none">
                     We'll never share your email with anyone else.
                   </Form.Text>

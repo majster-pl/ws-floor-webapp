@@ -24,6 +24,15 @@ const Dashboard = (setLoggedIn) => {
       });
   };
 
+  const getCustomer = () => {
+    apiClient
+      .get("/api/v1/customer")
+      .then((response) => {
+        console.log(response.data);
+      });
+  };
+
+
   const getEvent = () => {
     apiClient
       .get("/api/v1/events/10")
@@ -58,6 +67,7 @@ const Dashboard = (setLoggedIn) => {
     <div className="scroll">
       <Button onClick={getAssets}> Assets </Button>
       <Button onClick={getEvents}> get events </Button>
+      <Button onClick={getCustomer}> get Customer </Button>
       <Button onClick={getEvent}> get event 10 </Button>
       <Button onClick={saveEvent}> Save events </Button>
     </div>

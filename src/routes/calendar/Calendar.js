@@ -25,6 +25,7 @@ const Calendar = (setLoggedIn) => {
     isCalendarLoading,
     modalData,
     setModalData,
+    reloadCalendar,
   } = CalendarLogic();
   //   const { Header } = CalendarHeader();
   //if still waiting response from server then display spinner
@@ -32,20 +33,19 @@ const Calendar = (setLoggedIn) => {
     return <SpinnerComponent />;
   }
 
-  console.log('rendering calendar.js');
+  console.log("rendering calendar.js");
 
   return (
     <div className="calendar-main scroll">
       <CalendarNavbar
-          currentDate={currentDate}
-          setCurrentDate={setCurrentDate}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          numberOfDays={numberOfDays}
-          setNumberOfDays={setNumberOfDays}
+        currentDate={currentDate}
+        setCurrentDate={setCurrentDate}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        numberOfDays={numberOfDays}
+        setNumberOfDays={setNumberOfDays}
       />
       <table className="calendar-table">
-        
         <TableHeader
           currentDate={currentDate}
           // setCurrentDate={setCurrentDate}
@@ -69,9 +69,15 @@ const Calendar = (setLoggedIn) => {
           />
         )}
       </table>
-      {showModal == true &&
-      <Modal showModal={showModal} handleCloseModal={handleCloseModal} modalData={modalData} setModalData={setModalData} />
-      }
+      {showModal == true && (
+        <Modal
+          showModal={showModal}
+          handleCloseModal={handleCloseModal}
+          modalData={modalData}
+          setModalData={setModalData}
+          reloadCalendar={reloadCalendar}
+        />
+      )}
     </div>
   );
 };

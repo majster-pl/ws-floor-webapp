@@ -75,6 +75,10 @@ const CalendarLogic = () => {
     // console.log('show modal here?');
   };
 
+  function reloadCalendar() {
+    setCurrentDate(moment(currentDate, "DD-MM-YYYY"));
+  }
+
   return {
     currentDate,
     setCurrentDate,
@@ -89,6 +93,7 @@ const CalendarLogic = () => {
     isCalendarLoading,
     modalData,
     setModalData,
+    reloadCalendar,
   };
 };
 

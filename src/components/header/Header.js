@@ -115,8 +115,8 @@ const Header = ({ isLoggedIn, setLoggedIn }) => {
                   </Nav>
                 </Col>
 
-                <Col className="col-auto">
-                  <Nav className="d-none d-lg-block justify-content-end">
+                <Col className="col-auto my-auto">
+                  <Nav className="d-none d-lg-block justify-content-end ">
                     <Dropdown align="end">
                       <Dropdown.Toggle
                         as={CustomToggle}

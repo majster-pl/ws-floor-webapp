@@ -256,3 +256,9 @@ select:-webkit-autofill:focus {
 	border: 0px;
 }
 
+.modal {
+	z-index: 1040;
+}
+.modal-2 {
+	z-index: 1050;
+}
