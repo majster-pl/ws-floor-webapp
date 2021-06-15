@@ -3,17 +3,34 @@ import IsLoggedInLogic from "../../components/IsLoggedInLogic";
 import apiClient from "../../service/api/api";
 import "./Dashboard.css";
 
-const Dashboard = (setLoggedIn) => {
-  const { isLoading, SpinnerComponent } = IsLoggedInLogic(setLoggedIn);
+const Dashboard = ({ setLoggedIn, setShowToast, setToastData }) => {
+  const { isLoading, SpinnerComponent } = IsLoggedInLogic({ setLoggedIn });
   //if still waiting response from server then display spinner
   if (isLoading) {
     return <SpinnerComponent />;
   }
 
-  const getAssets = () => {
-    apiClient.get("/api/v1/assets/1").then((response) => {
-      console.log(response.data);
+  // fuction to initial and set toast
+  const showToast = (variant, title, body) => {
+    setShowToast(false);
+    setShowToast(true);
+    setToastData({
+      variant: variant.toLowerCase(),
+      title: title,
+      body: body,
     });
+  };
+
+  const getAssets = () => {
+    apiClient
+      .get("/api/v1/assets/2")
+      .then((response) => {
+        console.log(response.data);
+        showToast("success", "Response", JSON.stringify(response.data))
+      })
+      .catch((err) => {
+        showToast("danger", "Error", err.response.statusText)
+      });
   };
 
   const getEvents = () => {
@@ -25,20 +42,15 @@ const Dashboard = (setLoggedIn) => {
   };
 
   const getCustomer = () => {
-    apiClient
-      .get("/api/v1/customer")
-      .then((response) => {
-        console.log(response.data);
-      });
+    apiClient.get("/api/v1/customer").then((response) => {
+      console.log(response.data);
+    });
   };
 
-
   const getEvent = () => {
-    apiClient
-      .get("/api/v1/events/10")
-      .then((response) => {
-        console.log(response.data);
-      });
+    apiClient.get("/api/v1/events/10").then((response) => {
+      console.log(response.data);
+    });
   };
   const saveEvent = () => {
     let url = "/api/v1/events/119";
@@ -47,7 +59,7 @@ const Dashboard = (setLoggedIn) => {
       description: "lol",
       booked_date: "2021-05-29",
       allowed_time: 2,
-      status: "booked"
+      status: "booked",
     };
 
     apiClient

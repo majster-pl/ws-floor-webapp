@@ -321,7 +321,7 @@ const CalendarModal = ({
             </Modal.Header>
             <Modal.Body>
               <Form.Group as={Row} controlId="formReg">
-                <Form.Label column sm="3" className="text-end">
+                <Form.Label column sm="3" className="text-md-end">
                   Reg
                 </Form.Label>
                 <Col sm="9">
@@ -369,7 +369,7 @@ const CalendarModal = ({
               </Form.Group>
 
               <Form.Group as={Row} controlId="formCustomer">
-                <Form.Label column sm="3" className="text-end">
+                <Form.Label column sm="3" className="text-md-end">
                   Customer
                 </Form.Label>
                 <Col sm="9">
@@ -430,7 +430,7 @@ const CalendarModal = ({
 
               {/* DESCRIPTION */}
               <Form.Group as={Row} controlId="formDescription">
-                <Form.Label column sm="3" className="text-end">
+                <Form.Label column sm="3" className="text-md-end ">
                   Description
                 </Form.Label>
                 <Col sm="9">
@@ -451,7 +451,7 @@ const CalendarModal = ({
 
               {/* ALLOWED TIME */}
               <Form.Group as={Row} controlId="formAllowedTime">
-                <Form.Label column sm="3" className="text-end">
+                <Form.Label column sm="3" className="text-md-end">
                   Allowed time
                 </Form.Label>
                 <Col sm="9">
@@ -472,7 +472,7 @@ const CalendarModal = ({
 
               {/* BOOKED DATE */}
               <Form.Group as={Row} controlId="formBookedAt">
-                <Form.Label column sm="3" className="text-end">
+                <Form.Label column sm="3" className="text-md-end">
                   Booked date
                 </Form.Label>
                 <Col sm="9">
@@ -506,7 +506,7 @@ const CalendarModal = ({
 
               {/* OTHERS */}
               <Form.Group as={Row} controlId="formOthers">
-                <Form.Label column sm="3" className="text-end">
+                <Form.Label column sm="3" className="text-md-end">
                   Others
                 </Form.Label>
                 <Col sm="9">
@@ -525,7 +525,7 @@ const CalendarModal = ({
 
               {/* STATUS */}
               <Form.Group as={Row} controlId="formStatus">
-                <Form.Label column sm="3" className="text-end">
+                <Form.Label column sm="3" className="text-md-end">
                   Status
                 </Form.Label>
                 <Col sm="9">

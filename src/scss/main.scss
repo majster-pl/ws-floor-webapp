@@ -156,6 +156,14 @@ $btn-padding-y:  0.15rem;
 //   border-radius: 10px !important;
 // }
 
+// $toast-background-color: rgba($color-gray-light, 1);
+// $toast-color: rgba($color-gray, 1);
+
+
+.toast-main {
+  z-index: 3000 !important;
+}
+
 // Import Bootstrap and its default variables
 @import "~bootstrap/scss/bootstrap.scss";
 @import "~bootstrap/scss/functions";

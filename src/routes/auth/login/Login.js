@@ -61,7 +61,7 @@ const Login = (setLoggedIn) => {
           <Form.Control.Feedback type="invalid" className="is-invalid d-inline">
             {errorMessage} <br></br>
             {sessionStorage.getItem("isLoggedIn") === "false"
-              ? sessionStorage.getItem("loginError")
+              ? sessionStorage.getItem("errorMessage")
               : ""}
           </Form.Control.Feedback>
         </Form.Group>

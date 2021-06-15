@@ -11,20 +11,22 @@ const apiClient = axios.create({
 });
 
 const redirectToLogin = () => {
-  if (window.location.pathname !== "/login") {
-    window.location.href = "/login";
-  }
+  // if (window.location.pathname !== "/login") {
+  //   window.location.href = "/login";
+  // }
   console.log("ERROR!!!");
 };
 
 apiClient.interceptors.response.use(
   function (response) {
+    sessionStorage.setItem("errorMessage", "");
+
     return response;
   },
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    sessionStorage.setItem("loginError", "");
+    sessionStorage.setItem("errorMessage", "");
     // check if server responding... if so check for errors
     if (typeof error.response === "object") {
       if (typeof error.response.status !== "undefined") {
@@ -32,21 +34,19 @@ apiClient.interceptors.response.use(
           sessionStorage.setItem("isLoggedIn", "false");
           if (error.response.status === 401) {
             sessionStorage.setItem(
-              "loginError",
+              "errorMessage",
               "You are no longer logged in, please log in again."
             );
           } else {
             sessionStorage.setItem(
-              "loginError",
-              "Error [" +
-                error.response.status +
-                "] occurred, please try again again."
+              "errorMessage",
+              error.response.status + " - " + error.response.statusText
             );
           }
           redirectToLogin();
         } else {
           sessionStorage.removeItem("isLoggedIn");
-          sessionStorage.removeItem("loginError");
+          // sessionStorage.removeItem("loginError");
           // sessionStorage.setItem(
           //   "loginError",
           //   "You are no longer logged in, please log in again."
@@ -57,6 +57,7 @@ apiClient.interceptors.response.use(
     } else {
       // console.log("oooo error!!");
       sessionStorage.setItem("isLoggedIn", "false");
+      sessionStorage.setItem("error", error);
       sessionStorage.setItem(
         "loginError",
         "Error: API Network Error, please try again again later."

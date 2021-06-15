@@ -36,7 +36,7 @@ const LoginLogic = ({ setLoggedIn }) => {
     if (err) {
       return false;
     }
-    sessionStorage.setItem("loginError", "");
+    // sessionStorage.setItem("apiError", "");
     setLoading(true);
     apiClient
       .get("/sanctum/csrf-cookie")
