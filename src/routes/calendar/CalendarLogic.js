@@ -2,10 +2,14 @@ import moment from "moment";
 import { useState, useEffect } from "react";
 import apiClient from "../../service/api/api";
 
-const CalendarLogic = () => {
+const CalendarLogic = ({showToast}) => {
   const todaysDate = moment().startOf("isoweek");
-  const [currentDate, setCurrentDate] = useState(() => {return todaysDate});
-  const [numberOfDays, setNumberOfDays] = useState(() => {return 7});
+  const [currentDate, setCurrentDate] = useState(() => {
+    return todaysDate;
+  });
+  const [numberOfDays, setNumberOfDays] = useState(() => {
+    return 7;
+  });
   const [tableData, setTableData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isCalendarLoading, setIsCalendarLoading] = useState(true);
@@ -54,12 +58,18 @@ const CalendarLogic = () => {
     if (!date) {
       let url = "/api/v1/events/" + eventId;
 
-      apiClient.get(url).then((response) => {
-        // setTableData(response.data.data);
-        // console.log(response.data);
-        setModalData(response.data.data);
-        setShowModal(true);
-      });
+      apiClient
+        .get(url)
+        .then((response) => {
+          // setTableData(response.data.data);
+          // console.log(response.data);
+          setModalData(response.data.data);
+          setShowModal(true);
+        })
+        .catch((err) => {
+          // console.log("UUU...");
+          showToast("danger", "Error", JSON.stringify(err), false)
+        });
     } else {
       setModalData({
         new_booking: true,

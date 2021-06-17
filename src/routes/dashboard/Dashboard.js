@@ -2,34 +2,40 @@ import { Button } from "react-bootstrap";
 import IsLoggedInLogic from "../../components/IsLoggedInLogic";
 import apiClient from "../../service/api/api";
 import "./Dashboard.css";
+import ToastLogic from "../../components/ToastLogic";
 
-const Dashboard = ({ setLoggedIn, setShowToast, setToastData }) => {
-  const { isLoading, SpinnerComponent } = IsLoggedInLogic({ setLoggedIn });
+const Dashboard = ({setLoggedIn, showToast}) => {
+  const { isLoading, SpinnerComponent } = IsLoggedInLogic(setLoggedIn);
   //if still waiting response from server then display spinner
   if (isLoading) {
     return <SpinnerComponent />;
   }
 
+  // const { setBody } = ToastLogic();
+
   // fuction to initial and set toast
-  const showToast = (variant, title, body) => {
-    setShowToast(false);
-    setShowToast(true);
-    setToastData({
-      variant: variant.toLowerCase(),
-      title: title,
-      body: body,
-    });
-  };
+  // const showToast = (variant, title, body) => {
+  //   setShowToast(false);
+  //   setShowToast(true);
+  //   setToastData({
+  //     variant: variant.toLowerCase(),
+  //     title: title,
+  //     body: body,
+  //   });
+  // };
 
   const getAssets = () => {
     apiClient
       .get("/api/v1/assets/2")
       .then((response) => {
-        console.log(response.data);
-        showToast("success", "Response", JSON.stringify(response.data))
+        console.log(response);
+        showToast("success", "Response", JSON.stringify(response.data));
+        // showToast("success", "Response", JSON.stringify(response.data));
       })
       .catch((err) => {
-        showToast("danger", "Error", err.response.statusText)
+        console.log(err);
+        
+        showToast("danger", "Error", err.statusText, false);
       });
   };
 

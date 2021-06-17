@@ -1,6 +1,6 @@
 import IsLoggedInLogic from "../../components/IsLoggedInLogic";
 
-const Workshop = (setLoggedIn) => {
+const Workshop = ({setLoggedIn}) => {
   const { isLoading, SpinnerComponent } = IsLoggedInLogic(setLoggedIn);
   //if still waiting response from server then display spinner
   if (isLoading) {

@@ -84,7 +84,6 @@ label {
   width: 100%;
 }
 
-
 // .form-control::placeholder {
 //   color: rgb(170, 170, 170) !important;
 // }
@@ -133,7 +132,7 @@ $input-border-color: $color-green;
 $input-border-width: 0.1rem;
 $input-color: $color-white;
 $input-focus-border-color: $color-pink;
-$input-transition: border-color .35s ease-in-out, box-shadow .35s ease-in-out;
+$input-transition: border-color 0.35s ease-in-out, box-shadow 0.35s ease-in-out;
 
 //form group
 // $form-group-margin-bottom: 0.6rem;
@@ -145,8 +144,8 @@ $input-btn-focus-box-shadow: 0px 1px 1px rgba(163, 2, 2, 0.075) inset, 0px 0px 8
 // $input-btn-padding-y: 0;
 $input-btn-padding-y: 0.175rem;
 $input-btn-padding-y-sm: 0;
-$btn-padding-y-sm:  0;
-$btn-padding-y:  0.15rem;
+$btn-padding-y-sm: 0;
+$btn-padding-y: 0.15rem;
 // $input-btn-padding-y-lg: 0.3rem;
 
 // $dropdown-item-padding-x: 30px;
@@ -159,14 +158,21 @@ $btn-padding-y:  0.15rem;
 // $toast-background-color: rgba($color-gray-light, 1);
 // $toast-color: rgba($color-gray, 1);
 
+// close button
+$btn-close-opacity: 1;
 
-.toast-main {
+.toast {
   z-index: 3000 !important;
+  opacity: 0.9;
+}
+
+.toast:hover {
+  opacity: 1;
 }
 
 // Import Bootstrap and its default variables
 @import "~bootstrap/scss/bootstrap.scss";
-@import "~bootstrap/scss/functions";
+// @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 
 // Awesome Fonts
@@ -174,4 +180,3 @@ $btn-padding-y:  0.15rem;
 @import "~@fortawesome/fontawesome-free/scss/regular";
 @import "~@fortawesome/fontawesome-free/scss/solid";
 @import "~@fortawesome/fontawesome-free/scss/fontawesome";
-

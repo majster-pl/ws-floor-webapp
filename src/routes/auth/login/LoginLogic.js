@@ -54,18 +54,19 @@ const LoginLogic = ({ setLoggedIn }) => {
           })
           .catch((err) => {
             setLoading(false);
-            if (typeof err.response.data.errors === "object") {
+            console.log(err);
+            if (typeof err.data.errors === "object") {
               // check if email error present
-              if (typeof err.response.data.errors.email === "object") {
-                setErrorMessage(err.response.data.errors.email);
+              if (typeof err.data.errors.email === "object") {
+                setErrorMessage(err.data.errors.email);
               }
               // check if password error message present
-              if (typeof err.response.data.errors.password === "object") {
-                setErrorMessage(err.response.data.errors.password);
+              if (typeof err.data.errors.password === "object") {
+                setErrorMessage(err.data.errors.password);
               }
             } else {
               // any other error
-              setErrorMessage(err.response.data.message);
+              setErrorMessage(err.data.message);
             }
           });
       })

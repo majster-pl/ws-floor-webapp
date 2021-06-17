@@ -24,6 +24,7 @@ apiClient.interceptors.response.use(
     return response;
   },
   function (error) {
+    // return Promise.reject(error.response);
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     sessionStorage.setItem("errorMessage", "");
@@ -65,7 +66,7 @@ apiClient.interceptors.response.use(
       redirectToLogin();
       // error = new Error("connection error!")
     }
-    return Promise.reject(error);
+    return Promise.reject(error.response);
   }
 );
 

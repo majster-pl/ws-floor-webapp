@@ -1,8 +1,9 @@
 import { Form, Button, Spinner } from "react-bootstrap";
 import "./Login.css";
 import LoginLogic from "./LoginLogic";
+// import IsLoggedInLogic from "../../../components/IsLoggedInLogic";
 
-const Login = (setLoggedIn) => {
+const Login = ({ setLoggedIn }) => {
   const {
     username,
     password,
@@ -15,6 +16,7 @@ const Login = (setLoggedIn) => {
     isPasswordValid,
   } = LoginLogic(setLoggedIn);
   // const [validated, setValidated] = useState(false);
+  // const {} = IsLoggedInLogic(setLoggedIn);
 
   return (
     <div className="center">

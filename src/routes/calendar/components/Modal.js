@@ -17,6 +17,7 @@ const CalendarModal = ({
   modalData,
   setModalData,
   reloadCalendar,
+  showToast,
 }) => {
   // set state hooks
   const [assets, setAssets] = useState([]);
@@ -269,10 +270,12 @@ const CalendarModal = ({
             handleCloseModal();
             setModalData([]);
             reloadCalendar();
+            showToast("success", "Saved", "Event saved." )
             // setBookedDate();
           })
           .catch((err) => {
             console.log("error:", err);
+            showToast("danger", "Error", err.statusText + " - Event NOT saved!", false )
           });
       })
       .catch((err) => {

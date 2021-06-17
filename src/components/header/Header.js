@@ -38,8 +38,9 @@ const Header = ({ isLoggedIn, setLoggedIn }) => {
 
   const logout = () => {
     apiClient.post("/logout").then((response) => {
+      // console.log(response);
       if (response.status === 204) {
-        setLoggedIn(false);
+        // setLoggedIn(false);
         // sessionStorage.setItem("loggedIn", false);
         Cookies.remove("logged-in", { path: "" });
         sessionStorage.clear();
