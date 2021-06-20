@@ -1,8 +1,10 @@
 import moment from "moment";
 import { useState, useEffect } from "react";
 import apiClient from "../../service/api/api";
+import { useHistory } from "react-router-dom";
 
-const CalendarLogic = ({showToast}) => {
+const CalendarLogic = ({ showToast }) => {
+  const history = useHistory();
   const todaysDate = moment().startOf("isoweek");
   const [currentDate, setCurrentDate] = useState(() => {
     return todaysDate;
@@ -47,10 +49,18 @@ const CalendarLogic = ({showToast}) => {
       moment(currentDate).format("YYYY-MM-DD") +
       "&format=grid";
 
-    apiClient.get(url).then((response) => {
-      setTableData(response.data.data);
-      // console.log(response.data);
-    });
+    apiClient
+      .get(url)
+      .then((response) => {
+        // console.log(response.isAuthenticated);
+        setTableData(response.data.data);
+        // console.log(response.data);
+      })
+
+      .catch((error) => {
+        // console.log(error.isAuthenticated);
+        history.push("/login");
+      });
   }, [currentDate]);
 
   // Modal handler
@@ -68,7 +78,8 @@ const CalendarLogic = ({showToast}) => {
         })
         .catch((err) => {
           // console.log("UUU...");
-          showToast("danger", "Error", JSON.stringify(err), false)
+          showToast("danger", "Error", JSON.stringify(err), false);
+          history.push("/login");
         });
     } else {
       setModalData({

@@ -7,8 +7,7 @@ import TableBody from "./components/TableBody";
 import "./Calendar.css";
 import CalendarSpinner from "./components/CalendarSpinner";
 
-const Calendar = ({setLoggedIn, showToast}) => {
-  const { isLoading, SpinnerComponent } = IsLoggedInLogic(setLoggedIn);
+const Calendar = ({ setLoggedIn, showToast, setLoginErrorMsg }) => {
   const {
     currentDate,
     setCurrentDate,
@@ -26,8 +25,13 @@ const Calendar = ({setLoggedIn, showToast}) => {
     modalData,
     setModalData,
     reloadCalendar,
-  } = CalendarLogic({showToast});
-  //   const { Header } = CalendarHeader();
+  } = CalendarLogic({ showToast });
+
+  // when page oppened check if user logged in, if not redirect to login page
+  const { isLoading, SpinnerComponent } = IsLoggedInLogic(
+    setLoginErrorMsg,
+    setLoggedIn
+  );
   //if still waiting response from server then display spinner
   if (isLoading) {
     return <SpinnerComponent />;

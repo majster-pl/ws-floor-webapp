@@ -1,26 +1,23 @@
 import { Form, Button, Spinner } from "react-bootstrap";
 import "./Login.css";
 import LoginLogic from "./LoginLogic";
-// import IsLoggedInLogic from "../../../components/IsLoggedInLogic";
 
-const Login = ({ setLoggedIn }) => {
+const Login = ({ setLoggedIn, loginErrorMsg, setLoginErrorMsg, showToast }) => {
   const {
     username,
     password,
     sendGetRequest,
     setUsername,
     setPassword,
-    errorMessage,
-    isLoading,
+    isSpinning,
     isEmailValid,
     isPasswordValid,
-  } = LoginLogic(setLoggedIn);
-  // const [validated, setValidated] = useState(false);
-  // const {} = IsLoggedInLogic(setLoggedIn);
+  } = LoginLogic(setLoggedIn, setLoginErrorMsg, showToast);
 
   return (
     <div className="center">
       <Form
+        className="login-form"
         noValidate
         // validated={validated}
         onSubmit={(e) => {
@@ -60,16 +57,16 @@ const Login = ({ setLoggedIn }) => {
             Password field can't be empty!
           </Form.Control.Feedback>
 
-          <Form.Control.Feedback type="invalid" className="is-invalid d-inline">
-            {errorMessage} <br></br>
+          <Form.Control.Feedback type="invalid" className="is-invalid d-block">
+            {loginErrorMsg} <br></br>
             {sessionStorage.getItem("isLoggedIn") === "false"
               ? sessionStorage.getItem("errorMessage")
               : ""}
           </Form.Control.Feedback>
         </Form.Group>
         <div className="d-grid">
-          <Button variant="success" type="submit" disabled={isLoading}>
-            {isLoading ? (
+          <Button variant="success" type="submit" disabled={isSpinning}>
+            {isSpinning ? (
               <Spinner
                 as="span"
                 animation="border"

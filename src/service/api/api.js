@@ -10,63 +10,18 @@ const apiClient = axios.create({
   withCredentials: true,
 });
 
-const redirectToLogin = () => {
-  // if (window.location.pathname !== "/login") {
-  //   window.location.href = "/login";
-  // }
-  console.log("ERROR!!!");
-};
-
 apiClient.interceptors.response.use(
   function (response) {
-    sessionStorage.setItem("errorMessage", "");
-
+    console.log(response);
     return response;
   },
   function (error) {
-    // return Promise.reject(error.response);
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
-    sessionStorage.setItem("errorMessage", "");
-    // check if server responding... if so check for errors
+    // check if response in error, if not put error in data object
     if (typeof error.response === "object") {
-      if (typeof error.response.status !== "undefined") {
-        if (sessionStorage.getItem("isLoggedIn") === "true") {
-          sessionStorage.setItem("isLoggedIn", "false");
-          if (error.response.status === 401) {
-            sessionStorage.setItem(
-              "errorMessage",
-              "You are no longer logged in, please log in again."
-            );
-          } else {
-            sessionStorage.setItem(
-              "errorMessage",
-              error.response.status + " - " + error.response.statusText
-            );
-          }
-          redirectToLogin();
-        } else {
-          sessionStorage.removeItem("isLoggedIn");
-          // sessionStorage.removeItem("loginError");
-          // sessionStorage.setItem(
-          //   "loginError",
-          //   "You are no longer logged in, please log in again."
-          // );
-          redirectToLogin();
-        }
-      }
+      return Promise.reject(error.response);
     } else {
-      // console.log("oooo error!!");
-      sessionStorage.setItem("isLoggedIn", "false");
-      sessionStorage.setItem("error", error);
-      sessionStorage.setItem(
-        "loginError",
-        "Error: API Network Error, please try again again later."
-      );
-      redirectToLogin();
-      // error = new Error("connection error!")
+      return Promise.reject({ data: error });
     }
-    return Promise.reject(error.response);
   }
 );
 

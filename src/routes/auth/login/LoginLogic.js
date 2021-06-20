@@ -3,27 +3,32 @@ import { useHistory } from "react-router";
 import apiClient from "../../../service/api/api";
 import * as EmailValidator from "email-validator";
 
-const LoginLogic = ({ setLoggedIn }) => {
+const LoginLogic = ({ setLoggedIn }, setLoginErrorMsg, showToast) => {
   const [username, setUsername] = useState("admin@gmail.com");
   const [password, setPassword] = useState("password");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isLoading, setLoading] = useState(false);
+  const [isSpinning, setIsSpinning] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
 
   const history = useHistory();
 
+  // console.log("eee? -- " + setLoginErrorMsg);
+
   useEffect(() => {
-    apiClient.get("/api/v1/logged-in").then(() => {
-      history.push("/dashboard");
-    });
+    apiClient
+      .get("/api/v1/logged-in")
+      .then(() => {
+        history.push("/dashboard");
+      })
+      .catch((error) => {
+        console.log("Error is: " + JSON.stringify(error));
+      });
   }, []);
 
   const sendGetRequest = (e) => {
     e.preventDefault();
     setIsEmailValid(true);
     setIsPasswordValid(true);
-    setErrorMessage("");
     let err = false;
     if (!EmailValidator.validate(username)) {
       setIsEmailValid(false);
@@ -37,10 +42,12 @@ const LoginLogic = ({ setLoggedIn }) => {
       return false;
     }
     // sessionStorage.setItem("apiError", "");
-    setLoading(true);
+    setIsSpinning(true);
     apiClient
       .get("/sanctum/csrf-cookie")
-      .then(() => {
+      .then((res) => {
+        // console.log(res);
+        console.log("HEERE I AM!");
         apiClient
           .post("/login", {
             email: username,
@@ -48,31 +55,50 @@ const LoginLogic = ({ setLoggedIn }) => {
           })
           .then((response) => {
             setLoggedIn(true);
-            console.log(response);
-            sessionStorage.setItem("isLoggedIn", "true");
+            console.log("response: " + response);
+            // sessionStorage.setItem("isLoggedIn", "true");
+            sessionStorage.setItem("loginStatus", "true");
+
             history.push("/dashboard");
           })
           .catch((err) => {
-            setLoading(false);
-            console.log(err);
-            if (typeof err.data.errors === "object") {
-              // check if email error present
-              if (typeof err.data.errors.email === "object") {
-                setErrorMessage(err.data.errors.email);
-              }
-              // check if password error message present
-              if (typeof err.data.errors.password === "object") {
-                setErrorMessage(err.data.errors.password);
-              }
-            } else {
-              // any other error
-              setErrorMessage(err.data.message);
-            }
+            // history.push("/dashboard");
+            // WORKAROUND: when user logged in, server throwing empty response until
+            // next request from server, check if looged in then redirect
+            setIsSpinning(false);
+            apiClient
+              .get("/api/v1/logged-in")
+              .then((response) => {
+                sessionStorage.setItem("loginStatus", "true");
+                history.push("/dashboard");
+                showToast(
+                  "success",
+                  "Login",
+                  "Welcome back " + response.data.name
+                );
+              })
+              .catch((error) => {
+                if (typeof err.data.errors === "object") {
+                  // check if email error present
+                  if (typeof err.data.errors.email === "object") {
+                    setLoginErrorMsg(err.data.errors.email);
+                  }
+                  // check if password error message present
+                  if (typeof err.data.errors.password === "object") {
+                    setLoginErrorMsg(err.data.errors.password);
+                  }
+                } else {
+                  // any other error
+                  setLoginErrorMsg(err.data.message);
+                }
+                console.log("Error is: " + JSON.stringify(error));
+              });
+            // console.log("typeof: " + JSON.stringify(err));
           });
       })
       .catch(() => {
-        setLoading(false);
-        setErrorMessage("ERR_CONNECTION_REFUSED");
+        setIsSpinning(false);
+        setLoginErrorMsg("API connection error, try again later.");
       });
   };
   return {
@@ -81,8 +107,7 @@ const LoginLogic = ({ setLoggedIn }) => {
     sendGetRequest,
     setUsername,
     setPassword,
-    errorMessage,
-    isLoading,
+    isSpinning,
     isEmailValid,
     isPasswordValid,
   };

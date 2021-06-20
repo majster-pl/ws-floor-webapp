@@ -11,7 +11,11 @@ const ToastComponent = ({ show, setShow, variant, title, body, autoHide }) => {
     >
       <Toast.Header className="" closeButton={false}>
         <strong className="me-auto">{title}</strong>
-        <Button variant="dark" className="btn-close" onClick={() => setShow(false)}/>
+        <Button
+          variant="dark"
+          className="btn-close"
+          onClick={() => setShow(false)}
+        />
       </Toast.Header>
       <Toast.Body>{body}</Toast.Body>
     </Toast>

@@ -2,39 +2,30 @@ import { Button } from "react-bootstrap";
 import IsLoggedInLogic from "../../components/IsLoggedInLogic";
 import apiClient from "../../service/api/api";
 import "./Dashboard.css";
-import ToastLogic from "../../components/ToastLogic";
 
-const Dashboard = ({setLoggedIn, showToast}) => {
-  const { isLoading, SpinnerComponent } = IsLoggedInLogic(setLoggedIn);
+const Dashboard = ({ setLoggedIn, showToast, setLoginErrorMsg }) => {
+  // when page oppened check if user logged in, if not redirect to login page
+  const { isLoading, SpinnerComponent } = IsLoggedInLogic(
+    setLoginErrorMsg,
+    setLoggedIn
+  );
   //if still waiting response from server then display spinner
   if (isLoading) {
     return <SpinnerComponent />;
   }
-
-  // const { setBody } = ToastLogic();
-
-  // fuction to initial and set toast
-  // const showToast = (variant, title, body) => {
-  //   setShowToast(false);
-  //   setShowToast(true);
-  //   setToastData({
-  //     variant: variant.toLowerCase(),
-  //     title: title,
-  //     body: body,
-  //   });
-  // };
 
   const getAssets = () => {
     apiClient
       .get("/api/v1/assets/2")
       .then((response) => {
         console.log(response);
+        // setLoginErrorMsg(JSON.stringify(response.data));
         showToast("success", "Response", JSON.stringify(response.data));
         // showToast("success", "Response", JSON.stringify(response.data));
       })
       .catch((err) => {
         console.log(err);
-        
+        // setLoggedIn(false);
         showToast("danger", "Error", err.statusText, false);
       });
   };

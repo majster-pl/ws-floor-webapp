@@ -58,7 +58,9 @@ const CalendarEvent = ({
         <div className="card-body p-0">
           <div className="row card-body-row">
             <div className="col-5 card-text">Customer:</div>
-            <div className="col-7 card-text text-white text-truncate">{customerName}</div>
+            <div className="col-7 card-text text-white text-truncate">
+              {customerName}
+            </div>
             {/* <div className="col-5 card-text">Reg:</div>
             <div className="col-7 card-text fw-bold">{vehicleId}</div> */}
             <div className="col-5 card-text">Desc:</div>
@@ -73,9 +75,7 @@ const CalendarEvent = ({
           </div>
         </div>
         <div className="card-footer p-0 card-body-row">
-          <small className="text-info fst-italic ps-1">
-            {status}
-          </small>
+          <small className="text-info fst-italic ps-1">{status}</small>
         </div>
       </div>
     </td>

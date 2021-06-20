@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-// import Cookies from "js-cookie";
 import "./scss/main.scss";
-// import apiClient from "./service/api/api";
 
 import Header from "./components/header/Header";
 import Home from "./routes/home/Home";
@@ -13,20 +11,11 @@ import Workshop from "./routes/workshop/Workshop";
 import Page404 from "./routes/page404/Page404";
 import ToastComponent from "./components/ToastComponent";
 import ToastLogic from "./components/ToastLogic";
+sessionStorage.setItem("loginStatus", "false");
 
 const App = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
-  // const [showToast, setShowToast] = useState(false);
-  // const [toastVariant, setToastVariant] = useState("Info");
-  // const [toastTitle, setToastTitle] = useState("");
-  // const [toastBody, setToastBody] = useState("");
-  // const [toastData, setToastData] = useState({
-  //   variant: "info",
-  //   title: "test",
-  //   body: "Toast body",
-  // });
-
-  // const {showToast, setShowToast, toastData} = ToastLogic();
+  const [Authenticated, setAuthenticated] = useState(false);
+  const [loginErrorMsg, setLoginErrorMsg] = useState("");
   const { show, setShow, variant, title, body, showToast, autoHide } =
     ToastLogic();
 
@@ -39,39 +28,49 @@ const App = () => {
         show={show}
         setShow={setShow}
         autoHide={autoHide}
-        // setShowToast={setShowToast}
-        // showToast={showToast}
-        // toastData={toastData}
       />
       <Router>
-        <Header isLoggedIn={loggedIn} setLoggedIn={{ setLoggedIn }} />
+        <Header
+          isLoggedIn={Authenticated}
+          setLoggedIn={setAuthenticated}
+          setLoginErrorMsg={setLoginErrorMsg}
+        />
         <Switch>
           <Route exact path="/">
             <Home />
           </Route>
 
           <Route path="/login">
-            <Login setLoggedIn={{ setLoggedIn }} />
+            <Login
+              setLoggedIn={setAuthenticated}
+              showToast={showToast}
+              setLoginErrorMsg={setLoginErrorMsg}
+              loginErrorMsg={loginErrorMsg}
+              showToast={showToast}
+            />
           </Route>
 
           <Route path="/dashboard">
             <Dashboard
-              setLoggedIn={{ setLoggedIn }}
+              setLoggedIn={setAuthenticated}
               showToast={showToast}
-              // setShowToast={setShowToast}
-              // setToastVariant={setToastVariant}
-              // setToastTitle={setToastTitle}
-              // setToastBody={setToastBody}
-              // setToastData={setToastData}
+              setLoginErrorMsg={setLoginErrorMsg}
             />
           </Route>
 
           <Route path="/calendar">
-            <Calendar setLoggedIn={{ setLoggedIn }} showToast={showToast} />
+            <Calendar
+              setLoggedIn={setAuthenticated}
+              showToast={showToast}
+              setLoginErrorMsg={setLoginErrorMsg}
+            />
           </Route>
 
           <Route path="/workshop">
-            <Workshop setLoggedIn={{ setLoggedIn }} />
+            <Workshop
+              setLoggedIn={setAuthenticated}
+              setLoginErrorMsg={setLoginErrorMsg}
+            />
           </Route>
 
           <Route path="/*">

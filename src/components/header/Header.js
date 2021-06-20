@@ -7,43 +7,22 @@ import Cookies from "js-cookie";
 
 import "./Header.css";
 
-// const logout = (e) => {
-//     e.preventDefault();
-
-//     var url = "/api/logout";
-//     // console.log(url);
-//     axios
-//         .post(url, formData, {
-//             headers: { "Content-Type": "application/json" },
-//         })
-//         .then((res) => {
-//             // console.log(res.data.map((e) => e.asset_name));
-//             // setAssetsOptions(res.data.map((e) => e.asset_name));
-//             console.warn(res);
-//             if (res.data.access_token) {
-//                 localStorage.setItem("user-token", res.data.access_token);
-//                 localStorage.setItem("user-data", JSON.stringify(res.data.user));
-//                 axios.defaults.headers.common['Authorization'] = res.data.access_token;
-//                 setIsLoggedIn(true);
-//             }
-//             history.push("/dashboard");
-//         })
-//         .catch((err) => {
-//             console.log(err);
-//         });
-// };
-
-const Header = ({ isLoggedIn, setLoggedIn }) => {
+const Header = ({ isLoggedIn, setLoggedIn, setLoginErrorMsg }) => {
   const history = useHistory();
 
   const logout = () => {
     apiClient.post("/logout").then((response) => {
       // console.log(response);
       if (response.status === 204) {
-        // setLoggedIn(false);
+        setLoggedIn(false);
         // sessionStorage.setItem("loggedIn", false);
-        Cookies.remove("logged-in", { path: "" });
-        sessionStorage.clear();
+        // Cookies.remove("logged-in", { path: "" });
+        // sessionStorage.clear();
+        sessionStorage.setItem("loginStatus", "false");
+        setLoginErrorMsg("You have been successfully logged out.");
+        // sessionStorage.setItem("isLoggedIn", "false");
+        history.push("/login");
+      } else {
         history.push("/login");
       }
     });

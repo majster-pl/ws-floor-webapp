@@ -1,11 +1,7 @@
 import CalendarEvent from "./CalendarEvent";
 // import moment from "moment";
 
-const CalendarBody = ({
-  tableData,
-  handleModalOpen,
-  query,
-}) => {
+const CalendarBody = ({ tableData, handleModalOpen, query }) => {
   // search function
   function search(event) {
     // console.log(event);
@@ -34,7 +30,8 @@ const CalendarBody = ({
         <tr key={index}>
           {row.map((cell, index2) => (
             <CalendarEvent
-              key={index+"."+index2}
+              key={index + "." + index2}
+              // {...cell}
               eventId={cell.event_id}
               isHighlighted={search(cell)}
               isUsed={cell.isUsed}
@@ -43,7 +40,7 @@ const CalendarBody = ({
               customerName={cell.customer_name}
               description={cell.description}
               allowedTime={cell.allowed_time}
-              others={typeof(cell.others) === 'object' ? "-----" : cell.others}
+              others={typeof cell.others === "object" ? "-----" : cell.others}
               status={cell.status}
               handleModalOpen={handleModalOpen}
             />

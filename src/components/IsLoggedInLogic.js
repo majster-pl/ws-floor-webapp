@@ -1,38 +1,48 @@
 //racfe
 import { useState, useEffect } from "react";
-import { useHistory } from "react-router";
 import { Spinner } from "react-bootstrap";
 import apiClient from "../service/api/api";
-// import Cookies from "js-cookie";
+import { useHistory } from "react-router-dom";
 
-const IsLoggedIn = ({setLoggedIn}) => {
+const IsLoggedIn = (setLoginErrorMsg, setLoggedIn) => {
   const [isLoading, setLoading] = useState(true);
-  // const [_isLoggedIn, _setIsLoggedIn] = useState(true);
   const history = useHistory();
 
-  useEffect(() => {
+  //check if user still logged in
+  const checkIfAuthenticated = () => {
     apiClient
       .get("/api/v1/logged-in", { withCredentials: true })
       .then(() => {
-        setLoading(false);
-        // _setIsLoggedIn(true);
+        sessionStorage.setItem("loginStatus", "true");
         setLoggedIn(true);
+        setLoading(false);
       })
-      .catch(() => {
-        // setLoading(false);
+      .catch((error) => {
         setLoggedIn(false);
-        // history.push("/login");
-        // _setIsLoggedIn(false);
+        history.push("/login");
+        // if user was logged in return message that he is not
+        // longer logged in, otherwise return server error.
+        switch (sessionStorage.getItem("loginStatus")) {
+          case "true":
+            setLoginErrorMsg(
+              "You are no longer logged in, please log in again."
+            );
+            break;
+
+          default:
+            setLoginErrorMsg(error.data.message);
+            break;
+        }
+        sessionStorage.setItem("loginStatus", "false");
       });
+  };
+
+  // run below every time this component is mounted
+  useEffect(() => {
+    console.log("I'm running!!");
+
+    checkIfAuthenticated();
   }, []);
-
-  // if (!_isLoggedIn) {
-  //   history.push("/login");
-  // }
-
-  // useEffect(() => {
-  //   setLoggedIn(_isLoggedIn);
-  // }, [_isLoggedIn]);
 
   const SpinnerComponent = () => {
     return (

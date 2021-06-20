@@ -12,9 +12,6 @@ import "./Calendar.css";
 const Calendar = (setLoggedIn) => {
   const { isLoading, SpinnerComponent } = IsLoggedInLogic(setLoggedIn);
 
-  
-  
-
   const todaysDate = moment().startOf("isoweek");
   const [currentDate, setDate] = useState(todaysDate);
   const [dateFormat, setDateFormat] = useState("YYYY-MM-DD");
