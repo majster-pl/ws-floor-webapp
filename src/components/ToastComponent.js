@@ -5,7 +5,7 @@ const ToastComponent = ({ show, setShow, variant, title, body, autoHide }) => {
     <Toast
       className={`position-fixed top-0 end-0 m-4 toast-main bg-${variant}`}
       onClose={() => setShow(false)}
-      delay={2000}
+      delay={3000}
       show={show}
       autohide={autoHide}
     >
@@ -14,6 +14,7 @@ const ToastComponent = ({ show, setShow, variant, title, body, autoHide }) => {
         <Button
           variant="dark"
           className="btn-close"
+          size="sm"
           onClick={() => setShow(false)}
         />
       </Toast.Header>

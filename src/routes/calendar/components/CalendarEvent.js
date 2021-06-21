@@ -46,7 +46,7 @@ const CalendarEvent = ({
         // data-toggle="modal"
         // data-target="#modalEditEvent"
         className={
-          (!isUsed ? "d-none " : "card h-100 ") +
+          (!isUsed ? "d-none " : "card h-100 disable-select ") +
           (!isHighlighted ? "" : "d-none")
         }
         onClick={() => handleModalOpen(null, eventId)}

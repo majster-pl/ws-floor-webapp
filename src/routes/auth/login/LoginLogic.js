@@ -73,8 +73,8 @@ const LoginLogic = ({ setLoggedIn }, setLoginErrorMsg, showToast) => {
                 history.push("/dashboard");
                 showToast(
                   "success",
-                  "Login",
-                  "Welcome back " + response.data.name
+                  "Success!",
+                  "Welcome back " + response.data.name + "!"
                 );
               })
               .catch((error) => {

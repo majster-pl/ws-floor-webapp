@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import { Button, Container, Row, Col, Card } from "react-bootstrap";
 import IsLoggedInLogic from "../../components/IsLoggedInLogic";
 import apiClient from "../../service/api/api";
 import "./Dashboard.css";
@@ -74,6 +74,78 @@ const Dashboard = ({ setLoggedIn, showToast, setLoginErrorMsg }) => {
 
   return (
     <div className="scroll">
+      <Container className="py-4">
+        <Row>
+          <Col sm={4}>
+            <Card className="dashboard-card h-100" bg="secondary">
+              <Card.Body>
+                <Row className="px-2">
+                  <Col className="col-auto me-auto">
+                    <Col>
+                      <div className="fw-bold fs-3">12</div>
+                      <div className="fw-light fs-5">Vehicles Due Today</div>
+                    </Col>
+                  </Col>
+                  <Col className="col-auto my-auto">
+                    <i class="fas fa-truck fa-2x text-primary"></i>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col>
+            <Card className="dashboard-card h-100" bg="secondary">
+              <Card.Body>
+                <Row className="px-2">
+                  <Col className="col-auto me-auto">
+                    <Col>
+                      <div className="fw-bold fs-3">22</div>
+                      <div className="fw-light fs-5">Customers</div>
+                    </Col>
+                  </Col>
+                  <Col className="col-auto my-auto">
+                    <i class="fas fa-users fa-2x text-primary"></i>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>{" "}
+          </Col>
+          <Col>
+            <Card className="dashboard-card h-100" bg="secondary">
+              <Card.Body>
+                <Row className="px-2">
+                  <Col className="col-auto me-auto">
+                    <Col>
+                      <div className="fw-bold fs-3">45</div>
+                      <div className="fw-light fs-5">Assets</div>
+                    </Col>
+                  </Col>
+                  <Col className="col-auto my-auto">
+                    <i class="fas fa-car fa-2x text-primary"></i>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>{" "}
+          </Col>
+          <Col>
+            <Card className="dashboard-card h-100" bg="secondary">
+              <Card.Body>
+                <Row className="px-2">
+                  <Col className="col-auto me-auto">
+                    <Col>
+                      <div className="fw-bold fs-3">4</div>
+                      <div className="fw-light fs-5">PMIs Today</div>
+                    </Col>
+                  </Col>
+                  <Col className="col-auto my-auto">
+                    <i class="fas fa-notes-medical fa-2x text-primary"></i>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>{" "}
+          </Col>
+        </Row>
+      </Container>
       <Button onClick={getAssets}> Assets </Button>
       <Button onClick={getEvents}> get events </Button>
       <Button onClick={getCustomer}> get Customer </Button>

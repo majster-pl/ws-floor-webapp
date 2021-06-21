@@ -1,0 +1,22 @@
+.dashboard-card {
+    transition         : all 0.3s;
+    user-select        : none;
+    -webkit-user-select: none;
+    -khtml-user-select : none;
+    -moz-user-select   : none;
+    -ms-user-select    : none;
+}
+
+.dashboard-card .icon {
+    border-radius: 50%;
+}
+
+.dashboard-card:hover {
+    background-color: var(--color-gray-dark) !important;
+    cursor          : pointer;
+}
+
+.dashboard-card:active {
+    background-color: var(--color-gray-darker) !important;
+    cursor          : pointer;
+}

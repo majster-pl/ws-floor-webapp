@@ -13,12 +13,12 @@ $theme-colors: (
   "success": #39a883,
   "danger": #ff4136,
   "info": #ffbb00,
-  "warning": #ffc107,
+  "pink": #f00fa6,
 );
 
 $color-white: #ffffff;
 $color-black: #000000;
-$color-gray: #313436;
+$color-gray: #2a2d30;
 $color-gray-dark: #1b2025;
 $color-gray-light: #a7a9ab;
 $color-pink: #f00fa6;
@@ -33,6 +33,7 @@ $color-green-light: #dfea87;
   --color-green-light: #{$color-green-light};
 
   --color-gray-light: #{$color-gray-light};
+  --color-gray-dark: #{$color-gray};
   --color-gray-darker: #{$color-gray-dark};
 }
 
@@ -168,6 +169,14 @@ $btn-close-opacity: 1;
 
 .toast:hover {
   opacity: 1;
+}
+
+.disable-select {
+  user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
 }
 
 // Import Bootstrap and its default variables
