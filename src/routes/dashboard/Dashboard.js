@@ -37,14 +37,14 @@ const Dashboard = ({ setLoggedIn, showToast, setLoginErrorMsg }) => {
           tension: 0.4,
         },
         {
-          label: "Completed Jobs",
+          label: "With status: booked",
           data: eventsBooked,
           borderColor: "#39a883",
           fill: false,
           tension: 0.4,
         },
         {
-          label: "Avaiting Arrival",
+          label: "Completed Jobs",
           data: eventsCompleted,
           borderColor: "#f00fa6",
           tension: 0.4,
@@ -135,6 +135,7 @@ const Dashboard = ({ setLoggedIn, showToast, setLoginErrorMsg }) => {
     getAssets();
     getEvents();
     getCompleted();
+    // Chart();
   }, [numberOfSelectedDays]);
 
   useEffect(() => {
@@ -180,7 +181,7 @@ const Dashboard = ({ setLoggedIn, showToast, setLoginErrorMsg }) => {
   return (
     <div className="scroll">
       <Container className="py-4">
-        <Row>
+        <Row className="g-3">
           <Col sm={4}>
             <Card className="dashboard-card h-100" bg="secondary">
               <Card.Body>
@@ -252,10 +253,10 @@ const Dashboard = ({ setLoggedIn, showToast, setLoginErrorMsg }) => {
         </Row>
       </Container>
       <Container>
-        <Row className="p-2">
+        <Row className="p-2 g-2">
           <Col className="col-auto me-auto">
             <Col>
-              <div className="fw-bold fs-4 text-light">Workshop overview</div>
+              <div className="fw-bold fs-4">Workshop overview</div>
             </Col>
           </Col>
           <Col className="col-auto my-auto">
