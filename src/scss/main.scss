@@ -10,9 +10,11 @@ $theme-colors: (
   "primary": #0d6efd,
   "sendary-extra": #141518,
   "secondary": #2d3238,
+  "light": #888888,
   "success": #39a883,
   "danger": #ff4136,
   "info": #ffbb00,
+  "lime": #dfea87,
   "pink": #f00fa6,
 );
 
@@ -110,6 +112,8 @@ $border-color: $color-gray;
 $border-radius: 0.75rem;
 $border-radius-sm: 1rem;
 $border-radius-lg: 0.75rem;
+
+$component-active-bg: $color-green;
 
 // $dropdown-link-hover-bg: red;
 $dropdown-padding-y: 1rem;

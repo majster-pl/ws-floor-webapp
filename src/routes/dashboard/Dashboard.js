@@ -1,27 +1,64 @@
-import { Button, Container, Row, Col, Card } from "react-bootstrap";
+import {
+  Button,
+  Container,
+  Row,
+  Col,
+  Card,
+  DropdownButton,
+  Dropdown,
+} from "react-bootstrap";
 import IsLoggedInLogic from "../../components/IsLoggedInLogic";
 import apiClient from "../../service/api/api";
+import { useState, useEffect } from "react";
 import "./Dashboard.css";
+import { Line } from "react-chartjs-2";
 
 const Dashboard = ({ setLoggedIn, showToast, setLoginErrorMsg }) => {
+  const [chartData, setChartData] = useState({});
+  const [eventsPerDay, setEventsPerDay] = useState([]);
+  const [eventsBooked, setEventsBooked] = useState([]);
+  const [eventsCompleted, setEventsCompleted] = useState([]);
+  const [numberOfSelectedDays, setNumberOfSelectedDays] = useState(7);
   // when page oppened check if user logged in, if not redirect to login page
   const { isLoading, SpinnerComponent } = IsLoggedInLogic(
     setLoginErrorMsg,
     setLoggedIn
   );
-  //if still waiting response from server then display spinner
-  if (isLoading) {
-    return <SpinnerComponent />;
-  }
+
+  const Chart = () => {
+    setChartData({
+      datasets: [
+        {
+          label: "Total booked jobs",
+          data: eventsPerDay,
+          borderColor: "#ffbb00",
+          fill: false,
+          cubicInterpolationMode: "monotone",
+          tension: 0.4,
+        },
+        {
+          label: "Completed Jobs",
+          data: eventsBooked,
+          borderColor: "#39a883",
+          fill: false,
+          tension: 0.4,
+        },
+        {
+          label: "Avaiting Arrival",
+          data: eventsCompleted,
+          borderColor: "#f00fa6",
+          tension: 0.4,
+          fill: false,
+        },
+      ],
+    });
+  };
 
   const getAssets = () => {
     apiClient
-      .get("/api/v1/assets/2")
+      .get("/api/v1/stats?from=2021-06-01&days=" + numberOfSelectedDays)
       .then((response) => {
-        console.log(response);
-        // setLoginErrorMsg(JSON.stringify(response.data));
-        showToast("success", "Response", JSON.stringify(response.data));
-        // showToast("success", "Response", JSON.stringify(response.data));
+        setEventsPerDay(response.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -32,9 +69,31 @@ const Dashboard = ({ setLoggedIn, showToast, setLoginErrorMsg }) => {
 
   const getEvents = () => {
     apiClient
-      .get("/api/v1/events?days=7&from=2021-06-1&format=grid")
+      .get(
+        "/api/v1/stats?from=2021-06-01&days=" +
+          numberOfSelectedDays +
+          "&status=booked"
+      )
       .then((response) => {
-        console.log(response.data);
+        setEventsBooked(response.data.data);
+        console.log(response.data.data);
+      });
+  };
+
+  const getCompleted = () => {
+    apiClient
+      .get(
+        "/api/v1/stats?from=2021-06-01&days=" +
+          numberOfSelectedDays +
+          "&status=completed"
+      )
+      .then((response) => {
+        setEventsCompleted(response.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        // setLoggedIn(false);
+        showToast("danger", "Error", err.statusText, false);
       });
   };
 
@@ -71,6 +130,52 @@ const Dashboard = ({ setLoggedIn, showToast, setLoginErrorMsg }) => {
         console.log("error:", err);
       });
   };
+  useEffect(() => {
+    // Chart.clear();
+    getAssets();
+    getEvents();
+    getCompleted();
+  }, [numberOfSelectedDays]);
+
+  useEffect(() => {
+    Chart();
+  }, [eventsBooked, eventsPerDay, eventsCompleted]);
+
+  //if still waiting response from server then display spinner
+  if (isLoading) {
+    return <SpinnerComponent />;
+  }
+
+  const Canvas = () => {
+    return (
+      <Line
+        key="canvas1"
+        data={chartData}
+        options={{
+          interaction: {
+            intersect: false,
+            mode: "nearest",
+          },
+          plugins: {
+            legend: {
+              position: "right",
+            },
+          },
+          responsive: true,
+          title: { text: "THICCNESS SCALE", display: true },
+          scales: {
+            yAxes: [
+              {
+                ticks: {
+                  beginAtZero: true,
+                },
+              },
+            ],
+          },
+        }}
+      />
+    );
+  };
 
   return (
     <div className="scroll">
@@ -87,7 +192,7 @@ const Dashboard = ({ setLoggedIn, showToast, setLoginErrorMsg }) => {
                     </Col>
                   </Col>
                   <Col className="col-auto my-auto">
-                    <i class="fas fa-truck fa-2x text-primary"></i>
+                    <i className="fas fa-truck fa-2x text-lime"></i>
                   </Col>
                 </Row>
               </Card.Body>
@@ -104,7 +209,7 @@ const Dashboard = ({ setLoggedIn, showToast, setLoginErrorMsg }) => {
                     </Col>
                   </Col>
                   <Col className="col-auto my-auto">
-                    <i class="fas fa-users fa-2x text-primary"></i>
+                    <i className="fas fa-users fa-2x text-lime"></i>
                   </Col>
                 </Row>
               </Card.Body>
@@ -121,7 +226,7 @@ const Dashboard = ({ setLoggedIn, showToast, setLoginErrorMsg }) => {
                     </Col>
                   </Col>
                   <Col className="col-auto my-auto">
-                    <i class="fas fa-car fa-2x text-primary"></i>
+                    <i className="fas fa-car fa-2x text-lime"></i>
                   </Col>
                 </Row>
               </Card.Body>
@@ -138,7 +243,7 @@ const Dashboard = ({ setLoggedIn, showToast, setLoginErrorMsg }) => {
                     </Col>
                   </Col>
                   <Col className="col-auto my-auto">
-                    <i class="fas fa-notes-medical fa-2x text-primary"></i>
+                    <i className="fas fa-notes-medical fa-2x text-lime"></i>
                   </Col>
                 </Row>
               </Card.Body>
@@ -146,11 +251,51 @@ const Dashboard = ({ setLoggedIn, showToast, setLoginErrorMsg }) => {
           </Col>
         </Row>
       </Container>
-      <Button onClick={getAssets}> Assets </Button>
-      <Button onClick={getEvents}> get events </Button>
-      <Button onClick={getCustomer}> get Customer </Button>
-      <Button onClick={getEvent}> get event 10 </Button>
-      <Button onClick={saveEvent}> Save events </Button>
+      <Container>
+        <Row className="p-2">
+          <Col className="col-auto me-auto">
+            <Col>
+              <div className="fw-bold fs-4 text-light">Workshop overview</div>
+            </Col>
+          </Col>
+          <Col className="col-auto my-auto">
+            <DropdownButton
+              id="dropdown-basic-button"
+              title="This month"
+              variant="success"
+            >
+              <Dropdown.Item
+                onClick={() => setNumberOfSelectedDays(7)}
+                active={numberOfSelectedDays == 7}
+              >
+                This Week
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => setNumberOfSelectedDays(31)}
+                active={numberOfSelectedDays == 31}
+              >
+                This Month
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => setNumberOfSelectedDays(365)}
+                active={numberOfSelectedDays == 365}
+              >
+                This Year
+              </Dropdown.Item>
+            </DropdownButton>
+          </Col>
+        </Row>
+      </Container>
+      <Container style={{ minHeight: "25rem" }}>
+        <Canvas />
+      </Container>
+      <Container className="mt-4">
+        <Button onClick={getAssets}> Get this week </Button>
+        <Button onClick={getEvents}> get events Booked </Button>
+        <Button onClick={getCustomer}> get Customer </Button>
+        <Button onClick={getEvent}> get event 10 </Button>
+        <Button onClick={saveEvent}> Save events </Button>
+      </Container>
     </div>
   );
 };

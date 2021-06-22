@@ -551,6 +551,7 @@ const CalendarModal = ({
                     <option value="booked">Booked</option>
                     <option value="arrived">Arrived</option>
                     <option value="awaiting_workshop">Awaiting Workshop</option>
+                    <option value="work_in_progress">Work in Progress</option>
                     <option value="awaiting_estimates">
                       Awaiting Estimates
                     </option>
@@ -558,7 +559,7 @@ const CalendarModal = ({
                     <option value="awaiting_authorisation">
                       Awaiting Authorisation
                     </option>
-                    <option value="work_in_progress">Work in Progress</option>
+                    <option value="completed">Completed</option>
                   </Form.Control>
                   {/* <Form.Control
                     name="status"
