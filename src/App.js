@@ -8,6 +8,7 @@ import Login from "./routes/auth/login/Login";
 import Calendar from "./routes/calendar/Calendar";
 import Dashboard from "./routes/dashboard/Dashboard";
 import Workshop from "./routes/workshop/Workshop";
+import Customers from "./routes/customers/Customers";
 import Page404 from "./routes/page404/Page404";
 import ToastComponent from "./components/ToastComponent";
 import ToastLogic from "./components/ToastLogic";
@@ -46,7 +47,6 @@ const App = () => {
               showToast={showToast}
               setLoginErrorMsg={setLoginErrorMsg}
               loginErrorMsg={loginErrorMsg}
-              showToast={showToast}
             />
           </Route>
 
@@ -68,6 +68,13 @@ const App = () => {
 
           <Route path="/workshop">
             <Workshop
+              setLoggedIn={setAuthenticated}
+              setLoginErrorMsg={setLoginErrorMsg}
+            />
+          </Route>
+
+          <Route path="/customers">
+            <Customers
               setLoggedIn={setAuthenticated}
               setLoginErrorMsg={setLoginErrorMsg}
             />

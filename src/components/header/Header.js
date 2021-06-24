@@ -1,6 +1,6 @@
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
-import { Navbar, Nav, Dropdown, Container, Row, Col } from "react-bootstrap";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { Navbar, Nav, Dropdown, NavDropdown, Row, Col } from "react-bootstrap";
 import apiClient from "../../service/api/api";
 import { useHistory } from "react-router";
 import Cookies from "js-cookie";
@@ -9,7 +9,7 @@ import "./Header.css";
 
 const Header = ({ isLoggedIn, setLoggedIn, setLoginErrorMsg }) => {
   const history = useHistory();
-
+  const location = useLocation();
   const logout = () => {
     apiClient.post("/logout").then((response) => {
       // console.log(response);
@@ -26,6 +26,15 @@ const Header = ({ isLoggedIn, setLoggedIn, setLoginErrorMsg }) => {
         history.push("/login");
       }
     });
+  };
+
+  // function to set Dropdown active
+  const setDropdown1Active = () => {
+    if (location.pathname === "/customers" || location.pathname === "/assets") {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
@@ -86,10 +95,31 @@ const Header = ({ isLoggedIn, setLoggedIn, setLoginErrorMsg }) => {
                     <Nav.Link eventKey="4" as={NavLink} to="/workshop">
                       Workshop
                     </Nav.Link>
+                    <NavDropdown
+                      eventKey="5.1"
+                      active={setDropdown1Active()}
+                      title="More"
+                      id="nav-dropdown"
+                    >
+                      <NavDropdown.Item
+                        eventKey="5.1"
+                        as={NavLink}
+                        to="/customers"
+                      >
+                        Customers
+                      </NavDropdown.Item>
+                      <NavDropdown.Item
+                        eventKey="5.2"
+                        as={NavLink}
+                        to="/assets"
+                      >
+                        Assets
+                      </NavDropdown.Item>
+                    </NavDropdown>
                   </Nav>
 
                   <Nav className="d-block d-lg-none me-auto">
-                    <Nav.Link eventKey="4" as={Link} onClick={logout}>
+                    <Nav.Link eventKey="5" as={Link} onClick={logout}>
                       Logout{" "}
                     </Nav.Link>
                   </Nav>
