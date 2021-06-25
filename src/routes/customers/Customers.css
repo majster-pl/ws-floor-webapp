@@ -1,0 +1,33 @@
+.cutomers-table {
+    table-layout: auto !important;
+    width       : 100%;
+}
+
+.numberCircle {
+    width              : 2.7rem;
+    height             : 2.7rem;
+    line-height        : 2.7rem;
+    border-radius      : 50%;
+    text-align         : center;
+    /* font-size       : 1.5rem; */
+    background-color   : white;
+    color              : blueviolet;
+}
+
+.cutomers-table thead tr th {
+    background-color: var(--color-green) !important;
+    font-weight     : 330;
+    font-size       : 0.9rem;
+}
+
+.cutomers-table tbody tr td {
+    vertical-align: middle;
+}
+
+.dropdown-nodeco:after {
+    display: none;
+}
+
+.dropdown-nodeco:hover {
+    color: tomato;
+}
