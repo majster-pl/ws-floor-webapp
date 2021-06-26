@@ -7,12 +7,14 @@ import {
   Dropdown,
   Button,
   Table,
+  Form,
   Image,
 } from "react-bootstrap";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import IsLoggedInLogic from "../../components/IsLoggedInLogic";
 import apiClient from "../../service/api/api";
 import "./Customers.css";
+import { useTable, useSortBy, useGlobalFilter } from 'react-table'
 
 const Customers = ({ setLoggedIn, setLoginErrorMsg }) => {
   // when page oppened check if user logged in, if not redirect to login page
@@ -20,68 +22,114 @@ const Customers = ({ setLoggedIn, setLoginErrorMsg }) => {
     setLoginErrorMsg,
     setLoggedIn
   );
-  const [customers, setCustomers] = useState([]);
 
-  //fetching customers list
-  const getCustomers = () => {
+  const [data, setData] = useState([]);
+
+
+  useEffect(() => {
     let url = "/api/v1/customer";
     apiClient
       .get(url)
       .then((response) => {
-        // console.log(response.data.data);
-        setCustomers(response.data.data);
-        // return response.data.data;
+        setData(response.data.data);
       })
       .catch((err) => {
         console.log("error:", err);
       });
-  };
 
-  useEffect(() => {
-    getCustomers();
   }, []);
 
-  function ListItem({ index, name, id }) {
-    return (
-      <tr>
-        <td>
-          <Row className="my-2">
-            <Col sm="auto" className="ms-3">
-              <div className="numberCircle fs-5 text-pink text-uppercase">
-                {name.match(/\b(\w)/g).join("").substring(0, 2)}</div>
-            </Col>
-            <Col className="my-auto">
-              <div className="text-start mx-1">{name}</div>
-            </Col>
-          </Row>
-        </td>
-        <td><div className="fw-light">
-          01179 162 240
+
+  const columns = useMemo(
+    () => [
+      {
+        Header: 'Customer',
+        accessor: 'customer_name', // accessor is the "key" in the data
+        Cell: ({ value }) => {
+          return (
+            <Row className="my-2">
+              <Col sm="auto" className="ms-3">
+                <div className="numberCircle fs-5 text-pink text-uppercase">
+                  {value.match(/\b(\w)/g).join("").substring(0, 2)}</div>
+              </Col>
+              <Col className="my-auto">
+                <div className="text-start mx-1">{value}</div>
+              </Col>
+            </Row>
+          )
+        }
+      },
+      {
+        Header: 'Contact no',
+        accessor: 'customer_contact',
+        Cell: ({ value }) => {
+          return (
+            <div className="fw-light">
+              {value}
             </div>
-        </td>
-        <td><div className="fs-4 fw-normal text-success">{index}</div></td>
-        <td>
-          <div className="fw-light">
-            <i className="fa fa-circle fa-sm me-2 text-success" aria-hidden="true"></i>
-                Active
-              </div>
-        </td>
-        <td>
-          <Dropdown>
-            <Dropdown.Toggle className="dropdown-nodeco" variant="none" id="dropdown-basic">
-              <i className="fa fa-ellipsis-v fa-1 text-pink"></i>
-            </Dropdown.Toggle>
+          )
+        }
+      },
+      {
+        Header: 'Assets',
+        accessor: 'assets_total',
+        Cell: ({ value }) => {
+          return (
+            <div className="fs-4 fw-normal text-success">{value}</div>
+          )
+        }
+      },
+      {
+        Header: 'Status',
+        accessor: 'status',
+        Cell: ({ value }) => {
+          return (
+            <div className="fw-light text-capitalize">
+              <i className="fa fa-circle fa-sm me-2 text-success " aria-hidden="true"></i>
+              {value}
+            </div>
+          )
+        }
+      },
+      {
+        Header: '',
+        accessor: 'id',
+        Cell: ({ value }) => {
+          return (
+            <Dropdown>
+              <Dropdown.Toggle className="dropdown-nodeco" variant="none" id="dropdown-basic">
+                <i className="fa fa-ellipsis-v fa-1 text-white"></i>
+              </Dropdown.Toggle>
 
-            <Dropdown.Menu>
-              <Dropdown.Item href="#/action-1">Edit</Dropdown.Item>
-              <Dropdown.Item href="#/action-2" className="text-danger">Remove</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </td>
+              <Dropdown.Menu>
+                <Dropdown.Item href="#/action-1">Edit {value}</Dropdown.Item>
+                <Dropdown.Item href="#/action-2" className="text-danger">Remove</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          )
+        }
+      },
+    ],
+    []
+  )
 
-      </tr>
-    );
-  }
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    state,
+    setGlobalFilter,
+  } = useTable({ columns, data }, useGlobalFilter, useSortBy)
+
+  const { globalFilter } = state;
+
+  // useEffect(() => {
+  //   getCustomers();
+  // }, []);
+
+
   //if still waiting response from server then display spinner
   if (isLoading) {
     return <SpinnerComponent />;
@@ -138,33 +186,56 @@ const Customers = ({ setLoggedIn, setLoginErrorMsg }) => {
                   </ul>
                 </ButtonGroup>
               </Col>
+              <Col>
+                <Form.Control size="sm" type="text" placeholder="Search" value={globalFilter || ""}
+                  onChange={(e) => setGlobalFilter(e.target.value)} />
+              </Col>
             </Row>
           </Col>
         </Row>
-
-        <Table className="cutomers-table" responsive="sm" striped hover variant="dark">
-          <thead>
-            <tr>
-              <th>
-                <div className="ms-3">Customer</div>
-              </th>
-              <th>Contact no</th>
-              <th>Assets</th>
-              <th>Status</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {customers.map(({ customer_id, customer_name }, index) => (
-              <ListItem
-                index={index + 1}
-                key={customer_id}
-                name={customer_name}
-                id={customer_id}
-              />
-            ))}
-          </tbody>
-        </Table>
+        <>
+          <Table className="cutomers-table" responsive="sm" striped hover variant="dark"
+            {...getTableProps()} >
+            <thead className="ms-4">
+              {headerGroups.map(headerGroup => (
+                <tr  {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map(column => (
+                    <th
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                    >
+                      {column.render('Header')}
+                      <span>
+                        {column.isSorted
+                          ? column.isSortedDesc
+                            ? <i className="fa fa-angle-down ms-1" aria-hidden="true"></i>
+                            : <i className="fa fa-angle-up ms-1" aria-hidden="true"></i>
+                          : ''}
+                      </span>
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {rows.map(row => {
+                prepareRow(row)
+                return (
+                  <tr {...row.getRowProps()}>
+                    {row.cells.map(cell => {
+                      return (
+                        <td
+                          {...cell.getCellProps()}
+                        >
+                          {cell.render('Cell')}
+                        </td>
+                      )
+                    })}
+                  </tr>
+                )
+              })}
+            </tbody>
+          </Table>
+        </>
 
       </Container>
     </div>
