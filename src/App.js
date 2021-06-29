@@ -9,6 +9,7 @@ import Calendar from "./routes/calendar/Calendar";
 import Dashboard from "./routes/dashboard/Dashboard";
 import Workshop from "./routes/workshop/Workshop";
 import Customers from "./routes/customers/Customers";
+import CustomerPage from "./routes/customers/pages/CustomerPage";
 import Page404 from "./routes/page404/Page404";
 import ToastComponent from "./components/ToastComponent";
 import ToastLogic from "./components/ToastLogic";
@@ -73,7 +74,14 @@ const App = () => {
             />
           </Route>
 
-          <Route path="/customers">
+          <Route path="/customers/:uuid">
+            <CustomerPage
+              setLoggedIn={setAuthenticated}
+              setLoginErrorMsg={setLoginErrorMsg}
+            />
+          </Route>
+
+          <Route exact path="/customers">
             <Customers
               setLoggedIn={setAuthenticated}
               setLoginErrorMsg={setLoginErrorMsg}

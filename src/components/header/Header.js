@@ -52,7 +52,7 @@ const Header = ({ isLoggedIn, setLoggedIn, setLoginErrorMsg }) => {
       aria-expanded="false"
     >
       <img
-        src="img/avatar.png"
+        src="/img/avatar.png"
         width="32"
         height="32"
         className="rounded-circle shadow-sm"
