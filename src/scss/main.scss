@@ -9,6 +9,7 @@
 $theme-colors: (
   "primary": #0d6efd,
   "sendary-extra": #141518,
+  "darker": #111314,
   "secondary": #2d3238,
   "light": #888888,
   "success": #39a883,
@@ -22,6 +23,7 @@ $color-white: #ffffff;
 $color-black: #000000;
 $color-gray: #2a2d30;
 $color-gray-dark: #1b2025;
+$color-gray-darker: #111314;
 $color-gray-light: #a7a9ab;
 $color-pink: #f00fa6;
 $color-green: #39a883;
@@ -72,7 +74,10 @@ $navbar-dark-color: #c4c4c4;
 $navbar-dark-toggler-border-color: transparent;
 $navbar-padding-x: 1rem;
 $navbar-padding-y: 0rem;
-
+$nav-link-color: $color-gray-light;
+$nav-link-hover-color: $color-white;
+$nav-tabs-link-active-color: $color-pink;
+$nav-tabs-link-active-bg: $color-gray-darker;
 label {
   color: var(--color-gray-light) !important;
 }
@@ -138,7 +143,9 @@ $input-border-width: 0.1rem;
 $input-color: $color-white;
 $input-focus-border-color: $color-pink;
 $input-transition: border-color 0.35s ease-in-out, box-shadow 0.35s ease-in-out;
+$input-plaintext-color: $color-white;
 
+// $form-check-input-focus-box-shadow: $color-orange;
 //form group
 // $form-group-margin-bottom: 0.6rem;
 $form-label-margin-bottom: 0.3rem;

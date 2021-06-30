@@ -74,7 +74,7 @@ const App = () => {
             />
           </Route>
 
-          <Route path="/customers/:uuid">
+          <Route path="/customers/:id">
             <CustomerPage
               setLoggedIn={setAuthenticated}
               setLoginErrorMsg={setLoginErrorMsg}
