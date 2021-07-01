@@ -5,49 +5,48 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import apiClient from "../../../service/api/api";
 import moment from "moment";
+import { Formik } from "formik";
 
-function CustomerPage({ setLoggedIn, setLoginErrorMsg }) {
+function CustomerPage({ setLoggedIn, setLoginErrorMsg, showToast }) {
   // when page oppened check if user logged in, if not redirect to login page
   const { isLoading, SpinnerComponent } = IsLoggedInLogic(
     setLoginErrorMsg,
     setLoggedIn
   );
+  const { id } = useParams(); // parameter from url
 
   const [formGeneral, setFormGeneral] = useState({
     customer_name: "",
     status: "",
   });
+  const [toggleEditForm, setToggleEditForm] = useState(true); // state of edit/save button
+  const [key, setKey] = useState("general"); // current tab state
 
-  const [toggleEditForm, setToggleEditForm] = useState(true);
-
-  const { id } = useParams();
-  const [key, setKey] = useState("home");
-
-  const getCustomerData = () => {
+  // function to update customer
+  const updateCustomer = (values) => {
+    let url = "/api/v1/customer/" + id;
     apiClient
-      .get("/api/v1/customer/" + id)
+      .patch(url, values)
       .then((response) => {
-        // console.log(response.data.data);
-        setFormGeneral(response.data.data);
-
-        // setEventsPerDay(response.data.data);
+        setToggleEditForm(!toggleEditForm)
+        showToast("success", "Saved", "Event saved.");
       })
       .catch((err) => {
-        console.log(err);
-
-        // showToast("danger", "Error", err.statusText, false);
+        showToast("danger", "Error", "Changes not saved. " + err.data.message, false);
       });
   };
 
+  // fech data on component mount
   useEffect(() => {
-    getCustomerData();
+    const fetchData = async () => {
+      const result = await apiClient.get(
+        "/api/v1/customer/" + id,
+      );
+      setFormGeneral(result.data.data)
+    };
+    fetchData();
   }, []);
 
-  const loadedString = (string) => {
-    if (typeof string !== "undefined") {
-      return string;
-    }
-  };
 
   //if still waiting response from server then display spinner
   if (isLoading) {
@@ -74,9 +73,9 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg }) {
                 <div className="numberCircle fs-3 text-pink text-uppercase">
                   {formGeneral.customer_name !== ""
                     ? formGeneral.customer_name
-                        .match(/\b(\w)/g)
-                        .join("")
-                        .substring(0, 2)
+                      .match(/\b(\w)/g)
+                      .join("")
+                      .substring(0, 2)
                     : ""}
                 </div>
               </div>
@@ -122,54 +121,68 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg }) {
           onSelect={(k) => setKey(k)}
           className=""
         >
-          <Tab eventKey="home" title="General" className="bg-darker">
+          <Tab eventKey="general" title="General" className="bg-darker">
             <Container className="py-3">
-              <Row className="justify-content-end">
-                <Col className="col-auto">
-                  <Button
-                    variant={toggleEditForm ? "lime" : "success"}
-                    onClick={() => setToggleEditForm(!toggleEditForm)}
-                  >
-                    {toggleEditForm ? "Edit" : "Save"}
-                  </Button>
-                </Col>
-              </Row>
-              <Form>
-                <Row className="">
-                  <Form.Group as={Col} controlId="formName">
-                    <Form.Label>Customer Name</Form.Label>
-                    <Form.Control
-                      plaintext={toggleEditForm}
-                      disabled={toggleEditForm}
-                      type="text"
-                      placeholder="Enter customer name"
-                      defaultValue={formGeneral.customer_name}
-                    />
-                  </Form.Group>
+              <Formik initialValues={formGeneral}
+                validateOnChange={true}
+                enableReinitialize={true} onSubmit={(values) => {
+                  updateCustomer(values);
+                  // console.log(values);
+                }}>
+                {(props) => (
+                  <>
+                    <Row className="justify-content-end">
+                      <Col className="col-auto">
+                        <Button
+                          variant={toggleEditForm ? "lime" : "success"}
+                          onClick={() => {
+                            !toggleEditForm ? props.submitForm() : setToggleEditForm(false);
+                          }}
+                        >
+                          {toggleEditForm ? "Edit" : "Save"}
+                        </Button>
+                      </Col>
+                    </Row>
+                    <Row className="">
+                      <Form.Group as={Col} controlId="formName">
+                        <Form.Label>Customer Name</Form.Label>
+                        <Form.Control
+                          plaintext={toggleEditForm}
+                          disabled={toggleEditForm}
+                          type="text"
+                          placeholder="Enter customer name"
+                          onChange={props.handleChange('customer_name')}
+                          value={props.values.customer_name}
+                        />
+                      </Form.Group>
 
-                  <Form.Group as={Col} controlId="formContact">
-                    <Form.Label>Contact Number</Form.Label>
-                    <Form.Control
-                      plaintext={toggleEditForm}
-                      disabled={toggleEditForm}
-                      defaultValue={formGeneral.customer_contact}
-                      type="text"
-                      placeholder="Contact number"
-                    />
-                  </Form.Group>
-                </Row>
-              </Form>
+                      <Form.Group as={Col} controlId="formContact">
+                        <Form.Label>Contact Number</Form.Label>
+                        <Form.Control
+                          plaintext={toggleEditForm}
+                          disabled={toggleEditForm}
+                          onChange={props.handleChange('customer_contact')}
+                          value={props.values.customer_contact}
+                          type="text"
+                          placeholder="Contact number"
+                        />
+                      </Form.Group>
+                    </Row>
+                  </>
+
+                )}
+              </Formik>
             </Container>
           </Tab>
           <Tab eventKey="assets" title="Assets" className="bg-darker">
             <p>tab 2</p>
           </Tab>
-          <Tab eventKey="contact" title="Contact" className="bg-darker">
+          <Tab eventKey="others" title="Others" className="bg-darker">
             <p>tab 3</p>
           </Tab>
         </Tabs>
       </Container>
-    </div>
+    </div >
   );
 }
 

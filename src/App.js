@@ -77,6 +77,7 @@ const App = () => {
           <Route path="/customers/:id">
             <CustomerPage
               setLoggedIn={setAuthenticated}
+              showToast={showToast}
               setLoginErrorMsg={setLoginErrorMsg}
             />
           </Route>

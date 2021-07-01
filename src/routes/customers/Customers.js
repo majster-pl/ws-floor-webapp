@@ -51,11 +51,11 @@ const Customers = ({ setLoggedIn, setLoginErrorMsg }) => {
         Cell: ({ value, id }) => {
           return (
             <Row className="my-2">
-              <Col sm="auto" className="ms-4 text-end">
+              <Col sm="auto" className="ms-4 text-end d-none d-md-block">
                 <div className="numberCircle fs-5 text-pink text-uppercase">
                   {value.match(/\b(\w)/g).join("").substring(0, 2)}</div>
               </Col>
-              <Col className="my-auto text-start">
+              <Col className="my-auto text-center text-md-start">
                 <Button variant="link" className="p-0 text-start text-white text-decoration-none" as={Link} to={"/customers/" + id}>{value}</Button>
               </Col>
             </Row>
@@ -103,8 +103,8 @@ const Customers = ({ setLoggedIn, setLoginErrorMsg }) => {
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item href="#/action-1">Edit {value}</Dropdown.Item>
-                <Dropdown.Item href="#/action-2" className="text-danger">Remove</Dropdown.Item>
+                <Dropdown.Item as={Link} to={"/customers/" + value}>Edit {value}</Dropdown.Item>
+                <Dropdown.Item onClick={() => alert("Do you really want to remove it??")} className="text-danger">Remove</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           )
