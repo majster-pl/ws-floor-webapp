@@ -18,6 +18,9 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, showToast }) {
   const [formGeneral, setFormGeneral] = useState({
     customer_name: "",
     status: "",
+    assets_total: "",
+    created_at: "",
+    customer_contact: "",
   });
   const [toggleEditForm, setToggleEditForm] = useState(true); // state of edit/save button
   const [key, setKey] = useState("general"); // current tab state
