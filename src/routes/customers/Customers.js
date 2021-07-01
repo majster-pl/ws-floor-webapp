@@ -61,7 +61,7 @@ const Customers = ({ setLoggedIn, setLoginErrorMsg }) => {
               <Col className="my-auto text-center text-md-start">
                 <Button
                   variant="link"
-                  className="p-0 text-start text-white text-decoration-none"
+                  className="p-0 text-white text-decoration-none"
                   as={Link}
                   to={"/customers/" + id}
                 >
