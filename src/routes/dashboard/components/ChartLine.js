@@ -23,6 +23,8 @@ const ChartLine = () => {
   };
 
   const Chart = () => {
+    console.log("running new chart...");
+
     setChartData({
       datasets: [
         {

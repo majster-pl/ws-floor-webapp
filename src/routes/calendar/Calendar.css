@@ -69,11 +69,10 @@ tr,
 	cursor: pointer;
 }
 
-.pagination .page-item a {
+#calendar-pagination .page-item a {
 	font-size: 0.8rem !important;
 	padding  : 0.15rem 0.8rem;
 }
-
 
 .navbar-fixed-left {
 	/* background-color: white; */

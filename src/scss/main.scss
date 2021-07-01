@@ -127,9 +127,12 @@ $dropdown-padding-y: 1rem;
 $pagination-color: $color-white;
 $pagination-bg: $color-gray;
 $pagination-border-color: $color-gray-dark;
-$pagination-hover-bg: darken($pagination-bg, 3%);
+// $pagination-hover-bg: darken($pagination-bg, 3%);
 $pagination-hover-color: $color-pink;
-$pagination-hover-border-color: $pagination-hover-bg;
+// $pagination-hover-border-color: #20c997;
+// $pagination-disabled-color: $color-gray;
+$pagination-disabled-border-color: $color-gray-dark;
+$pagination-disabled-bg: $color-gray;
 
 //modal
 $modal-content-bg: $color-gray-dark;

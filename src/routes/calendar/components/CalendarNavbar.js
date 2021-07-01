@@ -54,7 +54,7 @@ const CalendarNavbar = ({
           <Row className="text-end text-md-start">
             <Col xs="auto" className="my-auto">
               <ButtonGroup>
-                <ul className="pagination my-auto">
+                <ul id="calendar-pagination" className="pagination my-auto">
                   <li className="page-item">
                     <a
                       key="nav-1"
