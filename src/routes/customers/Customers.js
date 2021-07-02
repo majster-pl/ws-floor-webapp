@@ -182,15 +182,15 @@ const Customers = ({ setLoggedIn, setLoginErrorMsg }) => {
             <Row>
               <Col>
                 <Pagination className="my-auto">
-                  <Pagination.First
-                    onClick={() => gotoPage(0)}
-                    disabled={pageCount < 4}
-                  />
+                  {pageCount > 4 ? (
+                    <Pagination.First onClick={() => gotoPage(0)} />
+                  ) : (
+                    ""
+                  )}
                   <Pagination.Prev
                     onClick={() => previousPage()}
                     disabled={!canPreviousPage}
                   />
-                  {/* {state.pageIndex > 1 ? <Pagination.Ellipsis /> : ""} */}
 
                   {pageOptions.map((val) =>
                     val + 3 > state.pageIndex && val - 3 < state.pageIndex ? (
@@ -204,7 +204,7 @@ const Customers = ({ setLoggedIn, setLoginErrorMsg }) => {
                       ""
                     )
                   )}
-                  {state.pageIndex + 1 < pageCount ? (
+                  {state.pageIndex + 1 < pageCount && pageCount > 3 ? (
                     <Pagination.Ellipsis disabled />
                   ) : (
                     ""
@@ -213,10 +213,11 @@ const Customers = ({ setLoggedIn, setLoginErrorMsg }) => {
                     onClick={() => nextPage()}
                     disabled={!canNextPage}
                   />
-                  <Pagination.Last
-                    onClick={() => gotoPage(pageCount - 1)}
-                    disabled={pageCount < 4}
-                  />
+                  {pageCount > 4 ? (
+                    <Pagination.Last onClick={() => gotoPage(pageCount - 1)} />
+                  ) : (
+                    ""
+                  )}
                 </Pagination>
               </Col>
               <Col className="col-auto my-auto">
