@@ -27,7 +27,7 @@ function NewCustomerPage({ setLoggedIn, setLoginErrorMsg, showToast }) {
 
   // function to update customer
   const saveCustomer = (values) => {
-    let url = "/api/v1/customer/";
+    let url = "/api/v1/customer";
     apiClient
       .post(url, values)
       .then((response) => {
