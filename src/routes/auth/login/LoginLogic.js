@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import apiClient from "../../../service/api/api";
 import * as EmailValidator from "email-validator";
+// import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const LoginLogic = ({ setLoggedIn }, setLoginErrorMsg, showToast) => {
+const LoginLogic = ({ setLoggedIn }, setLoginErrorMsg, showToast, toast) => {
   const [username, setUsername] = useState("admin@gmail.com");
   const [password, setPassword] = useState("password");
   const [isSpinning, setIsSpinning] = useState(false);
@@ -71,11 +73,13 @@ const LoginLogic = ({ setLoggedIn }, setLoginErrorMsg, showToast) => {
               .then((response) => {
                 sessionStorage.setItem("loginStatus", "true");
                 history.push("/dashboard");
-                showToast(
-                  "success",
-                  "Success!",
-                  "Welcome back " + response.data.name + "!"
-                );
+                // showToast(
+                //   "success",
+                //   "Success!",
+                //   "Welcome back " + response.data.name + "!"
+                // );
+                // showToast();
+                toast.success("Welcome back " + response.data.name + "!");
               })
               .catch((error) => {
                 if (typeof err.data.errors === "object") {

@@ -1,18 +1,12 @@
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-} from "react-bootstrap";
+import { Container, Row, Col, Card } from "react-bootstrap";
 import IsLoggedInLogic from "../../components/IsLoggedInLogic";
 import apiClient from "../../service/api/api";
 import { useState, useEffect } from "react";
 import "./Dashboard.css";
 // import { Line } from "react-chartjs-2";
-import ChartLine from "./components/ChartLine"
+import ChartLine from "./components/ChartLine";
 
-const Dashboard = ({ setLoggedIn, showToast, setLoginErrorMsg }) => {
-
+const Dashboard = ({ setLoggedIn, setLoginErrorMsg, toast }) => {
   // when page oppened check if user logged in, if not redirect to login page
   const { isLoading, SpinnerComponent } = IsLoggedInLogic(
     setLoginErrorMsg,
@@ -29,7 +23,11 @@ const Dashboard = ({ setLoggedIn, showToast, setLoginErrorMsg }) => {
       <Container className="py-4">
         <Row className="g-3">
           <Col sm={4}>
-            <Card className="dashboard-card h-100" bg="secondary">
+            <Card
+              className="dashboard-card h-100"
+              bg="secondary"
+              onClick={() => toast.info("ELO!")}
+            >
               <Card.Body>
                 <Row className="px-2">
                   <Col className="col-auto me-auto">

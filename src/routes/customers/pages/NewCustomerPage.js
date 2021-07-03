@@ -8,7 +8,7 @@ import moment from "moment";
 import { Formik } from "formik";
 import { useHistory } from "react-router-dom";
 
-function NewCustomerPage({ setLoggedIn, setLoginErrorMsg, showToast }) {
+function NewCustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
   // when page oppened check if user logged in, if not redirect to login page
   const { isLoading, SpinnerComponent } = IsLoggedInLogic(
     setLoginErrorMsg,
@@ -33,16 +33,13 @@ function NewCustomerPage({ setLoggedIn, setLoginErrorMsg, showToast }) {
       .then((response) => {
         console.log(response);
 
-        showToast("success", "Saved", "New customer added.");
+        toast.success("New customer added.");
         history.push("/customers");
       })
       .catch((err) => {
-        showToast(
-          "danger",
-          "Error",
-          "New Customer not saved! " + err.data.message,
-          false
-        );
+        console.log(JSON.stringify(err));
+
+        toast.warn("New Customer not saved! " + JSON.stringify(err.data));
       });
   };
 

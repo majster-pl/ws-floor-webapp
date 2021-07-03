@@ -21,7 +21,7 @@ import {
 } from "react-table";
 import { Link } from "react-router-dom";
 
-const Customers = ({ setLoggedIn, setLoginErrorMsg }) => {
+const Customers = ({ setLoggedIn, setLoginErrorMsg, toast }) => {
   // when page oppened check if user logged in, if not redirect to login page
   const { isLoading, SpinnerComponent } = IsLoggedInLogic(
     setLoginErrorMsg,

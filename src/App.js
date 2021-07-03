@@ -12,29 +12,30 @@ import Customers from "./routes/customers/Customers";
 import CustomerPage from "./routes/customers/pages/CustomerPage";
 import NewCustomerPage from "./routes/customers/pages/NewCustomerPage";
 import Page404 from "./routes/page404/Page404";
-import ToastComponent from "./components/ToastComponent";
-import ToastLogic from "./components/ToastLogic";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 sessionStorage.setItem("loginStatus", "false");
 
 const App = () => {
-  const [Authenticated, setAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
   const [loginErrorMsg, setLoginErrorMsg] = useState("");
-  const { show, setShow, variant, title, body, showToast, autoHide } =
-    ToastLogic();
 
   return (
     <>
-      <ToastComponent
-        variant={variant}
-        title={title}
-        body={body}
-        show={show}
-        setShow={setShow}
-        autoHide={autoHide}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
       />
       <Router>
         <Header
-          isLoggedIn={Authenticated}
+          isLoggedIn={authenticated}
           setLoggedIn={setAuthenticated}
           setLoginErrorMsg={setLoginErrorMsg}
         />
@@ -46,7 +47,7 @@ const App = () => {
           <Route path="/login">
             <Login
               setLoggedIn={setAuthenticated}
-              showToast={showToast}
+              toast={toast}
               setLoginErrorMsg={setLoginErrorMsg}
               loginErrorMsg={loginErrorMsg}
             />
@@ -55,7 +56,7 @@ const App = () => {
           <Route path="/dashboard">
             <Dashboard
               setLoggedIn={setAuthenticated}
-              showToast={showToast}
+              toast={toast}
               setLoginErrorMsg={setLoginErrorMsg}
             />
           </Route>
@@ -63,8 +64,8 @@ const App = () => {
           <Route path="/calendar">
             <Calendar
               setLoggedIn={setAuthenticated}
-              showToast={showToast}
               setLoginErrorMsg={setLoginErrorMsg}
+              toast={toast}
             />
           </Route>
 
@@ -72,27 +73,29 @@ const App = () => {
             <Workshop
               setLoggedIn={setAuthenticated}
               setLoginErrorMsg={setLoginErrorMsg}
+              toast={toast}
             />
           </Route>
 
           <Route path="/customers/new">
             <NewCustomerPage
               setLoggedIn={setAuthenticated}
-              showToast={showToast}
               setLoginErrorMsg={setLoginErrorMsg}
+              toast={toast}
             />
           </Route>
           <Route path="/customers/:id">
             <CustomerPage
               setLoggedIn={setAuthenticated}
-              showToast={showToast}
               setLoginErrorMsg={setLoginErrorMsg}
+              toast={toast}
             />
           </Route>
           <Route exact path="/customers">
             <Customers
               setLoggedIn={setAuthenticated}
               setLoginErrorMsg={setLoginErrorMsg}
+              toast={toast}
             />
           </Route>
 

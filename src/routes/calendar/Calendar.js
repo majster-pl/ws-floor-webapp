@@ -7,7 +7,7 @@ import TableBody from "./components/TableBody";
 import "./Calendar.css";
 import CalendarSpinner from "./components/CalendarSpinner";
 
-const Calendar = ({ setLoggedIn, showToast, setLoginErrorMsg }) => {
+const Calendar = ({ setLoggedIn, toast, setLoginErrorMsg }) => {
   const {
     currentDate,
     setCurrentDate,
@@ -25,7 +25,7 @@ const Calendar = ({ setLoggedIn, showToast, setLoginErrorMsg }) => {
     modalData,
     setModalData,
     reloadCalendar,
-  } = CalendarLogic({ showToast });
+  } = CalendarLogic({ toast });
 
   // when page oppened check if user logged in, if not redirect to login page
   const { isLoading, SpinnerComponent } = IsLoggedInLogic(
@@ -80,7 +80,7 @@ const Calendar = ({ setLoggedIn, showToast, setLoginErrorMsg }) => {
           modalData={modalData}
           setModalData={setModalData}
           reloadCalendar={reloadCalendar}
-          showToast={showToast}
+          toast={toast}
         />
       )}
     </div>

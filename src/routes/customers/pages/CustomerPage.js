@@ -7,7 +7,7 @@ import apiClient from "../../../service/api/api";
 import moment from "moment";
 import { Formik } from "formik";
 
-function CustomerPage({ setLoggedIn, setLoginErrorMsg, showToast }) {
+function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
   // when page oppened check if user logged in, if not redirect to login page
   const { isLoading, SpinnerComponent } = IsLoggedInLogic(
     setLoginErrorMsg,
@@ -35,10 +35,10 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, showToast }) {
       .patch(url, values)
       .then((response) => {
         setToggleEditForm(!toggleEditForm)
-        showToast("success", "Saved", "Customer data updated.");
+        toast.success("Customer data updated.");
       })
       .catch((err) => {
-        showToast("danger", "Error", "Changes not saved. " + err.data.message, false);
+        toast.warn("Changes not saved. " + err.data.message, false);
       });
   };
 
