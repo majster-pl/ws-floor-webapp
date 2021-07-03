@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { Container, Button, Tabs, Tab, Form, Row, Col } from "react-bootstrap";
+import { Container, Button, Tabs, Tab, Form, Row, Col, Accordion, Card } from "react-bootstrap";
 import IsLoggedInLogic from "../../../components/IsLoggedInLogic";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -21,6 +21,9 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, showToast }) {
     assets_total: "",
     created_at: "",
     customer_contact: "",
+    created_by_name: "",
+    updated_at: "",
+    uuid: ""
   });
   const [toggleEditForm, setToggleEditForm] = useState(true); // state of edit/save button
   const [key, setKey] = useState("general"); // current tab state
@@ -32,7 +35,7 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, showToast }) {
       .patch(url, values)
       .then((response) => {
         setToggleEditForm(!toggleEditForm)
-        showToast("success", "Saved", "Event saved.");
+        showToast("success", "Saved", "Customer data updated.");
       })
       .catch((err) => {
         showToast("danger", "Error", "Changes not saved. " + err.data.message, false);
@@ -45,10 +48,11 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, showToast }) {
       const result = await apiClient.get(
         "/api/v1/customer/" + id,
       );
+      console.log(result.data.data);
       setFormGeneral(result.data.data)
     };
     fetchData();
-  }, []);
+  }, [toggleEditForm]);
 
 
   //if still waiting response from server then display spinner
@@ -67,7 +71,7 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, showToast }) {
               as={Link}
               to={"/customers"}
             >
-              Go Back
+              Back
             </Button>
           </div>
           <div className="col-6">
@@ -124,8 +128,8 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, showToast }) {
           onSelect={(k) => setKey(k)}
           className=""
         >
-          <Tab eventKey="general" title="General" className="bg-darker">
-            <Container className="py-3">
+          <Tab eventKey="general" title="General" className="bg-darker border-start border-end border-bottom shadow">
+            <Container className="py-3 ">
               <Formik initialValues={formGeneral}
                 validateOnChange={true}
                 enableReinitialize={true} onSubmit={(values) => {
@@ -146,7 +150,7 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, showToast }) {
                         </Button>
                       </Col>
                     </Row>
-                    <Row className="">
+                    <Row className="mx-1 my-2">
                       <Form.Group as={Col} controlId="formName">
                         <Form.Label>Customer Name</Form.Label>
                         <Form.Control
@@ -170,7 +174,49 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, showToast }) {
                           placeholder="Contact number"
                         />
                       </Form.Group>
+
+                      <Form.Group as={Col} controlId="formStatus">
+                        <Form.Label>Status:</Form.Label>
+                        <Form.Control as="select"
+                          plaintext={toggleEditForm}
+                          disabled={toggleEditForm}
+                          onChange={props.handleChange("status")}
+                        >
+                          <option value="active" selected={"active" == props.values.status} >Active</option>
+                          <option value="on_hold" selected={"on_hold" == props.values.status} >On Hold</option>
+                        </Form.Control>
+                      </Form.Group>
                     </Row>
+                    <Container className="my-4 text-muted">
+                      <Accordion>
+                        <small>
+                          <Accordion.Toggle as={Button} variant="link-none text-info" eventKey="0">
+                            More
+                          </Accordion.Toggle>
+                        </small>
+                        <Accordion.Collapse eventKey="0">
+                          <Container className="ms-3">
+                            <Col>
+                              <small className="font-monospace">Creadted by: {props.values.created_by_name}</small>
+                            </Col>
+                            <Col>
+                              <small className="font-monospace">Created at: {moment(new Date(props.values.created_at)).format("DD-MMM-YYYY HH:mm")}</small>
+                            </Col>
+
+                            <Col>
+                              <small className="font-monospace">Last update: {moment(new Date(props.values.updated_at)).format("DD-MMM-YYYY HH:mm")}</small>
+                            </Col>
+                            <Col>
+                              <small className="font-monospace">Unique customer id: {props.values.uuid}</small>
+                            </Col>
+                            <Col>
+                              <small className="font-monospace">Status: {props.values.status}</small>
+                            </Col>
+                          </Container>
+                        </Accordion.Collapse>
+
+                      </Accordion>
+                    </Container>
                   </>
 
                 )}

@@ -10,6 +10,7 @@ import Dashboard from "./routes/dashboard/Dashboard";
 import Workshop from "./routes/workshop/Workshop";
 import Customers from "./routes/customers/Customers";
 import CustomerPage from "./routes/customers/pages/CustomerPage";
+import NewCustomerPage from "./routes/customers/pages/NewCustomerPage";
 import Page404 from "./routes/page404/Page404";
 import ToastComponent from "./components/ToastComponent";
 import ToastLogic from "./components/ToastLogic";
@@ -74,6 +75,13 @@ const App = () => {
             />
           </Route>
 
+          <Route path="/customers/new">
+            <NewCustomerPage
+              setLoggedIn={setAuthenticated}
+              showToast={showToast}
+              setLoginErrorMsg={setLoginErrorMsg}
+            />
+          </Route>
           <Route path="/customers/:id">
             <CustomerPage
               setLoggedIn={setAuthenticated}
@@ -81,7 +89,6 @@ const App = () => {
               setLoginErrorMsg={setLoginErrorMsg}
             />
           </Route>
-
           <Route exact path="/customers">
             <Customers
               setLoggedIn={setAuthenticated}

@@ -180,7 +180,12 @@ const Customers = ({ setLoggedIn, setLoginErrorMsg }) => {
         <Row className="py-3 justify-content-between">
           <Col className="col-auto my-2">
             <Row>
-              <Col>
+              <Col className="my-auto mx-4">
+                <Button variant="success" as={Link} to={"/customers/new"}>
+                  Add new
+                </Button>
+              </Col>
+              <Col className="col-auto my-auto">
                 <Pagination className="my-auto">
                   {pageCount > 4 ? (
                     <Pagination.First onClick={() => gotoPage(0)} />
@@ -219,9 +224,6 @@ const Customers = ({ setLoggedIn, setLoginErrorMsg }) => {
                     ""
                   )}
                 </Pagination>
-              </Col>
-              <Col className="col-auto my-auto">
-                <Button variant="success">Add new</Button>
               </Col>
             </Row>
           </Col>
