@@ -38,7 +38,9 @@ function NewCustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
       .catch((err) => {
         console.log(JSON.stringify(err));
 
-        toast.warn("New Customer not saved! " + JSON.stringify(err.data));
+        toast.warn(
+          "New Customer not saved! " + JSON.stringify(err.data.message)
+        );
       });
   };
 
@@ -61,21 +63,21 @@ function NewCustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
         >
           {(props) => (
             <>
-              <Container className="my-2 mb-5">
+              <Container className="my-2 mb-4">
                 <div className="row justify-content-between">
-                  <div className="col-4 px-2">
+                  <div className="col-12 col-md-4 mb-3">
                     <Button
-                      className="my-auto"
+                      className="mt-1"
                       variant="light"
                       onClick={() => history.goBack()}
                     >
                       Back
                     </Button>
                   </div>
-                  <div className="col-6">
-                    <div className="row">
+                  <div className="col-12 col-md-6">
+                    <div className="row mx-auto my-2">
                       <div className="col-auto my-auto">
-                        <div className="numberCircle fs-3 text-pink text-uppercase">
+                        <div className="number-circle-large fs-2 text-pink text-uppercase">
                           {props.values.customer_name !== ""
                             ? props.values.customer_name
                                 .match(/\b(\w)/g)
@@ -92,33 +94,50 @@ function NewCustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
                 </div>
               </Container>
 
-              <Card.Title>Add New Customer</Card.Title>
+              <Container>
+                <Card.Title>Add New Customer</Card.Title>
 
-              <Row className="my-4">
-                <Form.Group as={Col} controlId="formName">
-                  <Form.Label>Customer Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter customer name"
-                    onChange={props.handleChange("customer_name")}
-                    value={props.values.customer_name}
-                  />
-                </Form.Group>
-
-                <Form.Group as={Col} controlId="formContact">
-                  <Form.Label>Contact Number</Form.Label>
-                  <Form.Control
-                    onChange={props.handleChange("customer_contact")}
-                    value={props.values.customer_contact}
-                    type="text"
-                    placeholder="Contact number"
-                  />
-                </Form.Group>
-              </Row>
-
-              <Button variant="success" onClick={() => props.submitForm()}>
-                Save
-              </Button>
+                <Row className="mb-4 mt-2 g-3">
+                  <Form.Group
+                    as={Col}
+                    className="col-12 col-md-6"
+                    controlId="formName"
+                  >
+                    <Form.Label>Customer Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter customer name"
+                      onChange={props.handleChange("customer_name")}
+                      value={props.values.customer_name}
+                    />
+                  </Form.Group>
+                  <Form.Group
+                    as={Col}
+                    className="col-12 col-md-6"
+                    controlId="formContact"
+                  >
+                    <Form.Label>Contact Number</Form.Label>
+                    <Form.Control
+                      onChange={props.handleChange("customer_contact")}
+                      value={props.values.customer_contact}
+                      type="text"
+                      placeholder="Contact number"
+                    />
+                  </Form.Group>
+                </Row>
+                <Row className="justify-content-end">
+                  <div className="col-12 col-md-3 align-self-end text-end">
+                    <div className="d-grid">
+                      <Button
+                        variant="success"
+                        onClick={() => props.submitForm()}
+                      >
+                        Save
+                      </Button>
+                    </div>
+                  </div>
+                </Row>
+              </Container>
             </>
           )}
         </Formik>

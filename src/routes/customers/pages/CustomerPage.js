@@ -97,65 +97,69 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
 
   return (
     <div className="scroll">
-      <Container className="my-2">
-        <div className="row justify-content-between">
-          <div className="col-4">
-            <Button
-              className="mt-1"
-              variant="light"
-              onClick={() => history.goBack()}
-            >
-              Back
-            </Button>
-          </div>
-          <div className="col-6">
-            <div className="row">
-              <div className="col-auto my-auto">
-                <div className="numberCircle fs-3 text-pink text-uppercase">
-                  {formGeneral.customer_name !== ""
-                    ? formGeneral.customer_name
-                      .match(/\b(\w)/g)
-                      .join("")
-                      .substring(0, 2)
-                    : ""}
+      <Container className="py-3">
+        <Container className="my-2 mb-4">
+
+          <div className="row justify-content-between">
+            <div className="col-12 col-md-4  mb-3">
+              <Button
+                className="mt-1"
+                variant="light"
+                onClick={() => history.goBack()}
+              >
+                Back
+              </Button>
+            </div>
+            <div className="col-12 col-md-6">
+              <div className="row mx-auto my-2">
+                <div className="col-auto my-auto">
+                  <div className="number-circle-large fs-2 text-pink text-uppercase">
+                    {formGeneral.customer_name !== ""
+                      ? formGeneral.customer_name
+                        .match(/\b(\w)/g)
+                        .join("")
+                        .substring(0, 2)
+                      : ""}
+                  </div>
                 </div>
-              </div>
-              <div className="col text-start">
-                <div className="fs-4">{formGeneral.customer_name}</div>
-                <div className="row ">
-                  <div className="col-auto">
-                    <div>
-                      <span className="fs-5 me-2 text-success">
-                        {formGeneral.assets_total}
-                      </span>
-                      Assets
+                <div className="col text-start">
+                  <div className="fs-4">{formGeneral.customer_name}</div>
+                  <div className="row ">
+                    <div className="col-auto">
+                      <div>
+                        <span className="fs-5 me-2 text-success">
+                          {formGeneral.assets_total}
+                        </span>
+                        Assets
+                      </div>
                     </div>
-                  </div>
-                  <div className="col-auto">
-                    <div>
-                      Since
-                      <span className="fs-5 mx-2 text-success">
-                        {moment(formGeneral.created_at).format("MMM-YYYY")}
+                    <div className="col-auto">
+                      <div>
+                        Since
+                        <span className="fs-5 mx-2 text-success">
+                          {moment(formGeneral.created_at).format("MMM-YYYY")}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="col-auto">
+                      <span
+                        className={
+                          "fs-5 text-capitalize " +
+                          (formGeneral.status == "on_hold"
+                            ? "text-info"
+                            : "text-success")
+                        }
+                      >
+                        {formGeneral.status.replace("_", " ")}
                       </span>
                     </div>
-                  </div>
-                  <div className="col-auto">
-                    <span
-                      className={
-                        "fs-5 mx-2 text-capitalize " +
-                        (formGeneral.status == "on_hold"
-                          ? "text-info"
-                          : "text-success")
-                      }
-                    >
-                      {formGeneral.status.replace("_", " ")}
-                    </span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </Container>
+
         <Tabs
           id="controlled-tab-example"
           activeKey={key}
@@ -190,7 +194,7 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
                       </Col>
                       <Col className="col-auto">
                         <Button
-                          variant={(toggleEditForm || !props.dirty) ? "lime" : "success"}
+                          variant={(toggleEditForm) ? "lime" : !props.dirty ? "light" : "success"}
                           disabled={props.isSubmitting}
                           onClick={() => {
                             if (toggleEditForm) {
@@ -208,8 +212,8 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
                         </Button>
                       </Col>
                     </Row>
-                    <Row className="mx-1 my-2">
-                      <Form.Group as={Col} controlId="formName">
+                    <Row className="mx-1 my-2 g-3">
+                      <Form.Group as={Col} className="col-12 col-md-6" controlId="formName">
                         <Form.Label>Customer Name</Form.Label>
                         <Form.Control
                           plaintext={toggleEditForm}
@@ -221,7 +225,7 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
                         />
                       </Form.Group>
 
-                      <Form.Group as={Col} controlId="formContact">
+                      <Form.Group as={Col} className="col-12 col-md-6" controlId="formContact">
                         <Form.Label>Contact Number</Form.Label>
                         <Form.Control
                           plaintext={toggleEditForm}
@@ -233,7 +237,7 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
                         />
                       </Form.Group>
 
-                      <Form.Group as={Col} controlId="formStatus">
+                      <Form.Group as={Col} className="col-12 col-md-6" controlId="formStatus">
                         <Form.Label>Status:</Form.Label>
                         <Form.Control as="select"
                           plaintext={toggleEditForm}
