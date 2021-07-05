@@ -31,3 +31,7 @@
 .dropdown-nodeco:hover {
     color: tomato;
 }
+
+.Toastify__toast-body {
+    overflow-wrap: anywhere;
+}

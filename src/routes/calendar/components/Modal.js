@@ -253,34 +253,55 @@ const CalendarModal = ({
 
   const handleSubmit = (values) => {
     console.log("handleSubmit");
-    console.log("MODAL: " + JSON.stringify(modalData));
+    console.log("MODAL: " + JSON.stringify(values));
 
-    let url = "/api/v1/events/" + values.event_id;
+    if (modalData.new_booking) {
+      let url = "/api/v1/events";
+      apiClient
+        .post(url, values)
+        .then((response) => {
+          // setTableData(response.data.data);
+          console.log(response.data);
+          // setModalData(response.data.data);
+          // setShowModal(true);
+          handleCloseModal();
+          setModalData([]);
+          reloadCalendar();
+          toast.success("New event added.");
+          // setBookedDate();
+        })
+        .catch((err) => {
+          console.log("error:", err);
+          toast.warn(err.statusText + " - Event NOT saved!");
+        });
+    } else {
+      let url = "/api/v1/events/" + values.event_id;
 
-    apiClient
-      .get("/sanctum/csrf-cookie")
-      .then(() => {
-        apiClient
-          .patch(url, values)
-          .then((response) => {
-            // setTableData(response.data.data);
-            console.log(response.data);
-            // setModalData(response.data.data);
-            // setShowModal(true);
-            handleCloseModal();
-            setModalData([]);
-            reloadCalendar();
-            toast.success("Event saved.");
-            // setBookedDate();
-          })
-          .catch((err) => {
-            console.log("error:", err);
-            toast.warn(err.statusText + " - Event NOT saved!");
-          });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+      apiClient
+        .get("/sanctum/csrf-cookie")
+        .then(() => {
+          apiClient
+            .patch(url, values)
+            .then((response) => {
+              // setTableData(response.data.data);
+              console.log(response.data);
+              // setModalData(response.data.data);
+              // setShowModal(true);
+              handleCloseModal();
+              setModalData([]);
+              reloadCalendar();
+              toast.success("Event saved.");
+              // setBookedDate();
+            })
+            .catch((err) => {
+              console.log("error:", err);
+              toast.warn(err.statusText + " - Event NOT saved!");
+            });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   };
 
   const isWeekday = (date) => {
@@ -310,7 +331,7 @@ const CalendarModal = ({
           <Form onSubmit={props.handleSubmit}>
             <Modal.Header>
               {/* {modalData.id == undefined ? ( */}
-              {modalData.new_booking === true ? (
+              {modalData.new_booking ? (
                 <Modal.Title>Add New Booking</Modal.Title>
               ) : (
                 <Modal.Title>Edit booking</Modal.Title>
@@ -361,7 +382,9 @@ const CalendarModal = ({
                         isInvalid={isAssetInvalid}
                         value={props.values.reg}
                         placeholder="Vehicle Reg..."
-                        defaultSelected={[modalData]}
+                        defaultSelected={
+                          modalData.new_booking ? "" : [modalData]
+                        }
                       />
                     </Form.Group>
                   </Fragment>
@@ -421,7 +444,9 @@ const CalendarModal = ({
                         // isInvalid={isAssetInvalid}
                         value={props.values.customer_name}
                         placeholder="Customer..."
-                        defaultSelected={[modalData]}
+                        defaultSelected={
+                          modalData.new_booking ? "" : [modalData]
+                        }
                       />
                     </Form.Group>
                   </Fragment>
@@ -537,7 +562,11 @@ const CalendarModal = ({
                     as="select"
                     type="select"
                     name="payment_method"
-                    value={props.values.status}
+                    defaultValue={
+                      modalData.new_booking
+                        ? "-- select status --"
+                        : props.values.status
+                    }
                     onChange={props.handleChange("status")}
                     // onChange={setFormValue}
                     // value={form.payment_method}

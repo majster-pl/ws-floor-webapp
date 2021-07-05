@@ -5,7 +5,7 @@ import * as EmailValidator from "email-validator";
 // import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const LoginLogic = ({ setLoggedIn }, setLoginErrorMsg, showToast, toast) => {
+const LoginLogic = ({ setLoggedIn }, setLoginErrorMsg, toast) => {
   const [username, setUsername] = useState("admin@gmail.com");
   const [password, setPassword] = useState("password");
   const [isSpinning, setIsSpinning] = useState(false);
@@ -72,16 +72,10 @@ const LoginLogic = ({ setLoggedIn }, setLoginErrorMsg, showToast, toast) => {
               .get("/api/v1/logged-in")
               .then((response) => {
                 sessionStorage.setItem("loginStatus", "true");
-                history.push("/dashboard");
-                // showToast(
-                //   "success",
-                //   "Success!",
-                //   "Welcome back " + response.data.name + "!"
-                // );
-                // showToast();
                 toast.success("Welcome back " + response.data.name + "!");
+                history.push("/dashboard");
               })
-              .catch((error) => {
+              .catch((err) => {
                 if (typeof err.data.errors === "object") {
                   // check if email error present
                   if (typeof err.data.errors.email === "object") {
@@ -95,9 +89,8 @@ const LoginLogic = ({ setLoggedIn }, setLoginErrorMsg, showToast, toast) => {
                   // any other error
                   setLoginErrorMsg(err.data.message);
                 }
-                console.log("Error is: " + JSON.stringify(error));
+                console.log("Error is: " + JSON.stringify(err));
               });
-            // console.log("typeof: " + JSON.stringify(err));
           });
       })
       .catch(() => {

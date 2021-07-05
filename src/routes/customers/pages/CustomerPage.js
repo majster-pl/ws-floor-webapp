@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
-import { Container, Button, Tabs, Tab, Form, Row, Col, Accordion, Card } from "react-bootstrap";
+import { Container, Button, Tabs, Tab, Form, Row, Col, Accordion, Modal } from "react-bootstrap";
 import IsLoggedInLogic from "../../../components/IsLoggedInLogic";
-import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import apiClient from "../../../service/api/api";
 import moment from "moment";
 import { Formik } from "formik";
+import { useHistory } from "react-router-dom";
 
 function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
   // when page oppened check if user logged in, if not redirect to login page
@@ -13,6 +13,16 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
     setLoginErrorMsg,
     setLoggedIn
   );
+  const history = useHistory();
+  const [showModal, setShowModal] = useState(false);
+  const [modalData, setModaldata] = useState({
+    customer_name: "",
+    id: 0,
+  });
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
+  const [removeAll, setRemoveAll] = useState(false);
+
   const { id } = useParams(); // parameter from url
 
   const [formGeneral, setFormGeneral] = useState({
@@ -27,6 +37,30 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
   });
   const [toggleEditForm, setToggleEditForm] = useState(true); // state of edit/save button
   const [key, setKey] = useState("general"); // current tab state
+
+  // function to remove customer
+  const removeCustomer = () => {
+    let url = "/api/v1/customer/" + modalData.id;
+
+    apiClient
+      .delete(url)
+      .then((response) => {
+        console.log(response);
+        toast.success("Customer removed.");
+        // reloadTable();
+        history.goBack()
+        setShowModal(false);
+      })
+      .catch((err) => {
+        console.log(JSON.stringify(err));
+
+        toast.error(
+          <div className="toast_wrap">
+            Unable to remove customer! {JSON.stringify(err.data.message)}
+          </div>
+        );
+      });
+  };
 
   // function to update customer
   const updateCustomer = (values) => {
@@ -68,8 +102,7 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
             <Button
               className="mt-1"
               variant="light"
-              as={Link}
-              to={"/customers"}
+              onClick={() => history.goBack()}
             >
               Back
             </Button>
@@ -139,6 +172,21 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
                 {(props) => (
                   <>
                     <Row className="justify-content-end">
+                      <Col className="col-auto">
+                        <Button
+                          variant="danger"
+                          onClick={() => {
+                            let data = {
+                              customer_name: props.values.customer_name,
+                              id: props.values.id,
+                            };
+                            handleShowModal();
+                            setModaldata(data);
+                          }}
+                        >
+                          Remove
+                        </Button>
+                      </Col>
                       <Col className="col-auto">
                         <Button
                           variant={toggleEditForm ? "lime" : "success"}
@@ -231,6 +279,53 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
           </Tab>
         </Tabs>
       </Container>
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header>
+          <Modal.Title className="text-danger">Warning!</Modal.Title>
+          <Button
+            className="btn-close btn-secondary"
+            type="button"
+            onClick={() => handleCloseModal()}
+          />
+        </Modal.Header>
+        <Modal.Body>
+          <p className="">
+            Removeing customer also erase all bookings and any data assosiated
+            with this customer! Are you sure you want to remove{" "}
+            <span className="text-success"> {modalData.customer_name}</span> ?
+          </p>
+          <Form.Group className="mt-4" controlId="formBasicCheckbox">
+            <Form.Check
+              type="checkbox"
+              onChange={(event) => {
+                console.log(modalData);
+                setRemoveAll(event.target.checked);
+              }}
+              label="I want to remove all"
+              className="disable-select"
+            />
+            <Form.Text
+              className={"text-danger " + (!removeAll ? "d-none" : "")}
+            >
+              <div className="text-uppercase">
+                This operation can't be undone!
+              </div>
+            </Form.Text>
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+          <Button
+            variant="danger"
+            disabled={!removeAll}
+            onClick={() => removeCustomer()}
+          >
+            Remove
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div >
   );
 }

@@ -25,16 +25,15 @@ function NewCustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
   });
   const [key, setKey] = useState("general"); // current tab state
 
-  // function to update customer
+  // function to add new customer
   const saveCustomer = (values) => {
     let url = "/api/v1/customer";
     apiClient
       .post(url, values)
       .then((response) => {
-        console.log(response);
-
+        // console.log(response);
         toast.success("New customer added.");
-        history.push("/customers");
+        history.push("/customers/" + response.data.id);
       })
       .catch((err) => {
         console.log(JSON.stringify(err));
@@ -62,14 +61,13 @@ function NewCustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
         >
           {(props) => (
             <>
-              <Container className="my-1 mb-5">
+              <Container className="my-2 mb-5">
                 <div className="row justify-content-between">
-                  <div className="col-4 px-0">
+                  <div className="col-4 px-2">
                     <Button
                       className="my-auto"
                       variant="light"
-                      as={Link}
-                      to={"/customers"}
+                      onClick={() => history.goBack()}
                     >
                       Back
                     </Button>

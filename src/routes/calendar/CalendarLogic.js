@@ -53,13 +53,15 @@ const CalendarLogic = ({ showToast }) => {
       .get(url)
       .then((response) => {
         // console.log(response.isAuthenticated);
-        setTableData(response.data.data);
         // console.log(response.data);
+        setTableData(response.data.data);
       })
 
       .catch((error) => {
+        console.log(error);
+
         // console.log(error.isAuthenticated);
-        history.push("/login");
+        // history.push("/login");
       });
   }, [currentDate]);
 

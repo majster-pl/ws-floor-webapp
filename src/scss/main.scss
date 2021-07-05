@@ -27,6 +27,7 @@ $color-gray-darker: #111314;
 $color-gray-light: #a7a9ab;
 $color-pink: #f00fa6;
 $color-green: #39a883;
+$color-success: #39a883;
 $color-orange: #ffbb00;
 $color-green-light: #dfea87;
 // default colors:
@@ -177,13 +178,8 @@ $btn-padding-y: 0.15rem;
 // close button
 $btn-close-opacity: 1;
 
-.toast {
-  z-index: 3000 !important;
-  opacity: 0.9;
-}
-
-.toast:hover {
-  opacity: 1;
+.Toastify__toast--success {
+  background-color: $color-success !important;
 }
 
 .disable-select {

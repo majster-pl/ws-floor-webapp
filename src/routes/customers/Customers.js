@@ -8,6 +8,8 @@ import {
   Form,
   Pagination,
   Nav,
+  Modal,
+  CloseButton,
 } from "react-bootstrap";
 import { useState, useEffect, useMemo } from "react";
 import IsLoggedInLogic from "../../components/IsLoggedInLogic";
@@ -29,18 +31,52 @@ const Customers = ({ setLoggedIn, setLoginErrorMsg, toast }) => {
   );
 
   const [data, setData] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [modalData, setModaldata] = useState({
+    customer_name: "",
+    id: 0,
+  });
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
+  const [removeAll, setRemoveAll] = useState(false);
 
-  useEffect(() => {
+  const reloadTable = () => {
     let url = "/api/v1/customer";
     apiClient
       .get(url)
       .then((response) => {
+        // console.log(response);
+
         setData(response.data.data);
       })
       .catch((err) => {
         console.log("error:", err);
       });
-  }, []);
+  };
+  useEffect(() => reloadTable(), []);
+
+  // function to remove customer
+  const removeCustomer = () => {
+    let url = "/api/v1/customer/" + modalData.id;
+
+    apiClient
+      .delete(url)
+      .then((response) => {
+        console.log(response);
+        toast.success("Customer removed.");
+        reloadTable();
+        setShowModal(false);
+      })
+      .catch((err) => {
+        console.log(JSON.stringify(err));
+
+        toast.error(
+          <div className="toast_wrap">
+            Unable to remove customer! {JSON.stringify(err.data.message)}
+          </div>
+        );
+      });
+  };
 
   const columns = useMemo(
     () => [
@@ -118,7 +154,7 @@ const Customers = ({ setLoggedIn, setLoginErrorMsg, toast }) => {
       {
         Header: "",
         accessor: "id",
-        Cell: ({ value }) => {
+        Cell: ({ value, cust_name }) => {
           return (
             <Dropdown>
               <Dropdown.Toggle
@@ -134,7 +170,16 @@ const Customers = ({ setLoggedIn, setLoginErrorMsg, toast }) => {
                   Edit {value}
                 </Dropdown.Item>
                 <Dropdown.Item
-                  onClick={() => alert("Do you really want to remove it??")}
+                  // onClick={() => alert("Do you really want to remove it??")}
+                  onClick={() => {
+                    setRemoveAll(false);
+                    let data = {
+                      customer_name: cust_name,
+                      id: value,
+                    };
+                    setModaldata(data);
+                    setShowModal(true);
+                  }}
                   className="text-danger"
                 >
                   Remove
@@ -287,6 +332,7 @@ const Customers = ({ setLoggedIn, setLoginErrorMsg, toast }) => {
                           {cell.render("Cell", {
                             id: row.original.id,
                             value: cell.value,
+                            cust_name: row.original.customer_name,
                           })}
                         </td>
                       );
@@ -298,6 +344,53 @@ const Customers = ({ setLoggedIn, setLoginErrorMsg, toast }) => {
           </Table>
         </>
       </Container>
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header>
+          <Modal.Title className="text-danger">Warning!</Modal.Title>
+          <Button
+            className="btn-close btn-secondary"
+            type="button"
+            onClick={() => handleCloseModal()}
+          />
+        </Modal.Header>
+        <Modal.Body>
+          <p className="">
+            Removeing customer also erase all bookings and any data assosiated
+            with this customer! Are you sure you want to remove{" "}
+            <span className="text-success"> {modalData.customer_name}</span> ?
+          </p>
+          <Form.Group className="mt-4" controlId="formBasicCheckbox">
+            <Form.Check
+              type="checkbox"
+              onChange={(event) => {
+                console.log(modalData);
+                setRemoveAll(event.target.checked);
+              }}
+              label="I want to remove all"
+              className="disable-select"
+            />
+            <Form.Text
+              className={"text-danger " + (!removeAll ? "d-none" : "")}
+            >
+              <div className="text-uppercase">
+                This operation can't be undone!
+              </div>
+            </Form.Text>
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+          <Button
+            variant="danger"
+            disabled={!removeAll}
+            onClick={() => removeCustomer()}
+          >
+            Remove
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
