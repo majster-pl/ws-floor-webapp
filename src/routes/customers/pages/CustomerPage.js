@@ -68,10 +68,11 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
     apiClient
       .patch(url, values)
       .then((response) => {
-        setToggleEditForm(!toggleEditForm)
+        setToggleEditForm(true);
         toast.success("Customer data updated.");
       })
       .catch((err) => {
+        setToggleEditForm(false);
         toast.warn("Changes not saved. " + err.data.message, false);
       });
   };
@@ -189,12 +190,21 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
                       </Col>
                       <Col className="col-auto">
                         <Button
-                          variant={toggleEditForm ? "lime" : "success"}
+                          variant={(toggleEditForm || !props.dirty) ? "lime" : "success"}
+                          disabled={props.isSubmitting}
                           onClick={() => {
-                            !toggleEditForm ? props.submitForm() : setToggleEditForm(false);
+                            if (toggleEditForm) {
+                              setToggleEditForm(false)
+                            } else {
+                              if (props.dirty) {
+                                props.submitForm()
+                              } else {
+                                setToggleEditForm(true)
+                              }
+                            }
                           }}
                         >
-                          {toggleEditForm ? "Edit" : "Save"}
+                          {toggleEditForm ? "Edit" : !props.dirty ? "Cancel" : "Save"}
                         </Button>
                       </Col>
                     </Row>
