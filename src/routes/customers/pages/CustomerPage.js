@@ -73,7 +73,7 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
       })
       .catch((err) => {
         setToggleEditForm(false);
-        toast.warn("Changes not saved. " + err.data.message, false);
+        toast.error("Changes not saved. " + err.data.message, false);
       });
   };
 

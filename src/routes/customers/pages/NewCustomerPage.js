@@ -45,7 +45,7 @@ function NewCustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
         history.push("/customers/" + resp.data.id);
       } catch (err) {
         // Handle Error Here
-        toast.warn(
+        toast.error(
           "New Customer not saved! " + JSON.stringify(err.data.message)
         );
         console.error(err);
@@ -138,21 +138,24 @@ function NewCustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
                     <div className="d-grid">
                       <Button
                         variant="success"
-                        disabled={props.isSubmitting}
+                        disabled={props.isSubmitting || !props.dirty}
                         onClick={() => props.submitForm()}
                       >
                         {props.isSubmitting ? (
-                          <Spinner
-                            as="span"
-                            animation="grow"
-                            size="sm"
-                            role="status"
-                            aria-hidden="true"
-                          />
+                          <>
+                            <Spinner
+                              className="mx-2"
+                              as="span"
+                              animation="grow"
+                              size="sm"
+                              role="status"
+                              aria-hidden="true"
+                            />
+                            Saving...
+                          </>
                         ) : (
-                          ""
+                          "Save"
                         )}
-                        Save
                       </Button>
                     </div>
                   </div>

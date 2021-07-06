@@ -80,7 +80,7 @@ const CalendarLogic = ({ toast }) => {
         })
         .catch((err) => {
           // console.log("UUU...");
-          toast.warn("Error" + JSON.stringify(err));
+          toast.error("Error" + JSON.stringify(err));
           history.push("/login");
         });
     } else {

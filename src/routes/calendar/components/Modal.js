@@ -272,7 +272,7 @@ const CalendarModal = ({
         })
         .catch((err) => {
           console.log("error:", err);
-          toast.warn(err.statusText + " - Event NOT saved!");
+          toast.error(err.statusText + " - Event NOT saved!");
         });
     } else {
       let url = "/api/v1/events/" + values.event_id;
@@ -295,7 +295,7 @@ const CalendarModal = ({
             })
             .catch((err) => {
               console.log("error:", err);
-              toast.warn(err.statusText + " - Event NOT saved!");
+              toast.error(err.statusText + " - Event NOT saved!");
             });
         })
         .catch((err) => {
