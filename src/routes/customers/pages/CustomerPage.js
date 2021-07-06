@@ -192,9 +192,9 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
                           Remove
                         </Button>
                       </Col>
-                      <Col className="col-auto">
+                      <Col className="col-auto mx-2">
                         <Button
-                          variant={(toggleEditForm) ? "lime" : !props.dirty ? "light" : "success"}
+                          variant={(toggleEditForm) ? "info" : !props.dirty ? "light" : "success"}
                           disabled={props.isSubmitting}
                           onClick={() => {
                             if (toggleEditForm) {
@@ -212,7 +212,8 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
                         </Button>
                       </Col>
                     </Row>
-                    <Row className="mx-1 my-2 g-3">
+                    <hr></hr>
+                    <Row className="mx-1 g-3">
                       <Form.Group as={Col} className="col-12 col-md-6" controlId="formName">
                         <Form.Label>Customer Name</Form.Label>
                         <Form.Control
@@ -249,7 +250,8 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
                         </Form.Control>
                       </Form.Group>
                     </Row>
-                    <Container className="my-4 text-muted">
+                    <hr></hr>
+                    <Container className="my-3 text-muted">
                       <Accordion>
                         <small>
                           <Accordion.Toggle as={Button} variant="link-none text-info" eventKey="0">
