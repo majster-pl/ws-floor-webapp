@@ -1,5 +1,13 @@
 // import { useParams } from "react-router-dom";
-import { Container, Button, Card, Tab, Form, Row, Col } from "react-bootstrap";
+import {
+  Container,
+  Button,
+  Card,
+  Spinner,
+  Form,
+  Row,
+  Col,
+} from "react-bootstrap";
 import IsLoggedInLogic from "../../../components/IsLoggedInLogic";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -26,23 +34,26 @@ function NewCustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
   const [key, setKey] = useState("general"); // current tab state
 
   // function to add new customer
-  const saveCustomer = (values) => {
-    let url = "/api/v1/customer";
-    apiClient
-      .post(url, values)
-      .then((response) => {
-        // console.log(response);
+  function handleSubmit(values, { setSubmitting }) {
+    async function saveCustomer() {
+      let url = "/api/v1/customer";
+      try {
+        const resp = await apiClient.post(url, values);
+        console.log(resp.data);
         toast.success("New customer added.");
-        history.push("/customers/" + response.data.id);
-      })
-      .catch((err) => {
-        console.log(JSON.stringify(err));
-
+        setSubmitting(false);
+        history.push("/customers/" + resp.data.id);
+      } catch (err) {
+        // Handle Error Here
         toast.warn(
           "New Customer not saved! " + JSON.stringify(err.data.message)
         );
-      });
-  };
+        console.error(err);
+        setSubmitting(false);
+      }
+    }
+    saveCustomer();
+  }
 
   //if still waiting response from server then display spinner
   if (isLoading) {
@@ -56,10 +67,7 @@ function NewCustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
           initialValues={formGeneral}
           validateOnChange={true}
           enableReinitialize={true}
-          onSubmit={(values) => {
-            saveCustomer(values);
-            // console.log(values);
-          }}
+          onSubmit={handleSubmit}
         >
           {(props) => (
             <>
@@ -130,8 +138,20 @@ function NewCustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
                     <div className="d-grid">
                       <Button
                         variant="success"
+                        disabled={props.isSubmitting}
                         onClick={() => props.submitForm()}
                       >
+                        {props.isSubmitting ? (
+                          <Spinner
+                            as="span"
+                            animation="grow"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          ""
+                        )}
                         Save
                       </Button>
                     </div>
