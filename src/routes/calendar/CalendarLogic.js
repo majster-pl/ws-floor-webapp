@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import apiClient from "../../service/api/api";
 import { useHistory } from "react-router-dom";
 
-const CalendarLogic = ({ toast }) => {
+const CalendarLogic = ({ toast, setIsLoading }) => {
   const history = useHistory();
   const todaysDate = moment().startOf("isoweek");
   const [currentDate, setCurrentDate] = useState(() => {
@@ -14,7 +14,7 @@ const CalendarLogic = ({ toast }) => {
   });
   const [tableData, setTableData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isCalendarLoading, setIsCalendarLoading] = useState(true);
+  const [isCalendarLoading, setIsCalendarLoading] = useState(false);
   const [dateFormat, setDateFormat] = useState("YYYY-MM-DD");
   // modal
   const [modalData, setModalData] = useState([]);
@@ -26,7 +26,7 @@ const CalendarLogic = ({ toast }) => {
 
   // function to turn off spinner
   useEffect(() => {
-    setIsCalendarLoading(false);
+    // setIsCalendarLoading(false);
   }, [tableData]);
 
   // useEffect(() => {
@@ -41,7 +41,8 @@ const CalendarLogic = ({ toast }) => {
 
   // Loading calendar from api when currentDate changes
   useEffect(() => {
-    setIsCalendarLoading(true);
+    // setIsCalendarLoading(true);
+    setIsLoading(true);
     const url =
       "/api/v1/events?days=" +
       numberOfDays +
@@ -54,11 +55,14 @@ const CalendarLogic = ({ toast }) => {
       .then((response) => {
         // console.log(response.isAuthenticated);
         // console.log(response.data);
+        setIsLoading(false);
         setTableData(response.data.data);
       })
 
       .catch((error) => {
+        setIsLoading(false);
         console.log(error);
+        toast.error("Error! " + error.data.message);
 
         // console.log(error.isAuthenticated);
         // history.push("/login");
@@ -67,6 +71,8 @@ const CalendarLogic = ({ toast }) => {
 
   // Modal handler
   const handleModalOpen = (date, eventId) => {
+    setIsLoading(true);
+
     if (!date) {
       let url = "/api/v1/events/" + eventId;
 
@@ -77,9 +83,11 @@ const CalendarLogic = ({ toast }) => {
           // console.log(response.data);
           setModalData(response.data.data);
           setShowModal(true);
+          setIsLoading(false);
         })
         .catch((err) => {
           // console.log("UUU...");
+          setIsLoading(false);
           toast.error("Error" + JSON.stringify(err));
           history.push("/login");
         });
@@ -89,6 +97,7 @@ const CalendarLogic = ({ toast }) => {
         booked_date: date,
       });
       setShowModal(true);
+      setIsLoading(false);
     }
 
     // console.log(initialFormData);

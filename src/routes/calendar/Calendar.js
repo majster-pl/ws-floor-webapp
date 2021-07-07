@@ -7,7 +7,7 @@ import TableBody from "./components/TableBody";
 import "./Calendar.css";
 import CalendarSpinner from "./components/CalendarSpinner";
 
-const Calendar = ({ setLoggedIn, toast, setLoginErrorMsg }) => {
+const Calendar = ({ setIsLoading, setLoggedIn, toast, setLoginErrorMsg }) => {
   const {
     currentDate,
     setCurrentDate,
@@ -25,19 +25,16 @@ const Calendar = ({ setLoggedIn, toast, setLoginErrorMsg }) => {
     modalData,
     setModalData,
     reloadCalendar,
-  } = CalendarLogic({ toast });
+  } = CalendarLogic({ toast, setIsLoading });
 
   // when page oppened check if user logged in, if not redirect to login page
   const { isLoading, SpinnerComponent } = IsLoggedInLogic(
     setLoginErrorMsg,
+    setIsLoading,
     setLoggedIn
   );
-  //if still waiting response from server then display spinner
-  if (isLoading) {
-    return <SpinnerComponent />;
-  }
 
-  console.log("rendering calendar.js");
+  // console.log("rendering calendar.js");
 
   return (
     <div className="calendar-main scroll">
@@ -64,6 +61,7 @@ const Calendar = ({ setLoggedIn, toast, setLoginErrorMsg }) => {
           <CalendarSpinner numberOfDays={numberOfDays} />
         ) : (
           <TableBody
+            setIsLoading={setIsLoading}
             tableData={tableData}
             setModalEditData={setModalEventId}
             handleModalOpen={handleModalOpen}

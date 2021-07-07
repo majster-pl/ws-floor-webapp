@@ -1,15 +1,14 @@
 import { Container, Row, Col, Card } from "react-bootstrap";
 import IsLoggedInLogic from "../../components/IsLoggedInLogic";
-import apiClient from "../../service/api/api";
-import { useState, useEffect } from "react";
 import "./Dashboard.css";
 // import { Line } from "react-chartjs-2";
 import ChartLine from "./components/ChartLine";
 
-const Dashboard = ({ setLoggedIn, setLoginErrorMsg, toast }) => {
+const Dashboard = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
   // when page oppened check if user logged in, if not redirect to login page
   const { isLoading, SpinnerComponent } = IsLoggedInLogic(
     setLoginErrorMsg,
+    setIsLoading,
     setLoggedIn
   );
 

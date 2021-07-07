@@ -7,10 +7,11 @@ import moment from "moment";
 import { Formik } from "formik";
 import { useHistory } from "react-router-dom";
 
-function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
+function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   // when page oppened check if user logged in, if not redirect to login page
-  const { isLoading, SpinnerComponent } = IsLoggedInLogic(
+  const { } = IsLoggedInLogic(
     setLoginErrorMsg,
+    setIsLoading,
     setLoggedIn
   );
   const history = useHistory();
@@ -41,6 +42,7 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
   // function to remove customer
   const removeCustomer = () => {
     let url = "/api/v1/customer/" + modalData.id;
+    setIsLoading(true);
 
     apiClient
       .delete(url)
@@ -50,6 +52,7 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
         // reloadTable();
         history.goBack()
         setShowModal(false);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(JSON.stringify(err));
@@ -59,21 +62,25 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
             Unable to remove customer! {JSON.stringify(err.data.message)}
           </div>
         );
+        setIsLoading(false);
       });
   };
 
   // function to update customer
   const updateCustomer = (values) => {
+    setIsLoading(true);
     let url = "/api/v1/customer/" + id;
     apiClient
       .patch(url, values)
       .then((response) => {
         setToggleEditForm(true);
         toast.success("Customer data updated.");
+        setIsLoading(false);
       })
       .catch((err) => {
         setToggleEditForm(false);
         toast.error("Changes not saved. " + err.data.message, false);
+        setIsLoading(false);
       });
   };
 
@@ -85,15 +92,17 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
       );
       console.log(result.data.data);
       setFormGeneral(result.data.data)
+      setIsLoading(false);
     };
     fetchData();
   }, [toggleEditForm]);
 
 
-  //if still waiting response from server then display spinner
-  if (isLoading) {
-    return <SpinnerComponent />;
-  }
+  // //if still waiting response from server then display spinner
+  // if (isLoading) {
+  //   // return <SpinnerComponent />;
+  //   return <></>;
+  // }
 
   return (
     <div className="scroll">
@@ -295,7 +304,7 @@ function CustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
           </Tab>
         </Tabs>
       </Container>
-      <Modal show={showModal} onHide={handleCloseModal}>
+      <Modal show={showModal} onHide={handleCloseModal} centered>
         <Modal.Header>
           <Modal.Title className="text-danger">Warning!</Modal.Title>
           <Button

@@ -9,17 +9,21 @@ import {
   Col,
 } from "react-bootstrap";
 import IsLoggedInLogic from "../../../components/IsLoggedInLogic";
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import apiClient from "../../../service/api/api";
-import moment from "moment";
 import { Formik } from "formik";
 import { useHistory } from "react-router-dom";
 
-function NewCustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
+function NewCustomerPage({
+  setIsLoading,
+  setLoggedIn,
+  setLoginErrorMsg,
+  toast,
+}) {
   // when page oppened check if user logged in, if not redirect to login page
   const { isLoading, SpinnerComponent } = IsLoggedInLogic(
     setLoginErrorMsg,
+    setIsLoading,
     setLoggedIn
   );
   const history = useHistory();
@@ -53,11 +57,6 @@ function NewCustomerPage({ setLoggedIn, setLoginErrorMsg, toast }) {
       }
     }
     saveCustomer();
-  }
-
-  //if still waiting response from server then display spinner
-  if (isLoading) {
-    return <SpinnerComponent />;
   }
 
   return (

@@ -67,7 +67,7 @@ const Header = ({ isLoggedIn, setLoggedIn, setLoginErrorMsg }) => {
       expand="lg"
       bg="black"
       variant="dark"
-      className="navbar-fixed-top bg-sendary-extra"
+      className="navbar-fixed-top bg-sendary-extra navbar-main"
     >
       <Navbar.Brand eventkey="1" href="/">
         <img

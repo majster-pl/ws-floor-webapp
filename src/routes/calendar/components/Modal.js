@@ -317,6 +317,8 @@ const CalendarModal = ({
       show={showModal}
       onHide={handleCloseModal}
       onShow={handleOnShow}
+      backdrop="static"
+      centered
     >
       <Formik
         initialValues={modalData}

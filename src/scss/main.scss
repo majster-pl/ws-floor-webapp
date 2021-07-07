@@ -79,12 +79,16 @@ $nav-link-color: $color-gray-light;
 $nav-link-hover-color: $color-white;
 $nav-tabs-link-active-color: $color-pink;
 $nav-tabs-link-active-bg: $color-gray-darker;
+.navbar-main {
+  z-index: 2000;
+}
 label {
   color: var(--color-gray-light) !important;
 }
 #root {
   width: 100%;
   height: 100%;
+  // min-width: 20rem;
 }
 
 .scroll {
@@ -106,6 +110,12 @@ label {
 //   border-radius: 15px !important;
 //   font-weight: 100 !important;
 // }
+
+// Modal loading
+.modal-dialog-loading .modal-content {
+  background-color: transparent;
+  border: transparent;
+}
 
 // // CARD
 .card {
@@ -140,6 +150,10 @@ $pagination-disabled-bg: $color-gray;
 $modal-content-bg: $color-gray-dark;
 $modal-content-border-color: $color-gray;
 $modal-header-padding-y: 0.6rem;
+.modal {
+  top: 3rem !important;
+  max-height: calc(100vh - 3rem);
+}
 
 //input
 $input-bg: $color-gray;

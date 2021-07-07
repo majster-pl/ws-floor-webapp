@@ -4,7 +4,7 @@ import { Spinner } from "react-bootstrap";
 import apiClient from "../service/api/api";
 import { useHistory } from "react-router-dom";
 
-const IsLoggedIn = (setLoginErrorMsg, setLoggedIn) => {
+const IsLoggedIn = (setIsLoading, setLoginErrorMsg, setLoggedIn) => {
   const [isLoading, setLoading] = useState(true);
   const history = useHistory();
 
@@ -16,6 +16,7 @@ const IsLoggedIn = (setLoginErrorMsg, setLoggedIn) => {
         sessionStorage.setItem("loginStatus", "true");
         setLoggedIn(true);
         setLoading(false);
+        setIsLoading(false);
       })
       .catch((error) => {
         setLoggedIn(false);
@@ -33,6 +34,8 @@ const IsLoggedIn = (setLoginErrorMsg, setLoggedIn) => {
             setLoginErrorMsg(error.data.message);
             break;
         }
+        setIsLoading(false);
+
         sessionStorage.setItem("loginStatus", "false");
       });
   };

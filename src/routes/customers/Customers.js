@@ -9,7 +9,6 @@ import {
   Pagination,
   Nav,
   Modal,
-  CloseButton,
 } from "react-bootstrap";
 import { useState, useEffect, useMemo } from "react";
 import IsLoggedInLogic from "../../components/IsLoggedInLogic";
@@ -23,10 +22,11 @@ import {
 } from "react-table";
 import { Link } from "react-router-dom";
 
-const Customers = ({ setLoggedIn, setLoginErrorMsg, toast }) => {
+const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
   // when page oppened check if user logged in, if not redirect to login page
   const { isLoading, SpinnerComponent } = IsLoggedInLogic(
     setLoginErrorMsg,
+    setIsLoading,
     setLoggedIn
   );
 
@@ -42,14 +42,17 @@ const Customers = ({ setLoggedIn, setLoginErrorMsg, toast }) => {
 
   const reloadTable = () => {
     let url = "/api/v1/customer";
+    setIsLoading(true);
     apiClient
       .get(url)
       .then((response) => {
         // console.log(response);
+        setIsLoading(false);
 
         setData(response.data.data);
       })
       .catch((err) => {
+        setIsLoading(false);
         console.log("error:", err);
       });
   };
@@ -100,6 +103,7 @@ const Customers = ({ setLoggedIn, setLoginErrorMsg, toast }) => {
                   className="p-0 text-white text-decoration-none"
                   as={Link}
                   to={"/customers/" + id}
+                  onClick={() => setIsLoading(true)}
                 >
                   {value}
                 </Button>
@@ -213,9 +217,9 @@ const Customers = ({ setLoggedIn, setLoginErrorMsg, toast }) => {
   const { globalFilter } = state;
 
   //if still waiting response from server then display spinner
-  if (isLoading) {
-    return <SpinnerComponent />;
-  }
+  // if (isLoading) {
+  //   return <SpinnerComponent />;
+  // }
 
   // console.log("state.pageSize:" + JSON.stringify(page));
 
@@ -223,56 +227,60 @@ const Customers = ({ setLoggedIn, setLoginErrorMsg, toast }) => {
     <div className="scroll">
       <Container>
         <Row className="py-3 justify-content-between">
-          <Col className="col-auto my-2">
-            <Row>
-              <Col className="my-auto mx-4">
+          <Col className="col-12 col-md-6 col-auto my-0">
+            <Row className="mb-2">
+              <Col className="col-4 col-md-auto my-auto">
                 <Button variant="success" as={Link} to={"/customers/new"}>
                   Add new
                 </Button>
               </Col>
-              <Col className="col-auto my-auto">
-                <Pagination className="my-auto">
-                  {pageCount > 4 ? (
-                    <Pagination.First onClick={() => gotoPage(0)} />
-                  ) : (
-                    ""
-                  )}
-                  <Pagination.Prev
-                    onClick={() => previousPage()}
-                    disabled={!canPreviousPage}
-                  />
-
-                  {pageOptions.map((val) =>
-                    val + 3 > state.pageIndex && val - 3 < state.pageIndex ? (
-                      <Pagination.Item
-                        active={val + 1 == state.pageIndex + 1}
-                        onClick={() => gotoPage(val)}
-                      >
-                        {val + 1}
-                      </Pagination.Item>
+              <Col className="col-8 col-md-auto my-auto">
+                <div className="text-end">
+                  <Pagination className="my-auto float-end">
+                    {pageCount > 4 ? (
+                      <Pagination.First onClick={() => gotoPage(0)} />
                     ) : (
                       ""
-                    )
-                  )}
-                  {state.pageIndex + 1 < pageCount && pageCount > 3 ? (
-                    <Pagination.Ellipsis disabled />
-                  ) : (
-                    ""
-                  )}
-                  <Pagination.Next
-                    onClick={() => nextPage()}
-                    disabled={!canNextPage}
-                  />
-                  {pageCount > 4 ? (
-                    <Pagination.Last onClick={() => gotoPage(pageCount - 1)} />
-                  ) : (
-                    ""
-                  )}
-                </Pagination>
+                    )}
+                    <Pagination.Prev
+                      onClick={() => previousPage()}
+                      disabled={!canPreviousPage}
+                    />
+
+                    {pageOptions.map((val) =>
+                      val + 3 > state.pageIndex && val - 3 < state.pageIndex ? (
+                        <Pagination.Item
+                          active={val + 1 == state.pageIndex + 1}
+                          onClick={() => gotoPage(val)}
+                        >
+                          {val + 1}
+                        </Pagination.Item>
+                      ) : (
+                        ""
+                      )
+                    )}
+                    {state.pageIndex + 1 < pageCount && pageCount > 3 ? (
+                      <Pagination.Ellipsis disabled />
+                    ) : (
+                      ""
+                    )}
+                    <Pagination.Next
+                      onClick={() => nextPage()}
+                      disabled={!canNextPage}
+                    />
+                    {pageCount > 4 ? (
+                      <Pagination.Last
+                        onClick={() => gotoPage(pageCount - 1)}
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </Pagination>
+                </div>
               </Col>
             </Row>
           </Col>
-          <Col className="col-md-3 my-auto">
+          <Col className="col-md-3 my-md-2 my-auto ">
             <Form.Control
               type="text"
               placeholder="Search"

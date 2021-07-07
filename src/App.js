@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Modal, Spinner } from "react-bootstrap";
 import "./scss/main.scss";
 
 import Header from "./components/header/Header";
@@ -19,6 +20,7 @@ sessionStorage.setItem("loginStatus", "false");
 const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [loginErrorMsg, setLoginErrorMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
@@ -55,6 +57,7 @@ const App = () => {
 
           <Route path="/dashboard">
             <Dashboard
+              setIsLoading={setIsLoading}
               setLoggedIn={setAuthenticated}
               toast={toast}
               setLoginErrorMsg={setLoginErrorMsg}
@@ -63,6 +66,7 @@ const App = () => {
 
           <Route path="/calendar">
             <Calendar
+              setIsLoading={setIsLoading}
               setLoggedIn={setAuthenticated}
               setLoginErrorMsg={setLoginErrorMsg}
               toast={toast}
@@ -86,6 +90,7 @@ const App = () => {
           </Route>
           <Route path="/customers/:id">
             <CustomerPage
+              setIsLoading={setIsLoading}
               setLoggedIn={setAuthenticated}
               setLoginErrorMsg={setLoginErrorMsg}
               toast={toast}
@@ -93,6 +98,7 @@ const App = () => {
           </Route>
           <Route exact path="/customers">
             <Customers
+              setIsLoading={setIsLoading}
               setLoggedIn={setAuthenticated}
               setLoginErrorMsg={setLoginErrorMsg}
               toast={toast}
@@ -104,6 +110,33 @@ const App = () => {
           </Route>
         </Switch>
       </Router>
+      <Modal
+        show={isLoading}
+        centered
+        className="modal-dialog-loading text-center disable-select"
+        animation={false}
+        onHide={() => setIsLoading(false)}
+        // backdrop="static"
+        // keyboard={false}
+      >
+        <div>
+          <div className="div-center">
+            <Spinner
+              className="mx-1"
+              animation="grow"
+              variant="primary"
+              size="sm"
+            />
+            <Spinner className="mx-1" animation="grow" variant="success" />
+            <Spinner
+              className="mx-1"
+              animation="grow"
+              variant="danger"
+              size="sm"
+            />
+          </div>
+        </div>
+      </Modal>
     </>
   );
 };
