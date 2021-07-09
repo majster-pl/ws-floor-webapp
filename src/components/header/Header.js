@@ -1,9 +1,16 @@
 import React from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { Navbar, Nav, Dropdown, NavDropdown, Row, Col } from "react-bootstrap";
+import {
+  Navbar,
+  Nav,
+  Dropdown,
+  NavDropdown,
+  Row,
+  Col,
+  Button,
+} from "react-bootstrap";
 import apiClient from "../../service/api/api";
 import { useHistory } from "react-router";
-import Cookies from "js-cookie";
 
 import "./Header.css";
 
@@ -38,12 +45,13 @@ const Header = ({ isLoggedIn, setLoggedIn, setLoginErrorMsg }) => {
   };
 
   const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
-    <a
+    <Button
       ref={ref}
       onClick={(e) => {
         e.preventDefault();
         onClick(e);
       }}
+      variant="link"
       className="nav-link p-0"
       id="navbarDropdownMenuLink"
       role="button"
@@ -58,7 +66,7 @@ const Header = ({ isLoggedIn, setLoggedIn, setLoginErrorMsg }) => {
         className="rounded-circle shadow-sm"
         alt="User avatar"
       ></img>
-    </a>
+    </Button>
   ));
 
   return (
@@ -84,32 +92,31 @@ const Header = ({ isLoggedIn, setLoggedIn, setLoginErrorMsg }) => {
           <Navbar.Collapse id="responsive-navbar-nav">
             <div className="mx-0 px-0 container-fluid">
               <Row>
-                <Col className="col-auto me-auto">
-                  <Nav className="me-auto">
-                    <Nav.Link eventkey="2" as={NavLink} to="/dashboard">
+                <Col className="col-12 col-lg-auto me-auto">
+                  <Nav className="me-auto w-100">
+                    <Nav.Link eventKey="2" as={NavLink} to="/dashboard">
                       Dashboard
                     </Nav.Link>
-                    <Nav.Link eventkey="3" as={NavLink} to="/calendar">
+                    <Nav.Link eventKey="3" as={NavLink} to="/calendar">
                       Calendar
                     </Nav.Link>
-                    <Nav.Link eventkey="4" as={NavLink} to="/workshop">
+                    <Nav.Link eventKey="4" as={NavLink} to="/workshop">
                       Workshop
                     </Nav.Link>
                     <NavDropdown
-                      eventkey="5.1"
                       active={setDropdown1Active()}
                       title="More"
                       id="nav-dropdown"
                     >
                       <NavDropdown.Item
-                        eventkey="5.1"
+                        eventKey="5.1"
                         as={NavLink}
                         to="/customers"
                       >
                         Customers
                       </NavDropdown.Item>
                       <NavDropdown.Item
-                        eventkey="5.2"
+                        eventKey="5.2"
                         as={NavLink}
                         to="/assets"
                       >
@@ -119,7 +126,7 @@ const Header = ({ isLoggedIn, setLoggedIn, setLoginErrorMsg }) => {
                   </Nav>
 
                   <Nav className="d-block d-lg-none me-auto">
-                    <Nav.Link eventkey="5" onClick={logout}>
+                    <Nav.Link eventKey="5" onClick={logout}>
                       Logout{" "}
                     </Nav.Link>
                   </Nav>
@@ -134,14 +141,14 @@ const Header = ({ isLoggedIn, setLoggedIn, setLoginErrorMsg }) => {
                       ></Dropdown.Toggle>
 
                       <Dropdown.Menu className="navbar-user-dropdown">
-                        <Dropdown.Item eventkey="10" as={Link} to="/add-user">
+                        <Dropdown.Item eventKey="10" as={Link} to="/add-user">
                           Add User
                         </Dropdown.Item>
-                        <Dropdown.Item eventkey="11" as={Link} to="/settings">
+                        <Dropdown.Item eventKey="11" as={Link} to="/settings">
                           Settings
                         </Dropdown.Item>
                         <Dropdown.Divider />
-                        <Dropdown.Item eventkey="12" as={Link} onClick={logout}>
+                        <Dropdown.Item eventKey="12" as={Link} onClick={logout}>
                           Logout
                         </Dropdown.Item>
                       </Dropdown.Menu>
