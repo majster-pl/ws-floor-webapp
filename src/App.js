@@ -12,6 +12,9 @@ import Workshop from "./routes/workshop/Workshop";
 import Customers from "./routes/customers/Customers";
 import CustomerPage from "./routes/customers/pages/CustomerPage";
 import NewCustomerPage from "./routes/customers/pages/NewCustomerPage";
+import Assets from "./routes/assets/Assets";
+import NewAssetPage from "./routes/assets/NewAssetPage";
+import AssetPage from "./routes/assets/AssetPage";
 import Page404 from "./routes/page404/Page404";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -98,6 +101,32 @@ const App = () => {
           </Route>
           <Route exact path="/customers">
             <Customers
+              setIsLoading={setIsLoading}
+              setLoggedIn={setAuthenticated}
+              setLoginErrorMsg={setLoginErrorMsg}
+              toast={toast}
+            />
+          </Route>
+
+          <Route exact path="/assets">
+            <Assets
+              setIsLoading={setIsLoading}
+              setLoggedIn={setAuthenticated}
+              setLoginErrorMsg={setLoginErrorMsg}
+              toast={toast}
+            />
+          </Route>
+
+          <Route path="/assets/new">
+            <NewAssetPage
+              setLoggedIn={setAuthenticated}
+              setLoginErrorMsg={setLoginErrorMsg}
+              toast={toast}
+            />
+          </Route>
+
+          <Route path="/assets/:id">
+            <AssetPage
               setIsLoading={setIsLoading}
               setLoggedIn={setAuthenticated}
               setLoginErrorMsg={setLoginErrorMsg}

@@ -10,20 +10,20 @@ import {
   Accordion,
   Modal,
 } from "react-bootstrap";
-import IsLoggedInLogic from "../../../components/IsLoggedInLogic";
+import IsLoggedInLogic from "../../components/IsLoggedInLogic";
 import { useState, useEffect } from "react";
-import apiClient from "../../../service/api/api";
+import apiClient from "../../service/api/api";
 import moment from "moment";
 import { Formik } from "formik";
 import { useHistory } from "react-router-dom";
 
-function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
+function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   // when page oppened check if user logged in, if not redirect to login page
   const {} = IsLoggedInLogic(setLoginErrorMsg, setIsLoading, setLoggedIn);
   const history = useHistory();
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModaldata] = useState({
-    customer_name: "",
+    reg: "",
     id: 0,
   });
   const handleCloseModal = () => setShowModal(false);
@@ -33,7 +33,7 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   const { id } = useParams(); // parameter from url
 
   const [formGeneral, setFormGeneral] = useState({
-    customer_name: "",
+    reg: "",
     status: "",
     assets_total: "",
     created_at: "",
@@ -93,7 +93,7 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   // fech data on component mount
   useEffect(() => {
     const fetchData = async () => {
-      const result = await apiClient.get("/api/v1/customers/" + id);
+      const result = await apiClient.get("/api/v1/assets/" + id);
       console.log(result.data.data);
       setFormGeneral(result.data.data);
       setIsLoading(false);
@@ -125,8 +125,8 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
               <div className="row mx-auto my-2">
                 <div className="col-auto my-auto">
                   <div className="number-circle-large fs-2 text-pink text-uppercase">
-                    {formGeneral.customer_name !== ""
-                      ? formGeneral.customer_name
+                    {formGeneral.reg !== ""
+                      ? formGeneral.reg
                           .match(/\b(\w)/g)
                           .join("")
                           .substring(0, 2)
@@ -134,7 +134,7 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                   </div>
                 </div>
                 <div className="col text-start">
-                  <div className="fs-4">{formGeneral.customer_name}</div>
+                  <div className="fs-4">{formGeneral.reg}</div>
                   <div className="row ">
                     <div className="col-auto">
                       <div>
@@ -200,7 +200,7 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                           variant="danger"
                           onClick={() => {
                             let data = {
-                              customer_name: props.values.customer_name,
+                              reg: props.values.reg,
                               id: props.values.id,
                             };
                             handleShowModal();
@@ -245,32 +245,48 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                       <Form.Group
                         as={Col}
                         className="col-12 col-md-6"
-                        controlId="formName"
+                        controlId="formReg"
                       >
-                        <Form.Label>Customer Name</Form.Label>
+                        <Form.Label>Reg</Form.Label>
                         <Form.Control
                           plaintext={toggleEditForm}
                           disabled={toggleEditForm}
                           type="text"
-                          placeholder="Enter customer name"
-                          onChange={props.handleChange("customer_name")}
-                          value={props.values.customer_name}
+                          placeholder="Vehicle Reg"
+                          onChange={props.handleChange("reg")}
+                          value={props.values.reg}
                         />
                       </Form.Group>
 
                       <Form.Group
                         as={Col}
                         className="col-12 col-md-6"
-                        controlId="formContact"
+                        controlId="formMake"
                       >
-                        <Form.Label>Contact Number</Form.Label>
+                        <Form.Label>Make</Form.Label>
                         <Form.Control
                           plaintext={toggleEditForm}
                           disabled={toggleEditForm}
-                          onChange={props.handleChange("customer_contact")}
-                          value={props.values.customer_contact}
+                          onChange={props.handleChange("make")}
+                          value={props.values.make}
                           type="text"
-                          placeholder="Contact number"
+                          placeholder="Vehicle Make"
+                        />
+                      </Form.Group>
+
+                      <Form.Group
+                        as={Col}
+                        className="col-12 col-md-6"
+                        controlId="formModel"
+                      >
+                        <Form.Label>Model</Form.Label>
+                        <Form.Control
+                          plaintext={toggleEditForm}
+                          disabled={toggleEditForm}
+                          onChange={props.handleChange("model")}
+                          value={props.values.model}
+                          type="text"
+                          placeholder="Vehicle Model"
                         />
                       </Form.Group>
 
@@ -377,7 +393,7 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
           <p className="">
             Removeing customer also erase all bookings and any data assosiated
             with this customer! Are you sure you want to remove{" "}
-            <span className="text-success"> {modalData.customer_name}</span> ?
+            <span className="text-success"> {modalData.reg}</span> ?
           </p>
           <Form.Group className="mt-4" controlId="formBasicCheckbox">
             <Form.Check
@@ -415,4 +431,4 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   );
 }
 
-export default CustomerPage;
+export default AssetPage;

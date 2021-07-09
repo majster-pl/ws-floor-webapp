@@ -49,7 +49,7 @@ const CalendarModal = ({
   //fetching customers list
   const getCustomers = () => {
     console.log("getCustomers function...");
-    let url = "/api/v1/customer";
+    let url = "/api/v1/customers";
 
     apiClient
       .get(url)

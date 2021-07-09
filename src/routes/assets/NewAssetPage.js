@@ -8,18 +8,13 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-import IsLoggedInLogic from "../../../components/IsLoggedInLogic";
+import IsLoggedInLogic from "../../components/IsLoggedInLogic";
 import { useState } from "react";
-import apiClient from "../../../service/api/api";
+import apiClient from "../../service/api/api";
 import { Formik } from "formik";
 import { useHistory } from "react-router-dom";
 
-function NewCustomerPage({
-  setIsLoading,
-  setLoggedIn,
-  setLoginErrorMsg,
-  toast,
-}) {
+function NewAssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   // when page oppened check if user logged in, if not redirect to login page
   const { isLoading, SpinnerComponent } = IsLoggedInLogic(
     setLoginErrorMsg,
@@ -29,29 +24,27 @@ function NewCustomerPage({
   const history = useHistory();
 
   const [formGeneral, setFormGeneral] = useState({
-    customer_name: "",
-    status: "",
-    assets_total: "",
+    reg: "",
+    make: "",
+    model: "",
     created_at: "",
-    customer_contact: "",
+    status: "",
   });
   const [key, setKey] = useState("general"); // current tab state
 
   // function to add new customer
   function handleSubmit(values, { setSubmitting }) {
     async function saveCustomer() {
-      let url = "/api/v1/customers";
+      let url = "/api/v1/assets";
       try {
         const resp = await apiClient.post(url, values);
         console.log(resp.data);
-        toast.success("New customer added.");
+        toast.success("New asset added.");
         setSubmitting(false);
-        history.push("/customers/" + resp.data.id);
+        history.push("/assets/" + resp.data.id);
       } catch (err) {
         // Handle Error Here
-        toast.error(
-          "New Customer not saved! " + JSON.stringify(err.data.message)
-        );
+        toast.error("New Asset not saved! " + JSON.stringify(err.data.message));
         console.error(err);
         setSubmitting(false);
       }
@@ -83,18 +76,20 @@ function NewCustomerPage({
                   </div>
                   <div className="col-12 col-md-6">
                     <div className="row mx-auto my-2">
-                      <div className="col-auto my-auto">
+                      {/* <div className="col-auto my-auto">
                         <div className="number-circle-large fs-2 text-pink text-uppercase">
-                          {props.values.customer_name !== ""
-                            ? props.values.customer_name
+                          {props.values.reg !== ""
+                            ? props.values.reg
                                 .match(/\b(\w)/g)
                                 .join("")
                                 .substring(0, 2)
                             : "..."}
                         </div>
-                      </div>
+                      </div> */}
                       <div className="col text-start">
-                        <div className="fs-4">{props.values.customer_name}</div>
+                        <div className="fs-4 text-uppercase">
+                          {props.values.reg}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -102,7 +97,7 @@ function NewCustomerPage({
               </Container>
 
               <Container>
-                <Card.Title>Add New Customer</Card.Title>
+                <Card.Title>Add Asset</Card.Title>
 
                 <Row className="mb-4 mt-2 g-3">
                   <Form.Group
@@ -110,12 +105,13 @@ function NewCustomerPage({
                     className="col-12 col-md-6"
                     controlId="formName"
                   >
-                    <Form.Label>Customer Name</Form.Label>
+                    <Form.Label>Reg</Form.Label>
                     <Form.Control
+                      maxLength={7}
                       type="text"
-                      placeholder="Enter customer name"
-                      onChange={props.handleChange("customer_name")}
-                      value={props.values.customer_name}
+                      placeholder="Vehicle Reg"
+                      onChange={props.handleChange("reg")}
+                      value={props.values.reg.toUpperCase()}
                     />
                   </Form.Group>
                   <Form.Group
@@ -123,13 +119,57 @@ function NewCustomerPage({
                     className="col-12 col-md-6"
                     controlId="formContact"
                   >
-                    <Form.Label>Contact Number</Form.Label>
+                    <Form.Label>Make</Form.Label>
                     <Form.Control
-                      onChange={props.handleChange("customer_contact")}
-                      value={props.values.customer_contact}
+                      onChange={props.handleChange("make")}
+                      value={props.values.make}
                       type="text"
-                      placeholder="Contact number"
+                      placeholder="Vehicle Make"
                     />
+                  </Form.Group>
+                  <Form.Group
+                    as={Col}
+                    className="col-12 col-md-6"
+                    controlId="formContact"
+                  >
+                    <Form.Label>Model</Form.Label>
+                    <Form.Control
+                      onChange={props.handleChange("model")}
+                      value={props.values.model}
+                      type="text"
+                      placeholder="Vehicel Model"
+                    />
+                  </Form.Group>
+                  <Form.Group
+                    as={Col}
+                    className="col-12 col-md-6"
+                    controlId="formStatus"
+                  >
+                    <Form.Label>Status:</Form.Label>
+                    <Form.Control
+                      as="select"
+                      onChange={props.handleChange("status")}
+                    >
+                      <option disabled selected></option>
+                      <option
+                        value="active"
+                        selected={"active" == props.values.status}
+                      >
+                        Active
+                      </option>
+                      <option
+                        value="key_fleet"
+                        selected={"key_fleet" == props.values.status}
+                      >
+                        Key Fleet
+                      </option>
+                      <option
+                        value="on_hold"
+                        selected={"on_hold" == props.values.status}
+                      >
+                        On Hold
+                      </option>
+                    </Form.Control>
                   </Form.Group>
                 </Row>
                 <Row className="justify-content-end">
@@ -168,4 +208,4 @@ function NewCustomerPage({
   );
 }
 
-export default NewCustomerPage;
+export default NewAssetPage;

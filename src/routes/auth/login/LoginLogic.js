@@ -23,6 +23,9 @@ const LoginLogic = ({ setLoggedIn }, setLoginErrorMsg, toast) => {
         history.push("/dashboard");
       })
       .catch((error) => {
+        console.log("HELLO!");
+        setLoginErrorMsg(error.data.message);
+
         console.log("Error is: " + JSON.stringify(error));
       });
   }, []);

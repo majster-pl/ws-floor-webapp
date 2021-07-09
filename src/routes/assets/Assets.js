@@ -13,7 +13,7 @@ import {
 import { useState, useEffect, useMemo } from "react";
 import IsLoggedInLogic from "../../components/IsLoggedInLogic";
 import apiClient from "../../service/api/api";
-import "./Customers.css";
+// import "./Customers.css";
 import {
   useTable,
   useSortBy,
@@ -22,7 +22,7 @@ import {
 } from "react-table";
 import { Link } from "react-router-dom";
 
-const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
+const Assets = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
   // when page oppened check if user logged in, if not redirect to login page
   const { isLoading, SpinnerComponent } = IsLoggedInLogic(
     setLoginErrorMsg,
@@ -33,7 +33,7 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModaldata] = useState({
-    customer_name: "",
+    reg: "",
     id: 0,
   });
   const handleCloseModal = () => setShowModal(false);
@@ -41,15 +41,16 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
   const [removeAll, setRemoveAll] = useState(false);
 
   const reloadTable = () => {
-    let url = "/api/v1/customers";
+    let url = "/api/v1/assets";
     setIsLoading(true);
     apiClient
       .get(url)
       .then((response) => {
+        // console.log(response);
         setIsLoading(false);
-        console.log(response.data.data);
 
         setData(response.data.data);
+        console.log(response.data.data);
       })
       .catch((err) => {
         setIsLoading(false);
@@ -60,13 +61,13 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
 
   // function to remove customer
   const removeCustomer = () => {
-    let url = "/api/v1/customers/" + modalData.id;
+    let url = "/api/v1/assets/" + modalData.id;
 
     apiClient
       .delete(url)
       .then((response) => {
         console.log(response);
-        toast.success("Customer removed.");
+        toast.success("Asset removed.");
         reloadTable();
         setShowModal(false);
       })
@@ -75,7 +76,7 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
 
         toast.error(
           <div className="toast_wrap">
-            Unable to remove customer! {JSON.stringify(err.data.message)}
+            Unable to remove asset! {JSON.stringify(err.data.message)}
           </div>
         );
       });
@@ -84,25 +85,25 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
   const columns = useMemo(
     () => [
       {
-        Header: "Customer",
-        accessor: "customer_name", // accessor is the "key" in the data
-        Cell: ({ value, id }) => {
+        Header: "Reg",
+        accessor: "reg", // accessor is the "key" in the data
+        Cell: ({ value, id, make }) => {
           return (
             <Row className="my-2">
-              <Col sm="auto" className="ms-4 text-end d-none d-md-block">
+              {/* <Col sm="auto" className="ms-4 text-end d-none d-md-block">
                 <div className="numberCircle fs-5 text-pink text-uppercase">
-                  {value
+                  {make
                     .match(/\b(\w)/g)
                     .join("")
                     .substring(0, 2)}
                 </div>
-              </Col>
-              <Col className="my-auto text-center text-md-start text-capitalize">
+              </Col> */}
+              <Col className="my-auto text-center text-uppercase">
                 <Button
                   variant="link"
                   className="p-0 text-white text-decoration-none"
                   as={Link}
-                  to={"/customers/" + id}
+                  to={"/assets/" + id}
                   onClick={() => setIsLoading(true)}
                 >
                   {value}
@@ -113,27 +114,20 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
         },
       },
       {
-        Header: "Contact no",
-        accessor: "customer_contact",
+        Header: "Make",
+        accessor: "make",
         Cell: ({ value }) => {
           return (
-            <Nav.Link
-              className="text-white fw-light"
-              onClick={() => window.open("tel:" + value, "_self")}
-            >
-              {value}
-            </Nav.Link>
+            <span className="text-white fw-light text-capitalize">{value}</span>
           );
         },
       },
       {
-        Header: "Assets",
-        accessor: "assets_total",
+        Header: "Model",
+        accessor: "model",
         Cell: ({ value }) => {
           return (
-            <div className="fs-4 fw-normal text-success text-center">
-              {value}
-            </div>
+            <span className="text-white fw-light text-capitalize">{value}</span>
           );
         },
       },
@@ -146,11 +140,15 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
               <i
                 className={
                   "fa fa-circle fa-xs me-2 " +
-                  (value === "active" ? "text-success" : "text-info")
+                  (value === "active"
+                    ? "text-success"
+                    : value == "key_fleet"
+                    ? "text-pink"
+                    : "text-info")
                 }
                 aria-hidden="true"
               ></i>
-              {value}
+              {value.replace("_", " ")}
             </div>
           );
         },
@@ -158,7 +156,7 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
       {
         Header: "",
         accessor: "id",
-        Cell: ({ value, cust_name }) => {
+        Cell: ({ value, reg }) => {
           return (
             <Dropdown>
               <Dropdown.Toggle
@@ -170,15 +168,15 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item as={Link} to={"/customers/" + value}>
-                  Edit {value}
+                <Dropdown.Item as={Link} to={"/assets/" + value}>
+                  Edit
                 </Dropdown.Item>
                 <Dropdown.Item
                   // onClick={() => alert("Do you really want to remove it??")}
                   onClick={() => {
                     setRemoveAll(false);
                     let data = {
-                      customer_name: cust_name,
+                      reg: reg,
                       id: value,
                     };
                     setModaldata(data);
@@ -230,7 +228,7 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
           <Col className="col-12 col-md-6 col-auto my-0">
             <Row className="mb-2">
               <Col className="col-4 col-md-auto my-auto">
-                <Button variant="success" as={Link} to={"/customers/new"}>
+                <Button variant="success" as={Link} to={"/assets/new"}>
                   Add new
                 </Button>
               </Col>
@@ -347,7 +345,7 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
                           {cell.render("Cell", {
                             id: row.original.id,
                             value: cell.value,
-                            cust_name: row.original.customer_name,
+                            reg: row.original.reg,
                           })}
                         </td>
                       );
@@ -370,9 +368,9 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
         </Modal.Header>
         <Modal.Body>
           <p className="">
-            Removeing customer also erase all bookings and any data assosiated
-            with this customer! Are you sure you want to remove{" "}
-            <span className="text-success"> {modalData.customer_name}</span> ?
+            Removeing asset also erase all bookings and any data assosiated with
+            this asset! Are you sure you want to remove{" "}
+            <span className="text-success"> {modalData.reg}</span> ?
           </p>
           <Form.Group className="mt-4" controlId="formBasicCheckbox">
             <Form.Check
@@ -410,4 +408,4 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
   );
 };
 
-export default Customers;
+export default Assets;
