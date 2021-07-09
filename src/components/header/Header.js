@@ -86,30 +86,30 @@ const Header = ({ isLoggedIn, setLoggedIn, setLoginErrorMsg }) => {
               <Row>
                 <Col className="col-auto me-auto">
                   <Nav className="me-auto">
-                    <Nav.Link eventKey="2" as={NavLink} to="/dashboard">
+                    <Nav.Link eventkey="2" as={NavLink} to="/dashboard">
                       Dashboard
                     </Nav.Link>
-                    <Nav.Link eventKey="3" as={NavLink} to="/calendar">
+                    <Nav.Link eventkey="3" as={NavLink} to="/calendar">
                       Calendar
                     </Nav.Link>
-                    <Nav.Link eventKey="4" as={NavLink} to="/workshop">
+                    <Nav.Link eventkey="4" as={NavLink} to="/workshop">
                       Workshop
                     </Nav.Link>
                     <NavDropdown
-                      eventKey="5.1"
+                      eventkey="5.1"
                       active={setDropdown1Active()}
                       title="More"
                       id="nav-dropdown"
                     >
                       <NavDropdown.Item
-                        eventKey="5.1"
+                        eventkey="5.1"
                         as={NavLink}
                         to="/customers"
                       >
                         Customers
                       </NavDropdown.Item>
                       <NavDropdown.Item
-                        eventKey="5.2"
+                        eventkey="5.2"
                         as={NavLink}
                         to="/assets"
                       >
@@ -119,7 +119,7 @@ const Header = ({ isLoggedIn, setLoggedIn, setLoginErrorMsg }) => {
                   </Nav>
 
                   <Nav className="d-block d-lg-none me-auto">
-                    <Nav.Link eventKey="5" as={Link} onClick={logout}>
+                    <Nav.Link eventkey="5" onClick={logout}>
                       Logout{" "}
                     </Nav.Link>
                   </Nav>
@@ -134,14 +134,14 @@ const Header = ({ isLoggedIn, setLoggedIn, setLoginErrorMsg }) => {
                       ></Dropdown.Toggle>
 
                       <Dropdown.Menu className="navbar-user-dropdown">
-                        <Dropdown.Item eventKey="10" as={Link} to="/add-user">
+                        <Dropdown.Item eventkey="10" as={Link} to="/add-user">
                           Add User
                         </Dropdown.Item>
-                        <Dropdown.Item eventKey="11" as={Link} to="/settings">
+                        <Dropdown.Item eventkey="11" as={Link} to="/settings">
                           Settings
                         </Dropdown.Item>
                         <Dropdown.Divider />
-                        <Dropdown.Item eventKey="12" as={Link} onClick={logout}>
+                        <Dropdown.Item eventkey="12" as={Link} onClick={logout}>
                           Logout
                         </Dropdown.Item>
                       </Dropdown.Menu>
