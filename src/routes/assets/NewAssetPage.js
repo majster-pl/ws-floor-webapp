@@ -10,9 +10,10 @@ import {
 } from "react-bootstrap";
 import IsLoggedInLogic from "../../components/IsLoggedInLogic";
 import { useState } from "react";
-import apiClient from "../../service/api/api";
-import { Formik } from "formik";
 import { useHistory } from "react-router-dom";
+import apiClient from "../../service/api/api";
+import { Formik, yupToFormErrors } from "formik";
+import * as yup from "yup";
 
 function NewAssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   // when page oppened check if user logged in, if not redirect to login page
@@ -22,6 +23,13 @@ function NewAssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
     setLoggedIn
   );
   const history = useHistory();
+
+  const reviewSchema = yup.object({
+    reg: yup.string().required().min(4),
+    make: yup.string().min(3),
+    model: yup.string().min(3),
+    status: yup.string().required(),
+  });
 
   const [formGeneral, setFormGeneral] = useState({
     reg: "",
@@ -58,6 +66,7 @@ function NewAssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
         <Formik
           initialValues={formGeneral}
           validateOnChange={true}
+          validationSchema={reviewSchema}
           enableReinitialize={true}
           onSubmit={handleSubmit}
         >
@@ -76,19 +85,9 @@ function NewAssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                   </div>
                   <div className="col-12 col-md-6">
                     <div className="row mx-auto my-2">
-                      {/* <div className="col-auto my-auto">
-                        <div className="number-circle-large fs-2 text-pink text-uppercase">
-                          {props.values.reg !== ""
-                            ? props.values.reg
-                                .match(/\b(\w)/g)
-                                .join("")
-                                .substring(0, 2)
-                            : "..."}
-                        </div>
-                      </div> */}
-                      <div className="col text-start">
-                        <div className="fs-4 text-uppercase">
-                          {props.values.reg}
+                      <div className="col-5 mx-auto bg-info rounded text-center">
+                        <div className="fs-2 my-auto fw-bold text-uppercase disable-select text-sendary-extra ">
+                          &nbsp;{props.values.reg}&nbsp;
                         </div>
                       </div>
                     </div>
@@ -103,7 +102,7 @@ function NewAssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                   <Form.Group
                     as={Col}
                     className="col-12 col-md-6"
-                    controlId="formName"
+                    controlId="formReg"
                   >
                     <Form.Label>Reg</Form.Label>
                     <Form.Control
@@ -112,12 +111,16 @@ function NewAssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                       placeholder="Vehicle Reg"
                       onChange={props.handleChange("reg")}
                       value={props.values.reg.toUpperCase()}
+                      onBlur={props.handleBlur("reg")}
                     />
+                    <Form.Control.Feedback type="invalid" className="d-block">
+                      {props.touched.reg && props.errors.reg}
+                    </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group
                     as={Col}
                     className="col-12 col-md-6"
-                    controlId="formContact"
+                    controlId="formMake"
                   >
                     <Form.Label>Make</Form.Label>
                     <Form.Control
@@ -125,12 +128,16 @@ function NewAssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                       value={props.values.make}
                       type="text"
                       placeholder="Vehicle Make"
+                      onBlur={props.handleBlur("make")}
                     />
+                    <Form.Control.Feedback type="invalid" className="d-block">
+                      {props.touched.make && props.errors.make}
+                    </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group
                     as={Col}
                     className="col-12 col-md-6"
-                    controlId="formContact"
+                    controlId="formModel"
                   >
                     <Form.Label>Model</Form.Label>
                     <Form.Control
@@ -138,7 +145,11 @@ function NewAssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                       value={props.values.model}
                       type="text"
                       placeholder="Vehicel Model"
+                      onBlur={props.handleBlur("model")}
                     />
+                    <Form.Control.Feedback type="invalid" className="d-block">
+                      {props.touched.model && props.errors.model}
+                    </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group
                     as={Col}
@@ -149,19 +160,16 @@ function NewAssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                     <Form.Control
                       as="select"
                       onChange={props.handleChange("status")}
+                      onBlur={props.handleBlur("status")}
                     >
-                      <option disabled selected></option>
+                      <option disabled selected>
+                        --- select one ---
+                      </option>
                       <option
                         value="active"
                         selected={"active" == props.values.status}
                       >
                         Active
-                      </option>
-                      <option
-                        value="key_fleet"
-                        selected={"key_fleet" == props.values.status}
-                      >
-                        Key Fleet
                       </option>
                       <option
                         value="on_hold"
@@ -170,6 +178,9 @@ function NewAssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                         On Hold
                       </option>
                     </Form.Control>
+                    <Form.Control.Feedback type="invalid" className="d-block">
+                      {props.touched.status && props.errors.status}
+                    </Form.Control.Feedback>
                   </Form.Group>
                 </Row>
                 <Row className="justify-content-end">
@@ -177,7 +188,7 @@ function NewAssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                     <div className="d-grid">
                       <Button
                         variant="success"
-                        disabled={props.isSubmitting || !props.dirty}
+                        disabled={props.isSubmitting}
                         onClick={() => props.submitForm()}
                       >
                         {props.isSubmitting ? (

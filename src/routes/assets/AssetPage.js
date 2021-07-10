@@ -47,14 +47,14 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
 
   // function to remove customer
   const removeCustomer = () => {
-    let url = "/api/v1/customers/" + modalData.id;
+    let url = "/api/v1/assets/" + modalData.id;
     setIsLoading(true);
 
     apiClient
       .delete(url)
       .then((response) => {
         console.log(response);
-        toast.success("Customer removed.");
+        toast.success("Asset removed.");
         // reloadTable();
         history.goBack();
         setShowModal(false);
@@ -75,12 +75,12 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   // function to update customer
   const updateCustomer = (values) => {
     setIsLoading(true);
-    let url = "/api/v1/customers/" + id;
+    let url = "/api/v1/assets/" + id;
     apiClient
       .patch(url, values)
       .then((response) => {
         setToggleEditForm(true);
-        toast.success("Customer data updated.");
+        toast.success("Asset data updated.");
         setIsLoading(false);
       })
       .catch((err) => {
@@ -123,47 +123,27 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
             </div>
             <div className="col-12 col-md-6">
               <div className="row mx-auto my-2">
-                <div className="col-auto my-auto">
-                  <div className="number-circle-large fs-2 text-pink text-uppercase">
-                    {formGeneral.reg !== ""
-                      ? formGeneral.reg
-                          .match(/\b(\w)/g)
-                          .join("")
-                          .substring(0, 2)
-                      : ""}
+                <div className="col-5 mx-auto bg-info rounded text-center">
+                  <div className="fs-2 my-auto fw-bold text-uppercase disable-select text-sendary-extra ">
+                    &nbsp;{formGeneral.reg}&nbsp;
                   </div>
                 </div>
-                <div className="col text-start">
-                  <div className="fs-4">{formGeneral.reg}</div>
-                  <div className="row ">
-                    <div className="col-auto">
-                      <div>
-                        <span className="fs-5 me-2 text-success">
-                          {formGeneral.assets_total}
-                        </span>
-                        Assets
-                      </div>
-                    </div>
-                    <div className="col-auto">
-                      <div>
-                        Since
-                        <span className="fs-5 mx-2 text-success">
-                          {moment(formGeneral.created_at).format("MMM-YYYY")}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="col-auto">
-                      <span
-                        className={
-                          "fs-5 text-capitalize " +
-                          (formGeneral.status == "on_hold"
-                            ? "text-info"
-                            : "text-success")
-                        }
-                      >
-                        {formGeneral.status.replace("_", " ")}
+              </div>
+              <div className="col text-center mt-3">
+                <div className="row ">
+                  <div className="col-auto mx-auto">
+                    <div>
+                      Added
+                      <span className="fs-5 mx-2 text-success">
+                        {moment(formGeneral.created_at).format("DD/MM/YYYY")}
                       </span>
                     </div>
+                  </div>
+                  <div className="col-auto mx-auto">
+                    Status
+                    <span className="fs-5 mx-2 text-capitalize text-success">
+                      {formGeneral.status.replace("_", " ")}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -175,7 +155,6 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
           id="controlled-tab-example"
           activeKey={key}
           onSelect={(k) => setKey(k)}
-          className=""
         >
           <Tab
             eventKey="general"
@@ -372,11 +351,33 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
               </Formik>
             </Container>
           </Tab>
-          <Tab eventKey="assets" title="Assets" className="bg-darker">
-            <p>tab 2</p>
+          <Tab
+            eventKey="owner"
+            title="Owner"
+            className="bg-darker border-start border-end border-bottom shadow"
+          >
+            <Container className="py-3">
+              Here will be displayed current owner of the vehicle.
+            </Container>
           </Tab>
-          <Tab eventKey="others" title="Others" className="bg-darker">
-            <p>tab 3</p>
+          <Tab
+            eventKey="history"
+            title="History"
+            className="bg-darker border-start border-end border-bottom shadow"
+          >
+            <Container className="py-3">
+              Here will be displayed history for the vehicle.
+            </Container>
+          </Tab>
+
+          <Tab
+            eventKey="bookings"
+            title="Bookigns"
+            className="bg-darker border-start border-end border-bottom shadow"
+          >
+            <Container className="py-3">
+              Here will be displayed all future booking for this asset.
+            </Container>
           </Tab>
         </Tabs>
       </Container>
@@ -391,8 +392,8 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
         </Modal.Header>
         <Modal.Body>
           <p className="">
-            Removeing customer also erase all bookings and any data assosiated
-            with this customer! Are you sure you want to remove{" "}
+            Removeing asset also erase all bookings and any data assosiated with
+            this asset! Are you sure you want to remove{" "}
             <span className="text-success"> {modalData.reg}</span> ?
           </p>
           <Form.Group className="mt-4" controlId="formBasicCheckbox">
