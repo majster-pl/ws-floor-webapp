@@ -9,12 +9,13 @@ import {
   Col,
 } from "react-bootstrap";
 import IsLoggedInLogic from "../../components/IsLoggedInLogic";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import apiClient from "../../service/api/api";
 import { Formik, yupToFormErrors } from "formik";
 import * as yup from "yup";
 import FormInput from "./components/FormInput";
+import { Typeahead } from "react-bootstrap-typeahead";
 
 function NewAssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   // when page oppened check if user logged in, if not redirect to login page
@@ -25,11 +26,21 @@ function NewAssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   );
   const history = useHistory();
 
+  const [customers, setCustomers] = useState([]);
+
   const reviewSchema = yup.object({
-    reg: yup.string().required().min(4),
+    reg: yup
+      .string()
+      .required("Vehicle reg is required")
+      .min(4, "Must be at least 4 characters"),
     make: yup.string().min(3),
     model: yup.string().min(3),
-    status: yup.string().required(),
+    status: yup.string().required("You must sellect status"),
+    belongs_to: yup
+      .number()
+      .required(
+        "You must to sellect owner of the vehicle, if not present go to Customers page and add new Customer before adding asset."
+      ),
   });
 
   const [formGeneral, setFormGeneral] = useState({
@@ -38,11 +49,34 @@ function NewAssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
     model: "",
     created_at: "",
     status: "",
+    belongs_to: "",
+    customer_name: "",
   });
   const [key, setKey] = useState("general"); // current tab state
 
+  useEffect(() => {
+    //fetching customers list
+    const getCustomers = () => {
+      console.log("getCustomers function...");
+      let url = "/api/v1/customers";
+
+      apiClient
+        .get(url)
+        .then((response) => {
+          console.log(response.data.data);
+          setCustomers(response.data.data);
+        })
+        .catch((err) => {
+          console.log("error:", err);
+        });
+    };
+    getCustomers();
+  }, []);
+
   // function to add new customer
   function handleSubmit(values, { setSubmitting }) {
+    console.log("KURNA: " + JSON.stringify(values));
+
     async function saveCustomer() {
       let url = "/api/v1/assets";
       try {
@@ -178,6 +212,33 @@ function NewAssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                     </Form.Control>
                     <Form.Control.Feedback type="invalid" className="d-block">
                       {props.touched.status && props.errors.status}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group
+                    as={Col}
+                    className="col-12 col-md-6"
+                    controlId="formModel"
+                  >
+                    <Form.Label>Owner:</Form.Label>
+                    <Typeahead
+                      id="customer-typeahead"
+                      labelKey="customer_name"
+                      onChange={(selected) => {
+                        const name =
+                          selected.length > 0 ? selected[0].customer_name : "";
+                        const id =
+                          selected.length > 0 ? selected[0].customer_id : "";
+                        props.setFieldValue("customer_name", name);
+                        props.setFieldValue("belongs_to", id);
+                      }}
+                      options={customers}
+                      // isInvalid={isAssetInvalid}
+                      //   value={props.values.customer_id}
+                      placeholder="Select customer..."
+                      //   defaultSelected={modalData.new_booking ? "" : [modalData]}
+                    />
+                    <Form.Control.Feedback type="invalid" className="d-block">
+                      {props.touched.belongs_to && props.errors.belongs_to}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Row>

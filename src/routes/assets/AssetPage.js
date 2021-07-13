@@ -36,8 +36,8 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
 
   const reviewSchema = yup.object({
     reg: yup.string().required().min(4),
-    make: yup.string().min(3),
-    model: yup.string().min(3),
+    make: yup.string().min(3).nullable(),
+    model: yup.string().min(3).nullable(),
     status: yup.string().required(),
   });
 
@@ -48,6 +48,7 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
     model: "",
     make: "",
     created_by_name: "",
+    belongs_to: "",
     created_at: "",
     updated_at: "",
     uuid: "",
