@@ -5,7 +5,7 @@ import * as EmailValidator from "email-validator";
 // import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const LoginLogic = ({ setLoggedIn }, setLoginErrorMsg, toast) => {
+const LoginLogic = ({ setLoggedIn }, setIsLoading, setLoginErrorMsg, toast) => {
   const [username, setUsername] = useState("admin@gmail.com");
   const [password, setPassword] = useState("password");
   const [isSpinning, setIsSpinning] = useState(false);
@@ -23,9 +23,9 @@ const LoginLogic = ({ setLoggedIn }, setLoginErrorMsg, toast) => {
         history.push("/dashboard");
       })
       .catch((error) => {
+        setIsLoading(false);
         console.log("HELLO!");
         setLoginErrorMsg(error.data.message);
-
         console.log("Error is: " + JSON.stringify(error));
       });
   }, []);

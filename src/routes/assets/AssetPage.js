@@ -16,6 +16,8 @@ import apiClient from "../../service/api/api";
 import moment from "moment";
 import { Formik } from "formik";
 import { useHistory } from "react-router-dom";
+import * as yup from "yup";
+import FormInput from "./components/FormInput";
 
 function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   // when page oppened check if user logged in, if not redirect to login page
@@ -32,13 +34,21 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
 
   const { id } = useParams(); // parameter from url
 
+  const reviewSchema = yup.object({
+    reg: yup.string().required().min(4),
+    make: yup.string().min(3),
+    model: yup.string().min(3),
+    status: yup.string().required(),
+  });
+
   const [formGeneral, setFormGeneral] = useState({
+    id: "",
     reg: "",
     status: "",
-    assets_total: "",
-    created_at: "",
-    customer_contact: "",
+    model: "",
+    make: "",
     created_by_name: "",
+    created_at: "",
     updated_at: "",
     uuid: "",
   });
@@ -93,10 +103,14 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   // fech data on component mount
   useEffect(() => {
     const fetchData = async () => {
-      const result = await apiClient.get("/api/v1/assets/" + id);
-      console.log(result.data.data);
-      setFormGeneral(result.data.data);
-      setIsLoading(false);
+      try {
+        const result = await apiClient.get("/api/v1/assets/" + id);
+        console.log(result.data.data);
+        setFormGeneral(result.data.data);
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+      }
     };
     fetchData();
   }, [toggleEditForm]);
@@ -165,6 +179,7 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
               <Formik
                 initialValues={formGeneral}
                 validateOnChange={true}
+                validationSchema={reviewSchema}
                 enableReinitialize={true}
                 onSubmit={(values) => {
                   updateCustomer(values);
@@ -226,14 +241,16 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                         className="col-12 col-md-6"
                         controlId="formReg"
                       >
-                        <Form.Label>Reg</Form.Label>
-                        <Form.Control
-                          plaintext={toggleEditForm}
-                          disabled={toggleEditForm}
-                          type="text"
-                          placeholder="Vehicle Reg"
-                          onChange={props.handleChange("reg")}
-                          value={props.values.reg}
+                        <FormInput
+                          _label="Reg"
+                          _errors={props.errors.reg}
+                          _touched={props.touched.reg}
+                          _maxLength={7}
+                          _disabled={toggleEditForm}
+                          _type="text"
+                          _placeholder="Vehicle Reg"
+                          _value={props.values.reg.toUpperCase()}
+                          _onChange={props.handleChange("reg")}
                         />
                       </Form.Group>
 
@@ -242,14 +259,16 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                         className="col-12 col-md-6"
                         controlId="formMake"
                       >
-                        <Form.Label>Make</Form.Label>
-                        <Form.Control
-                          plaintext={toggleEditForm}
-                          disabled={toggleEditForm}
-                          onChange={props.handleChange("make")}
-                          value={props.values.make}
-                          type="text"
-                          placeholder="Vehicle Make"
+                        <FormInput
+                          _label="Make"
+                          _errors={props.errors.make}
+                          _touched={props.touched.make}
+                          _maxLength={20}
+                          _disabled={toggleEditForm}
+                          _type="text"
+                          _placeholder="Vehicle Make"
+                          _value={props.values.make}
+                          _onChange={props.handleChange("make")}
                         />
                       </Form.Group>
 
@@ -258,14 +277,16 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                         className="col-12 col-md-6"
                         controlId="formModel"
                       >
-                        <Form.Label>Model</Form.Label>
-                        <Form.Control
-                          plaintext={toggleEditForm}
-                          disabled={toggleEditForm}
-                          onChange={props.handleChange("model")}
-                          value={props.values.model}
-                          type="text"
-                          placeholder="Vehicle Model"
+                        <FormInput
+                          _label="Model"
+                          _errors={props.errors.model}
+                          _touched={props.touched.model}
+                          _maxLength={20}
+                          _disabled={toggleEditForm}
+                          _type="text"
+                          _placeholder="Vehicle Model"
+                          _value={props.values.model}
+                          _onChange={props.handleChange("model")}
                         />
                       </Form.Group>
 

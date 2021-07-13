@@ -14,6 +14,7 @@ import { useHistory } from "react-router-dom";
 import apiClient from "../../service/api/api";
 import { Formik, yupToFormErrors } from "formik";
 import * as yup from "yup";
+import FormInput from "./components/FormInput";
 
 function NewAssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   // when page oppened check if user logged in, if not redirect to login page
@@ -104,52 +105,48 @@ function NewAssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                     className="col-12 col-md-6"
                     controlId="formReg"
                   >
-                    <Form.Label>Reg</Form.Label>
-                    <Form.Control
-                      maxLength={7}
-                      type="text"
-                      placeholder="Vehicle Reg"
-                      onChange={props.handleChange("reg")}
-                      value={props.values.reg.toUpperCase()}
-                      onBlur={props.handleBlur("reg")}
+                    <FormInput
+                      _label="Reg"
+                      _errors={props.errors.reg}
+                      _touched={props.touched.reg}
+                      _maxLength={8}
+                      _type="text"
+                      _placeholder="Vehicle Reg"
+                      _value={props.values.reg.toUpperCase()}
+                      _onChange={props.handleChange("reg")}
                     />
-                    <Form.Control.Feedback type="invalid" className="d-block">
-                      {props.touched.reg && props.errors.reg}
-                    </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group
                     as={Col}
                     className="col-12 col-md-6"
                     controlId="formMake"
                   >
-                    <Form.Label>Make</Form.Label>
-                    <Form.Control
-                      onChange={props.handleChange("make")}
-                      value={props.values.make}
-                      type="text"
-                      placeholder="Vehicle Make"
-                      onBlur={props.handleBlur("make")}
+                    <FormInput
+                      _label="Make"
+                      _errors={props.errors.make}
+                      _touched={props.touched.make}
+                      _maxLength={20}
+                      _type="text"
+                      _placeholder="Vehicle Make"
+                      _value={props.values.make}
+                      _onChange={props.handleChange("make")}
                     />
-                    <Form.Control.Feedback type="invalid" className="d-block">
-                      {props.touched.make && props.errors.make}
-                    </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group
                     as={Col}
                     className="col-12 col-md-6"
                     controlId="formModel"
                   >
-                    <Form.Label>Model</Form.Label>
-                    <Form.Control
-                      onChange={props.handleChange("model")}
-                      value={props.values.model}
-                      type="text"
-                      placeholder="Vehicel Model"
-                      onBlur={props.handleBlur("model")}
+                    <FormInput
+                      _label="Model"
+                      _errors={props.errors.model}
+                      _touched={props.touched.model}
+                      _maxLength={20}
+                      _type="text"
+                      _placeholder="Vehicle Model"
+                      _value={props.values.model}
+                      _onChange={props.handleChange("model")}
                     />
-                    <Form.Control.Feedback type="invalid" className="d-block">
-                      {props.touched.model && props.errors.model}
-                    </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group
                     as={Col}
@@ -161,6 +158,7 @@ function NewAssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                       as="select"
                       onChange={props.handleChange("status")}
                       onBlur={props.handleBlur("status")}
+                      isInvalid={props.touched.status && props.errors.status}
                     >
                       <option disabled selected>
                         --- select one ---

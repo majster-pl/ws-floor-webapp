@@ -93,10 +93,14 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   // fech data on component mount
   useEffect(() => {
     const fetchData = async () => {
-      const result = await apiClient.get("/api/v1/customers/" + id);
-      console.log(result.data.data);
-      setFormGeneral(result.data.data);
-      setIsLoading(false);
+      try {
+        const result = await apiClient.get("/api/v1/customers/" + id);
+        console.log(result.data.data);
+        setFormGeneral(result.data.data);
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+      }
     };
     fetchData();
   }, [toggleEditForm]);

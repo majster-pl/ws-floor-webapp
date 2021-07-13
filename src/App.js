@@ -51,6 +51,7 @@ const App = () => {
 
           <Route path="/login">
             <Login
+              setIsLoading={setIsLoading}
               setLoggedIn={setAuthenticated}
               toast={toast}
               setLoginErrorMsg={setLoginErrorMsg}

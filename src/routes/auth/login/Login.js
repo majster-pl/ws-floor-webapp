@@ -2,7 +2,13 @@ import { Form, Button, Spinner } from "react-bootstrap";
 import "./Login.css";
 import LoginLogic from "./LoginLogic";
 
-const Login = ({ setLoggedIn, loginErrorMsg, setLoginErrorMsg, toast }) => {
+const Login = ({
+  setIsLoading,
+  setLoggedIn,
+  loginErrorMsg,
+  setLoginErrorMsg,
+  toast,
+}) => {
   const {
     username,
     password,
@@ -12,7 +18,7 @@ const Login = ({ setLoggedIn, loginErrorMsg, setLoginErrorMsg, toast }) => {
     isSpinning,
     isEmailValid,
     isPasswordValid,
-  } = LoginLogic(setLoggedIn, setLoginErrorMsg, toast);
+  } = LoginLogic(setIsLoading, setLoggedIn, setLoginErrorMsg, toast);
 
   return (
     <div className="center">

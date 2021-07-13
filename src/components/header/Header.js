@@ -148,7 +148,7 @@ const Header = ({ isLoggedIn, setLoggedIn, setLoginErrorMsg }) => {
                           Settings
                         </Dropdown.Item>
                         <Dropdown.Divider />
-                        <Dropdown.Item eventKey="12" as={Link} onClick={logout}>
+                        <Dropdown.Item eventKey="12" onClick={logout}>
                           Logout
                         </Dropdown.Item>
                       </Dropdown.Menu>
