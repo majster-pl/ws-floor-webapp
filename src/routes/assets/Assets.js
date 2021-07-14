@@ -35,6 +35,7 @@ const Assets = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
   const [modalData, setModaldata] = useState({
     reg: "",
     id: 0,
+    index: 0,
   });
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
@@ -60,15 +61,18 @@ const Assets = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
   useEffect(() => reloadTable(), []);
 
   // function to remove customer
-  const removeCustomer = () => {
+  const removeCustomer = (index) => {
     let url = "/api/v1/assets/" + modalData.id;
 
     apiClient
       .delete(url)
       .then((response) => {
-        console.log(response);
+        console.log("removing item: " + index);
+        // console.log(response);
+        var newData = data;
+        newData.splice(index, 1);
+        setData([...newData]);
         toast.success("Asset removed.");
-        reloadTable();
         setShowModal(false);
       })
       .catch((err) => {
@@ -90,14 +94,6 @@ const Assets = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
         Cell: ({ value, id, make }) => {
           return (
             <Row className="my-2">
-              {/* <Col sm="auto" className="ms-4 text-end d-none d-md-block">
-                <div className="numberCircle fs-5 text-pink text-uppercase">
-                  {make
-                    .match(/\b(\w)/g)
-                    .join("")
-                    .substring(0, 2)}
-                </div>
-              </Col> */}
               <Col className="my-auto text-center text-uppercase">
                 <Button
                   variant="link"
@@ -156,7 +152,7 @@ const Assets = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
       {
         Header: "",
         accessor: "id",
-        Cell: ({ value, reg }) => {
+        Cell: ({ value, reg, index }) => {
           return (
             <Dropdown>
               <Dropdown.Toggle
@@ -178,6 +174,7 @@ const Assets = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
                     let data = {
                       reg: reg,
                       id: value,
+                      index: index,
                     };
                     setModaldata(data);
                     setShowModal(true);
@@ -337,13 +334,14 @@ const Assets = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
               {page.map((row) => {
                 prepareRow(row);
                 return (
-                  <tr {...row.getRowProps()}>
+                  <tr key={"asset-row-" + row.id} {...row.getRowProps()}>
                     {row.cells.map((cell) => {
                       // console.log(row.original.uuid);
                       return (
                         <td {...cell.getCellProps()}>
                           {cell.render("Cell", {
                             id: row.original.id,
+                            index: row.id,
                             value: cell.value,
                             reg: row.original.reg,
                           })}
@@ -398,7 +396,7 @@ const Assets = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
           <Button
             variant="danger"
             disabled={!removeAll}
-            onClick={() => removeCustomer()}
+            onClick={() => removeCustomer(modalData.index)}
           >
             Remove
           </Button>
