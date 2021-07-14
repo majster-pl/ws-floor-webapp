@@ -31,6 +31,7 @@ const Assets = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
   );
 
   const [data, setData] = useState([]);
+  const [errorMsg, setErrorMsg] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModaldata] = useState({
     reg: "",
@@ -47,15 +48,17 @@ const Assets = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
     apiClient
       .get(url)
       .then((response) => {
-        // console.log(response);
         setIsLoading(false);
-
         setData(response.data.data);
-        console.log(response.data.data);
       })
       .catch((err) => {
         setIsLoading(false);
-        console.log("error:", err);
+        setErrorMsg("I was unable to load assets :-(");
+        toast.error(
+          <div className="toast_wrap">
+            Error while loading assets. {JSON.stringify(err.data.message)}
+          </div>
+        );
       });
   };
   useEffect(() => reloadTable(), []);
@@ -66,9 +69,7 @@ const Assets = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
 
     apiClient
       .delete(url)
-      .then((response) => {
-        console.log("removing item: " + index);
-        // console.log(response);
+      .then(() => {
         var newData = data;
         newData.splice(index, 1);
         setData([...newData]);
@@ -330,28 +331,57 @@ const Assets = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
                 </tr>
               ))}
             </thead>
-            <tbody {...getTableBodyProps()}>
-              {page.map((row) => {
-                prepareRow(row);
-                return (
-                  <tr key={"asset-row-" + row.id} {...row.getRowProps()}>
-                    {row.cells.map((cell) => {
-                      // console.log(row.original.uuid);
-                      return (
-                        <td {...cell.getCellProps()}>
-                          {cell.render("Cell", {
-                            id: row.original.id,
-                            index: row.id,
-                            value: cell.value,
-                            reg: row.original.reg,
-                          })}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
+            {data.length < 1 ? (
+              <tr>
+                <td colSpan={5} className="p-0">
+                  <div className="div-center">
+                    <Container>
+                      <Col className="p-2">
+                        {errorMsg !== "" ? errorMsg : "No data to display..."}
+                      </Col>
+                      <Col>
+                        {errorMsg !== "" ? (
+                          <Button variant="info" onClick={() => reloadTable()}>
+                            Reload
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="success"
+                            as={Link}
+                            to={"/assets/new"}
+                          >
+                            Add new Asset
+                          </Button>
+                        )}
+                      </Col>
+                    </Container>
+                  </div>
+                </td>
+              </tr>
+            ) : (
+              <tbody {...getTableBodyProps()}>
+                {page.map((row) => {
+                  prepareRow(row);
+                  return (
+                    <tr key={"asset-row-" + row.id} {...row.getRowProps()}>
+                      {row.cells.map((cell) => {
+                        // console.log(row.original.uuid);
+                        return (
+                          <td {...cell.getCellProps()}>
+                            {cell.render("Cell", {
+                              id: row.original.id,
+                              index: row.id,
+                              value: cell.value,
+                              reg: row.original.reg,
+                            })}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            )}
           </Table>
         </>
       </Container>
@@ -374,7 +404,7 @@ const Assets = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
             <Form.Check
               type="checkbox"
               onChange={(event) => {
-                console.log(modalData);
+                // console.log(modalData);
                 setRemoveAll(event.target.checked);
               }}
               label="Yes, I want to remove it all"
