@@ -37,6 +37,7 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
     id: 0,
     index: null,
   });
+  const [errorMsg, setErrorMsg] = useState("");
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
   const [removeAll, setRemoveAll] = useState(false);
@@ -54,7 +55,12 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
       })
       .catch((err) => {
         setIsLoading(false);
-        console.log("error:", err);
+        setErrorMsg("I was unable to load assets :-(");
+        toast.error(
+          <div className="toast_wrap">
+            Error while loading assets. {JSON.stringify(err.data.message)}
+          </div>
+        );
       });
   };
   useEffect(() => reloadTable(), []);
@@ -339,28 +345,57 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
                 </tr>
               ))}
             </thead>
-            <tbody {...getTableBodyProps()}>
-              {page.map((row) => {
-                prepareRow(row);
-                return (
-                  <tr key={"customer-id-" + row.id} {...row.getRowProps()}>
-                    {row.cells.map((cell) => {
-                      // console.log(row.original.uuid);
-                      return (
-                        <td {...cell.getCellProps()}>
-                          {cell.render("Cell", {
-                            index: row.id,
-                            id: row.original.id,
-                            value: cell.value,
-                            cust_name: row.original.customer_name,
-                          })}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
+            {!isLoading && data.length == 0 ? (
+              <tr>
+                <td colSpan={5} className="p-0">
+                  <div className="div-center">
+                    <Container>
+                      <Col className="p-2">
+                        {errorMsg !== "" ? errorMsg : "No data to display..."}
+                      </Col>
+                      <Col>
+                        {errorMsg !== "" ? (
+                          <Button variant="info" onClick={() => reloadTable()}>
+                            Reload
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="success"
+                            as={Link}
+                            to={"/customers/new"}
+                          >
+                            Add new Customer
+                          </Button>
+                        )}
+                      </Col>
+                    </Container>
+                  </div>
+                </td>
+              </tr>
+            ) : (
+              <tbody {...getTableBodyProps()}>
+                {page.map((row) => {
+                  prepareRow(row);
+                  return (
+                    <tr key={"customer-id-" + row.id} {...row.getRowProps()}>
+                      {row.cells.map((cell) => {
+                        // console.log(row.original.uuid);
+                        return (
+                          <td {...cell.getCellProps()}>
+                            {cell.render("Cell", {
+                              index: row.id,
+                              id: row.original.id,
+                              value: cell.value,
+                              cust_name: row.original.customer_name,
+                            })}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            )}
           </Table>
         </>
       </Container>

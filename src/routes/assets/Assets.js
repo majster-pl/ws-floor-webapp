@@ -331,7 +331,7 @@ const Assets = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
                 </tr>
               ))}
             </thead>
-            {data.length < 1 ? (
+            {data.length < 1 && !isLoading ? (
               <tr>
                 <td colSpan={5} className="p-0">
                   <div className="div-center">
