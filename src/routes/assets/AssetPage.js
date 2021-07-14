@@ -35,10 +35,13 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   const { id } = useParams(); // parameter from url
 
   const reviewSchema = yup.object({
-    reg: yup.string().required().min(4),
-    make: yup.string().min(3).nullable(),
-    model: yup.string().min(3).nullable(),
-    status: yup.string().required(),
+    reg: yup
+      .string()
+      .required("Vehicle reg is required")
+      .min(4, "Must be at least 4 characters"),
+    make: yup.string().min(3),
+    model: yup.string().min(3),
+    status: yup.string().required("You must sellect status"),
   });
 
   const [formGeneral, setFormGeneral] = useState({

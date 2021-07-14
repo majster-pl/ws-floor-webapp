@@ -122,7 +122,9 @@ function NewAssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                     <div className="row mx-auto my-2">
                       <div className="col-5 mx-auto bg-info rounded text-center">
                         <div className="fs-2 my-auto fw-bold text-uppercase disable-select text-sendary-extra ">
-                          &nbsp;{props.values.reg}&nbsp;
+                          &nbsp;
+                          {props.values.reg == "" ? "reg" : props.values.reg}
+                          &nbsp;
                         </div>
                       </div>
                     </div>

@@ -35,6 +35,7 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
   const [modalData, setModaldata] = useState({
     customer_name: "",
     id: 0,
+    index: null,
   });
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
@@ -59,16 +60,18 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
   useEffect(() => reloadTable(), []);
 
   // function to remove customer
-  const removeCustomer = () => {
+  const removeCustomer = (index) => {
     let url = "/api/v1/customers/" + modalData.id;
 
     apiClient
       .delete(url)
       .then((response) => {
         console.log(response);
-        toast.success("Customer removed.");
-        reloadTable();
+        var newData = data;
+        newData.splice(index, 1);
+        setData([...newData]);
         setShowModal(false);
+        toast.success("Customer removed.");
       })
       .catch((err) => {
         console.log(JSON.stringify(err));
@@ -158,7 +161,7 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
       {
         Header: "",
         accessor: "id",
-        Cell: ({ value, cust_name }) => {
+        Cell: ({ value, cust_name, index }) => {
           return (
             <Dropdown>
               <Dropdown.Toggle
@@ -180,6 +183,7 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
                     let data = {
                       customer_name: cust_name,
                       id: value,
+                      index: index,
                     };
                     setModaldata(data);
                     setShowModal(true);
@@ -339,12 +343,13 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
               {page.map((row) => {
                 prepareRow(row);
                 return (
-                  <tr {...row.getRowProps()}>
+                  <tr key={"customer-id-" + row.id} {...row.getRowProps()}>
                     {row.cells.map((cell) => {
                       // console.log(row.original.uuid);
                       return (
                         <td {...cell.getCellProps()}>
                           {cell.render("Cell", {
+                            index: row.id,
                             id: row.original.id,
                             value: cell.value,
                             cust_name: row.original.customer_name,
@@ -400,7 +405,7 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
           <Button
             variant="danger"
             disabled={!removeAll}
-            onClick={() => removeCustomer()}
+            onClick={() => removeCustomer(modalData.index)}
           >
             Remove
           </Button>

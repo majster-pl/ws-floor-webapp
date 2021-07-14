@@ -35,7 +35,7 @@ const Assets = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
   const [modalData, setModaldata] = useState({
     reg: "",
     id: 0,
-    index: 0,
+    index: null,
   });
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
