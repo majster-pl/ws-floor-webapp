@@ -54,7 +54,7 @@ const Calendar = ({ setIsLoading, setLoggedIn, toast, setLoginErrorMsg }) => {
           // setSearchQuery={setSearchQuery}
           handleModalOpen={handleModalOpen}
           numberOfDays={numberOfDays}
-          // setNumberOfDays={setNumberOfDays}
+        // setNumberOfDays={setNumberOfDays}
         />
 
         {isCalendarLoading ? (
