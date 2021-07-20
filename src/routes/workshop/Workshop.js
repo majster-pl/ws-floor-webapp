@@ -1,9 +1,10 @@
 import IsLoggedInLogic from "../../components/IsLoggedInLogic";
-import { useState } from "react";
-import { Row, Col } from "react-bootstrap";
+import { useState, useEffect } from "react";
+import { Row, Col, Button } from "react-bootstrap";
 import initialData from "./initialData";
 import Column from "./components/Column";
 import { DragDropContext } from "react-beautiful-dnd";
+import apiClient from "../../service/api/api";
 
 const Workshop = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
   // when page oppened check if user logged in, if not redirect to login page
@@ -19,8 +20,38 @@ const Workshop = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
     console.log(result);
   };
 
+  const getWorkshop = () => {
+    let url = "/api/v1/workshop";
+    // setIsLoading(true);
+    apiClient
+      .get(url)
+      .then((response) => {
+        // setIsLoading(false);
+        console.log(response.data.data);
+        setData(response.data.data);
+
+        // setData(response.data.data);
+      })
+      .catch((err) => {
+        // setIsLoading(false);
+        // setErrorMsg("I was unable to load assets :-(");
+        // toast.error(
+        //   <div className="toast_wrap">
+        //     Error while loading assets. {JSON.stringify(err.data.message)}
+        //   </div>
+        // );
+        console.log(err.data);
+      });
+  };
+
+  useEffect(() => {
+    getWorkshop();
+    console.log(initialData);
+  }, []);
+
   return (
     <DragDropContext onDragEnd={ondragend}>
+      <Button onClick={() => getWorkshop()}>Test</Button>
       <div className="scroll">
         <Row className="p-0 m-0 row-cols-4" style={{ minWidth: "1248px" }}>
           {data.columnOrder.map((columnId) => {

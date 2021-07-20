@@ -12,7 +12,7 @@ const Task = ({ task, index }) => {
           ref={provided.innerRef}
           className="m-1"
         >
-          <Card.Body>{task.content}</Card.Body>
+          <Card.Body>{task.reg}</Card.Body>
         </Card>
       )}
     </Draggable>
