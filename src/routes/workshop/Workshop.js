@@ -5,6 +5,7 @@ import initialData from "./initialData";
 import Column from "./components/Column";
 import { DragDropContext } from "react-beautiful-dnd";
 import apiClient from "../../service/api/api";
+import "./Workshop.css";
 
 const Workshop = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
   // when page oppened check if user logged in, if not redirect to login page
@@ -51,22 +52,20 @@ const Workshop = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
 
   return (
     <DragDropContext onDragEnd={ondragend}>
-      <Button onClick={() => getWorkshop()}>Test</Button>
       <div className="scroll">
-        <Row className="p-0 m-0 row-cols-4" style={{ minWidth: "1248px" }}>
+        <Row
+          className="p-0 m-0 row-cols-sm-2 row-cols-md-4 row-cols-xl-5 row-cols-xxl-6 h-100"
+          // style={{ minWidth: "1248px" }}
+        >
           {data.columnOrder.map((columnId) => {
             const column = data.columns[columnId];
             const tasks = column.taskIds.map((taskId) => data.tasks[taskId]);
 
             // return <Column key={column.id} column={column} tasks={tasks} />;
             return (
-              <Col className="p-1">
+              <Col className="p-1 h-50 workshop-col-main">
                 <Column key={column.id} column={column} tasks={tasks} />
               </Col>
-              // <Col className="bg-info">Waiting Labour</Col>
-              // <Col className="bg-pink">Ready for MOT</Col>
-              // <Col className="bg-danger">SHIFT AM</Col>
-              // <Col className="bg-primary">SHIFT PM</Col>
             );
           })}
         </Row>
