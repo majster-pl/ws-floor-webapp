@@ -1,6 +1,6 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
-import { Card } from "react-bootstrap";
+import { Card, Row, Col } from "react-bootstrap";
 
 const Task = ({ task, index }) => {
   return (
@@ -12,7 +12,12 @@ const Task = ({ task, index }) => {
           ref={provided.innerRef}
           className="m-1"
         >
-          <Card.Body>{task.reg}</Card.Body>
+          <Card.Body>
+            <Row>
+              <Col>{task.reg}</Col>
+              <Col>{task.booked_date}</Col>
+            </Row>
+          </Card.Body>
         </Card>
       )}
     </Draggable>

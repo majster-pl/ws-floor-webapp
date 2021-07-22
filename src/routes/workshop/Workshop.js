@@ -25,7 +25,65 @@ const Workshop = ({
   const [loadingError, setLoadingError] = useState(false);
 
   ondragend = (result) => {
-    console.log(result);
+    const { destination, source, draggableId } = result;
+
+    // console.log(result);
+    // console.log(
+    //   "Change: " +
+    //     result.draggableId +
+    //     " status from: " +
+    //     result.source.droppableId +
+    //     " to: " +
+    //     result.destination.droppableId
+    // );
+
+    // exit if item dropped outside the column
+    if (!destination) {
+      return;
+    }
+    // exit if no changes made when dropped
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    // const newData = data;
+    // const column = newData.columns[source.droppableId];
+    // const newTaskIs = Array.from(column.taskIds);
+    // newTaskIs.splice(source.index, 1);
+    // newTaskIs.splice(destination.index, 0, draggableId);
+
+    // const newData2 = {
+    //   ...column,
+    //   newTaskIs: newTaskIs,
+    // };
+
+    // setData([...newData2]);
+
+    let url = "/api/v1/events/" + draggableId.slice(6);
+
+    let values = { status: destination.droppableId };
+
+    apiClient
+      .patch(url, values)
+      .then((response) => {
+        // setTableData(response.data.data);
+        console.log(response.data);
+        // setModalData(response.data.data);
+        // setShowModal(true);
+        // handleCloseModal();
+        // setModalData([]);
+        // reloadCalendar();
+        toast.success("Event saved.");
+        getWorkshop();
+        // setBookedDate();
+      })
+      .catch((err) => {
+        console.log("error:", err);
+        toast.error(err.statusText + " - Event NOT saved!");
+      });
   };
 
   const getWorkshop = () => {
@@ -60,7 +118,7 @@ const Workshop = ({
 
   useEffect(() => {
     getWorkshop();
-    // console.log(initialData);
+    console.log(initialData);
   }, []);
 
   return data.length !== 0 && !loadingError ? (

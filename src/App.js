@@ -79,6 +79,7 @@ const App = () => {
 
           <Route path="/workshop">
             <Workshop
+              setIsLoading={setIsLoading}
               setLoggedIn={setAuthenticated}
               setLoginErrorMsg={setLoginErrorMsg}
               toast={toast}
