@@ -20,8 +20,6 @@ const IsLoggedIn = (setLoginErrorMsg, setIsLoading, setLoggedIn) => {
       })
       .catch((error) => {
         setLoggedIn(false);
-        console.log("KURWA NO TU JESTE!s");
-
         // if user was logged in return message that he is not
         // longer logged in, otherwise return server error.
         switch (sessionStorage.getItem("loginStatus")) {
@@ -44,8 +42,6 @@ const IsLoggedIn = (setLoginErrorMsg, setIsLoading, setLoggedIn) => {
 
   // run below every time this component is mounted
   useEffect(() => {
-    console.log("I'm running!!");
-
     checkIfAuthenticated();
   }, []);
 

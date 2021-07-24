@@ -24,9 +24,6 @@ const LoginLogic = ({ setLoggedIn }, setIsLoading, setLoginErrorMsg, toast) => {
       })
       .catch((error) => {
         setIsLoading(false);
-        // console.log("HELLO!");
-        // setLoginErrorMsg(error.data.message);
-        // console.log("Error is: " + JSON.stringify(error));
       });
   }, []);
 

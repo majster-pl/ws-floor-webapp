@@ -25,10 +25,6 @@ const App = () => {
   const [loginErrorMsg, setLoginErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    console.log("isLoading changed to: " + isLoading);
-  }, [isLoading]);
-
   return (
     <>
       <ToastContainer
