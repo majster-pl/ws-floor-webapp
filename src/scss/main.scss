@@ -19,6 +19,10 @@ $theme-colors: (
   "pink": #f00fa6,
 );
 
+$h4-font-size: 0.9rem;
+$h5-font-size: 0.8rem;
+$h6-font-size: 0.7rem;
+
 $color-white: #ffffff;
 $color-black: #000000;
 $color-gray: #2a2d30;
@@ -48,6 +52,14 @@ $btn-close-color: $color-gray-light;
   font-family: "Comfortaa";
   src: local("Comfortaa"), url(../fonts/Comfortaa/static/Comfortaa-SemiBold.ttf) format("SemiBold");
 }
+
+// $font-family-sans-serif: "Comfortaa";
+
+$font-family-sans-serif: "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-family-serif: Georgia, "Times New Roman", Times, serif;
+//** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
+$font-family-monospace: Menlo, Monaco, Consolas, "Courier New", monospace;
+$font-family-base: $font-family-sans-serif;
 
 .div-center {
   display: flex;

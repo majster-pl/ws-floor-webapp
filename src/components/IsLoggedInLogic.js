@@ -4,7 +4,7 @@ import { Spinner } from "react-bootstrap";
 import apiClient from "../service/api/api";
 import { useHistory } from "react-router-dom";
 
-const IsLoggedIn = (setIsLoading, setLoginErrorMsg, setLoggedIn) => {
+const IsLoggedIn = (setLoginErrorMsg, setIsLoading, setLoggedIn) => {
   const [isLoading, setLoading] = useState(true);
   const history = useHistory();
 
@@ -20,7 +20,8 @@ const IsLoggedIn = (setIsLoading, setLoginErrorMsg, setLoggedIn) => {
       })
       .catch((error) => {
         setLoggedIn(false);
-        history.push("/login");
+        console.log("KURWA NO TU JESTE!s");
+
         // if user was logged in return message that he is not
         // longer logged in, otherwise return server error.
         switch (sessionStorage.getItem("loginStatus")) {
@@ -37,6 +38,7 @@ const IsLoggedIn = (setIsLoading, setLoginErrorMsg, setLoggedIn) => {
         setIsLoading(false);
 
         sessionStorage.setItem("loginStatus", "false");
+        history.push("/login");
       });
   };
 

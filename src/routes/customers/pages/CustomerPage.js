@@ -19,7 +19,11 @@ import { useHistory } from "react-router-dom";
 
 function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   // when page oppened check if user logged in, if not redirect to login page
-  const {} = IsLoggedInLogic(setLoginErrorMsg, setIsLoading, setLoggedIn);
+  const { isLoading, SpinnerComponent } = IsLoggedInLogic(
+    setLoginErrorMsg,
+    setIsLoading,
+    setLoggedIn
+  );
   const history = useHistory();
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModaldata] = useState({

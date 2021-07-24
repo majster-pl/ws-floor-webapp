@@ -27,15 +27,7 @@ const Workshop = ({
   ondragend = (result) => {
     const { destination, source, draggableId } = result;
 
-    // console.log(result);
-    // console.log(
-    //   "Change: " +
-    //     result.draggableId +
-    //     " status from: " +
-    //     result.source.droppableId +
-    //     " to: " +
-    //     result.destination.droppableId
-    // );
+    console.log(result);
 
     // exit if item dropped outside the column
     if (!destination) {
@@ -49,44 +41,54 @@ const Workshop = ({
       return;
     }
 
-    // const newData = data;
-    // const column = newData.columns[source.droppableId];
-    // const newTaskIs = Array.from(column.taskIds);
-    // newTaskIs.splice(source.index, 1);
-    // newTaskIs.splice(destination.index, 0, draggableId);
-
-    // const newData2 = {
-    //   ...column,
-    //   newTaskIs: newTaskIs,
-    // };
-
-    // setData([...newData2]);
-
     let url = "/api/v1/events/" + draggableId.slice(6);
 
-    let values = { status: destination.droppableId };
+    let values = {
+      status: destination.droppableId,
+      order: destination.index - 0.1,
+    };
+
+    const updateState = () => {
+      data["columns"][source.droppableId]["taskIds"].splice(source.index, 1);
+      data["columns"][destination.droppableId]["taskIds"].splice(
+        destination.index,
+        0,
+        draggableId.slice(6)
+      );
+      const column = data["columns"][source.droppableId];
+      const newTaskId = Array.from(column.taskIds);
+
+      const newColumn = {
+        ...column,
+        taksIds: newTaskId,
+      };
+
+      const newState = {
+        ...data,
+        columns: {
+          ...data.columns,
+          [newColumn.id]: newColumn,
+        },
+      };
+      setData(newState);
+    };
+
+    // for better user expirience update data before sending request to API
+    updateState();
 
     apiClient
       .patch(url, values)
       .then((response) => {
-        // setTableData(response.data.data);
         console.log(response.data);
-        // setModalData(response.data.data);
-        // setShowModal(true);
-        // handleCloseModal();
-        // setModalData([]);
-        // reloadCalendar();
-        toast.success("Event saved.");
-        getWorkshop();
-        // setBookedDate();
+        toast.success("Changes saved");
       })
       .catch((err) => {
         console.log("error:", err);
-        toast.error(err.statusText + " - Event NOT saved!");
+        toast.error(err.statusText + " - Changes not saved!");
       });
   };
 
-  const getWorkshop = () => {
+  const getWorkshopData = () => {
     setIsLoading(true);
     setLoadingError(false);
     let url = "/api/v1/workshop";
@@ -117,8 +119,7 @@ const Workshop = ({
   };
 
   useEffect(() => {
-    getWorkshop();
-    console.log(initialData);
+    getWorkshopData();
   }, []);
 
   return data.length !== 0 && !loadingError ? (
@@ -153,7 +154,7 @@ const Workshop = ({
           <div className="my-4">
             An unknown error occured while loading the data... :-(
           </div>
-          <Button variant="info" onClick={() => getWorkshop()}>
+          <Button variant="info" onClick={() => getWorkshopData()}>
             Reload
           </Button>
         </Col>

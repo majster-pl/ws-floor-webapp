@@ -24,9 +24,9 @@ const LoginLogic = ({ setLoggedIn }, setIsLoading, setLoginErrorMsg, toast) => {
       })
       .catch((error) => {
         setIsLoading(false);
-        console.log("HELLO!");
-        setLoginErrorMsg(error.data.message);
-        console.log("Error is: " + JSON.stringify(error));
+        // console.log("HELLO!");
+        // setLoginErrorMsg(error.data.message);
+        // console.log("Error is: " + JSON.stringify(error));
       });
   }, []);
 
@@ -92,7 +92,7 @@ const LoginLogic = ({ setLoggedIn }, setIsLoading, setLoginErrorMsg, toast) => {
                   // any other error
                   setLoginErrorMsg(err.data.message);
                 }
-                console.log("Error is: " + JSON.stringify(err));
+                console.log("Error2 is: " + JSON.stringify(err));
               });
           });
       })

@@ -1,6 +1,6 @@
 import React from "react";
 import { Droppable } from "react-beautiful-dnd";
-import { Card } from "react-bootstrap";
+import { Card, Row, Col } from "react-bootstrap";
 import Task from "./Task";
 
 const Column = ({ column, tasks }) => {
@@ -31,8 +31,15 @@ const Column = ({ column, tasks }) => {
           </div>
         )}
       </Droppable>
-      <Card.Footer className="bg-secondary text-pink workshop-col-footer">
-        Total: {Object.keys(tasks).length}
+      <Card.Footer className="bg-secondary text-pink workshop-col-footer h4 m-0 py-0">
+        <Row>
+          <Col className="col-12 h5 m-0">
+            Total: {Object.keys(tasks).length}
+          </Col>
+          <Col className="col-12 m-0 text-lime h5">
+            Hours: {Object.keys(tasks).length}
+          </Col>
+        </Row>
       </Card.Footer>
     </div>
   );

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Modal, Spinner } from "react-bootstrap";
 import "./scss/main.scss";
@@ -24,6 +24,10 @@ const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [loginErrorMsg, setLoginErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    console.log("isLoading changed to: " + isLoading);
+  }, [isLoading]);
 
   return (
     <>
