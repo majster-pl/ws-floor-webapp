@@ -88,6 +88,7 @@ const App = () => {
 
           <Route path="/customers/new">
             <NewCustomerPage
+              setIsLoading={setIsLoading}
               setLoggedIn={setAuthenticated}
               setLoginErrorMsg={setLoginErrorMsg}
               toast={toast}
@@ -121,6 +122,7 @@ const App = () => {
 
           <Route path="/assets/new">
             <NewAssetPage
+              setIsLoading={setIsLoading}
               setLoggedIn={setAuthenticated}
               setLoginErrorMsg={setLoginErrorMsg}
               toast={toast}

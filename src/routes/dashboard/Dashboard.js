@@ -1,8 +1,10 @@
 import { Container, Row, Col, Card } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 import IsLoggedInLogic from "../../components/IsLoggedInLogic";
 import "./Dashboard.css";
-// import { Line } from "react-chartjs-2";
 import ChartLine from "./components/ChartLine";
+import apiClient from "../../service/api/api";
+import { useState, useEffect } from "react";
 
 const Dashboard = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
   // when page oppened check if user logged in, if not redirect to login page
@@ -11,6 +13,36 @@ const Dashboard = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
     setIsLoading,
     setLoggedIn
   );
+
+  const [totalCustomers, setTotalCustomers] = useState();
+  const [totalAssets, setTotalAssets] = useState();
+
+  useEffect(() => {
+    const getNumberOfCustomer = () => {
+      apiClient
+        .get("/api/v1/customers")
+        .then((response) => {
+          setTotalCustomers(Object.keys(response.data.data).length);
+        })
+        .catch((err) => {
+          setTotalCustomers("n/a");
+        });
+    };
+
+    const getNumberOfAssets = () => {
+      apiClient
+        .get("/api/v1/assets")
+        .then((response) => {
+          setTotalAssets(Object.keys(response.data.data).length);
+        })
+        .catch((err) => {
+          setTotalAssets("n/a");
+        });
+    };
+
+    getNumberOfCustomer();
+    getNumberOfAssets();
+  }, []);
 
   //if still waiting response from server then display spinner
   if (isLoading) {
@@ -43,12 +75,17 @@ const Dashboard = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
             </Card>
           </Col>
           <Col>
-            <Card className="dashboard-card h-100" bg="secondary">
+            <Card
+              className="dashboard-card h-100 text-white text-decoration-none"
+              bg="secondary"
+              as={NavLink}
+              to="/customers"
+            >
               <Card.Body>
                 <Row className="px-2">
                   <Col className="col-auto me-auto">
                     <Col>
-                      <div className="fw-bold fs-3">22</div>
+                      <div className="fw-bold fs-3">{totalCustomers}</div>
                       <div className="fw-light fs-5">Customers</div>
                     </Col>
                   </Col>
@@ -57,15 +94,20 @@ const Dashboard = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
                   </Col>
                 </Row>
               </Card.Body>
-            </Card>{" "}
+            </Card>
           </Col>
           <Col>
-            <Card className="dashboard-card h-100" bg="secondary">
+            <Card
+              className="dashboard-card h-100 text-white text-decoration-none"
+              bg="secondary"
+              as={NavLink}
+              to="/assets"
+            >
               <Card.Body>
                 <Row className="px-2">
                   <Col className="col-auto me-auto">
                     <Col>
-                      <div className="fw-bold fs-3">45</div>
+                      <div className="fw-bold fs-3">{totalAssets}</div>
                       <div className="fw-light fs-5">Assets</div>
                     </Col>
                   </Col>
