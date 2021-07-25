@@ -1,6 +1,13 @@
 import IsLoggedInLogic from "../../components/IsLoggedInLogic";
 import { useState, useEffect } from "react";
-import { Row, Col, Button } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Button,
+  Container,
+  Form,
+  FormControl,
+} from "react-bootstrap";
 import initialData from "./initialData";
 import Column from "./components/Column";
 import { DragDropContext } from "react-beautiful-dnd";
@@ -23,11 +30,11 @@ const Workshop = ({
 
   const [data, setData] = useState([]);
   const [loadingError, setLoadingError] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   ondragend = (result) => {
     const { destination, source, draggableId } = result;
-
-    console.log(result);
+    // console.log(result);
 
     // exit if item dropped outside the column
     if (!destination) {
@@ -41,11 +48,11 @@ const Workshop = ({
       return;
     }
 
-    let url = "/api/v1/events/" + draggableId.slice(6);
+    let url = "/api/v1/workshop/" + draggableId.slice(6);
 
     let values = {
       status: destination.droppableId,
-      order: destination.index - 0.1,
+      order: data["columns"][destination.droppableId]["taskIds"],
     };
 
     const updateState = () => {
@@ -53,7 +60,7 @@ const Workshop = ({
       data["columns"][destination.droppableId]["taskIds"].splice(
         destination.index,
         0,
-        draggableId.slice(6)
+        parseFloat(draggableId.slice(6))
       );
       const column = data["columns"][source.droppableId];
       const newTaskId = Array.from(column.taskIds);
@@ -79,16 +86,30 @@ const Workshop = ({
     apiClient
       .patch(url, values)
       .then((response) => {
+        console.log("order changed to: " + response.data.order);
+        toast.success("Changes saved", {
+          autoClose: 1500,
+          hideProgressBar: true,
+          position: "bottom-right",
+        });
+        // updateOrder(destination.droppableId);
+        // loadWorkshopData();
         console.log(response.data);
-        toast.success("Changes saved");
       })
       .catch((err) => {
         console.log("error:", err);
-        toast.error(err.statusText + " - Changes not saved!");
+        toast.error(
+          <div>
+            <p>Error! Changes not saved</p>
+            <p>{err.statusText}</p>
+          </div>,
+          { autoClose: 1500 }
+        );
+        loadWorkshopData();
       });
   };
 
-  const getWorkshopData = () => {
+  const loadWorkshopData = () => {
     setIsLoading(true);
     setLoadingError(false);
     let url = "/api/v1/workshop";
@@ -119,14 +140,34 @@ const Workshop = ({
   };
 
   useEffect(() => {
-    getWorkshopData();
+    loadWorkshopData();
   }, []);
+
+  // useEffect(() => {
+  //   if (typeof data["columns"] !== "undefined") {
+  //     console.log(data["columns"]["awaiting_workshop"]["taskIds"]);
+  //   }
+  // }, [data]);
 
   return data.length !== 0 && !loadingError ? (
     <DragDropContext onDragEnd={ondragend}>
-      <div className="scroll">
+      <Row className="justify-content-end">
+        <Col className="col-auto m-2" style={{ width: "15rem" }}>
+          <Form className="d-flex">
+            <FormControl
+              size="sm"
+              type="search"
+              placeholder="Search"
+              className="mr-2"
+              aria-label="Search"
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </Form>
+        </Col>
+      </Row>
+      <div className="scroll" style={{ height: "calc(100vh - 6.2rem)" }}>
         <Row
-          className="p-0 m-0 row-cols-sm-2 row-cols-md-4 row-cols-xl-5 row-cols-xxl-6 h-100"
+          className="p-0 m-0 row-cols-sm-2 row-cols-md-4 row-cols-xl-5 row-cols-xxl-5 h-100"
           // style={{ minWidth: "1248px" }}
         >
           {data.length !== 0 && !loadingError ? (
@@ -137,7 +178,12 @@ const Workshop = ({
               // return <Column key={column.id} column={column} tasks={tasks} />;
               return (
                 <Col className="p-1 h-50 workshop-col-main">
-                  <Column key={column.id} column={column} tasks={tasks} />
+                  <Column
+                    key={column.id}
+                    column={column}
+                    tasks={tasks}
+                    searchQuery={searchQuery}
+                  />
                 </Col>
               );
             })
@@ -154,7 +200,7 @@ const Workshop = ({
           <div className="my-4">
             An unknown error occured while loading the data... :-(
           </div>
-          <Button variant="info" onClick={() => getWorkshopData()}>
+          <Button variant="info" onClick={() => loadWorkshopData()}>
             Reload
           </Button>
         </Col>

@@ -3,16 +3,23 @@ import { Droppable } from "react-beautiful-dnd";
 import { Card, Row, Col } from "react-bootstrap";
 import Task from "./Task";
 
-const Column = ({ column, tasks }) => {
+const Column = ({ column, tasks, searchQuery }) => {
   function TaskTitle({ title }) {
     return (
-      <Card.Header className="bg-secondary workshop-col-header text-truncate">
-        <Card.Title className="m-0">
-          <p className="lead text-lime">{title}</p>
+      <Card.Header className="bg-secondary workshop-col-header">
+        <Card.Title className="">
+          <h4 className="text-info text-uppercase text-truncate fw-bold">
+            {title}
+          </h4>
         </Card.Title>
       </Card.Header>
     );
   }
+
+  let sum = 0;
+  tasks.forEach((element) => {
+    sum += element.allowed_time;
+  });
 
   return (
     <div className="h-100 ">
@@ -25,7 +32,13 @@ const Column = ({ column, tasks }) => {
             {...provided.droppableProps}
           >
             {tasks.map((task, index) => (
-              <Task key={task.id} task={task} index={index} />
+              <Task
+                key={task.id}
+                task={task}
+                index={index}
+                options={column.options}
+                searchQuery={searchQuery}
+              />
             ))}
             {provided.placeholder}
           </div>
@@ -34,11 +47,9 @@ const Column = ({ column, tasks }) => {
       <Card.Footer className="bg-secondary text-pink workshop-col-footer h4 m-0 py-0">
         <Row>
           <Col className="col-12 h5 m-0">
-            Total: {Object.keys(tasks).length}
+            Jobsd: {Object.keys(tasks).length}
           </Col>
-          <Col className="col-12 m-0 text-lime h5">
-            Hours: {Object.keys(tasks).length}
-          </Col>
+          <Col className="col-12 m-0 text-lime h5">Hours: {sum}h</Col>
         </Row>
       </Card.Footer>
     </div>
