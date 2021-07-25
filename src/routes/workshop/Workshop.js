@@ -8,6 +8,7 @@ import {
   Form,
   FormControl,
 } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 import initialData from "./initialData";
 import Column from "./components/Column";
 import { DragDropContext } from "react-beautiful-dnd";
@@ -31,6 +32,7 @@ const Workshop = ({
   const [data, setData] = useState([]);
   const [loadingError, setLoadingError] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const history = useHistory();
 
   ondragend = (result) => {
     const { destination, source, draggableId } = result;
@@ -98,13 +100,15 @@ const Workshop = ({
       })
       .catch((err) => {
         console.log("error:", err);
-        toast.error(
-          <div>
-            <p>Error! Changes not saved</p>
-            <p>{err.statusText}</p>
-          </div>,
-          { autoClose: 1500 }
-        );
+        if (err.status !== 401) {
+          toast.error(
+            <div>
+              <p>Error! Changes not saved</p>
+              <p>{err.statusText}</p>
+            </div>,
+            { autoClose: 1500 }
+          );
+        }
         loadWorkshopData();
       });
   };
@@ -128,12 +132,24 @@ const Workshop = ({
         setIsLoading(false);
         setLoadingError(true);
         // setErrorMsg("I was unable to load assets :-(");
-        toast.error(
-          <div className="toast_wrap">
-            Error while loading data.
-            <p>{JSON.stringify(err)}</p>
-          </div>
-        );
+
+        if (err.status == 401) {
+          setLoginErrorMsg("You are not longer logged in");
+          history.push("/login");
+          toast.error(
+            <div className="toast_wrap">
+              Error while loading data.
+              <p>{JSON.stringify(err.data.message)}</p>
+            </div>
+          );
+        } else {
+          toast.error(
+            <div className="toast_wrap">
+              Error while loading data.
+              <p>{JSON.stringify(err)}</p>
+            </div>
+          );
+        }
         console.log(err.data);
       });
     // }, 5000);
