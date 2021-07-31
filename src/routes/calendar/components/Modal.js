@@ -132,26 +132,6 @@ const CalendarModal = ({
     });
   }, [assetSelections]);
 
-  // // on customerSelections changed
-  // const handleCustomerChange = (s, e) => {
-  //     setCustomerSelections([e.target.value])
-  // }
-  // // When customer changed
-  // useEffect(() => {
-  //     if (customerSelections[0] !== undefined) {
-  //         var cust = '';
-  //         if (typeof (customerSelections[0]) == 'string') {
-  //             cust = customerSelections[0];
-  //         } else {
-  //             cust = customerSelections[0].name;
-  //         }
-  //     }
-  //     setmodalData({
-  //         ...modalData,
-  //         ['customer_id']: cust,
-  //     });
-  // }, [customerSelections]);
-
   // handle change of form input
   const handleChange = (e, d) => {
     setModalData({
@@ -161,88 +141,6 @@ const CalendarModal = ({
     });
     // console.log('change!!', e);
   };
-
-  // const handleSubmit = (e) => {
-  //     e.preventDefault()
-  //     // console.log(modalData);
-  //     console.log('HANDLING SUBMIT...');
-  //     // console.log('id: ', modalData.id);
-
-  //     if (modalData.id != undefined) {
-  //         console.log('HANDLING UPDATE...');
-  //         // update existing event
-  //         var url = '/api/events/' + modalData.id;
-  //         axios.put(url, modalData, { headers: { "Content-Type": "application/json" }, crossdomain: true }).then((res) => {
-  //             console.log(res);
-  //             handleCloseModal();
-  //             reloadCalendar();
-  //             // setmodalData([]);
-  //             setBookedDate();
-  //         }).catch((err => {
-  //             console.log(err);
-  //         }));
-  //     } else {
-  //         console.log('HANDLING CREATE NEW EVENT...');
-  //         // create new event
-  //         var url = '/api/events/';
-  //         axios.post(url, modalData, { headers: { "Content-Type": "application/json" }, crossdomain: true }).then((res) => {
-  //             console.log('Creating new event....');
-  //             handleCloseModal();
-  //             // setmodalData([]);
-  //             reloadCalendar();
-  //             setBookedDate();
-  //             console.log(res);
-  //         }).catch((err => {
-  //             console.log('Error ocured while creating new event....');
-  //             console.log(err);
-  //         }));
-  //     }
-  //     // // console.log(url);
-  //     // axios.put(url, modalData, { headers: { "Content-Type": "application/json" } }).then((res) => {
-  //     //     console.log(res);
-  //     // }).catch((err => {
-  //     //     console.log(err);
-  //     // }));
-  // };
-
-  // const handleDelete = (e) => {
-  //     e.preventDefault();
-  //     var url = '/api/events/' + modalData.id;
-  //     axios.delete(url, modalData, { headers: { "Content-Type": "application/json" }, crossdomain: true }).then((res) => {
-  //         // console.log(res);
-  //         handleCloseModal();
-  //         reloadCalendar();
-  //     }).catch((err => {
-  //         // console.log(err);
-  //         alert(err);
-  //     }));
-
-  //     console.log('Removed!');
-  // }
-  // useEffect(() => {
-  //   console.log("EEEE:", modalData.event_id);
-  // }, [modalData]);
-
-  // const setAssetSelections = (selected) => {
-  // console.log('ello!' +  JSON.stringify(selected, null, 2));
-  // console.log('Reg: ' +  selected[0].reg);
-
-  // Set new asset id in modalData
-  // check if not empy field
-  // if (selected[0] !== undefined) {
-  //   setModalData({
-  //     ...modalData,
-  //     ['asset_id']: selected[0].asset_id,
-  //   });
-
-  // } else {
-  //   setModalData({
-  //     ...modalData,
-  //     ['asset_id']: 0,
-  //   });
-
-  // }
-  // }
 
   // Get all assets and customers when modal show
   const handleOnShow = () => {
@@ -403,17 +301,6 @@ const CalendarModal = ({
                 <Col sm="9">
                   <Fragment>
                     <Form.Group>
-                      {/* <Typeahead
-                        id="customer-typeahead"
-                        labelKey="name"
-                        allowNew
-                        // onChange={setCustomerSelections}
-                        // onInputChange={handleCustomerChange}
-                        // options={customerOptions}
-                        placeholder="Customer"
-                        // selected={customerSelections}
-                      /> */}
-
                       <Typeahead
                         id="customer-typeahead"
                         labelKey="customer_name"
@@ -587,14 +474,6 @@ const CalendarModal = ({
                     </option>
                     <option value="completed">Completed</option>
                   </Form.Control>
-                  {/* <Form.Control
-                    name="status"
-                    placeholder="Current status"
-                    // onChange={handleChange}
-                    onChange={props.handleChange("status")}
-                    value={props.values.status}
-                    defaultValue={modalData.status}
-                  /> */}
                   <Form.Text className="text-muted d-none">
                     We'll never share your email with anyone else.
                   </Form.Text>
@@ -603,20 +482,10 @@ const CalendarModal = ({
             </Modal.Body>
 
             <Modal.Footer>
-              {/* <Button variant="danger" className="me-auto" onClick={handleDelete}>
-    Remove
-  </Button> */}
               <Button variant="secondary" onClick={handleCloseModal}>
                 Close
               </Button>
-              <Button
-                variant="success"
-                type="submit"
-                // size="sm"
-                // onClick={() => {
-                //   handleSubmit();
-                // }}
-              >
+              <Button variant="success" type="submit">
                 Save
               </Button>
             </Modal.Footer>

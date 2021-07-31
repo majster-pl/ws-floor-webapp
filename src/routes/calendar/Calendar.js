@@ -7,7 +7,13 @@ import TableBody from "./components/TableBody";
 import "./Calendar.css";
 import CalendarSpinner from "./components/CalendarSpinner";
 
-const Calendar = ({ setIsLoading, setLoggedIn, toast, setLoginErrorMsg }) => {
+const Calendar = ({
+  setIsLoading,
+  setLoggedIn,
+  toast,
+  setLoginErrorMsg,
+  handleShowMainModal,
+}) => {
   const {
     currentDate,
     setCurrentDate,
@@ -54,7 +60,7 @@ const Calendar = ({ setIsLoading, setLoggedIn, toast, setLoginErrorMsg }) => {
           // setSearchQuery={setSearchQuery}
           handleModalOpen={handleModalOpen}
           numberOfDays={numberOfDays}
-        // setNumberOfDays={setNumberOfDays}
+          // setNumberOfDays={setNumberOfDays}
         />
 
         {isCalendarLoading ? (
@@ -68,6 +74,7 @@ const Calendar = ({ setIsLoading, setLoggedIn, toast, setLoginErrorMsg }) => {
             handleShowModal={handleShowModal}
             handleCloseModal={handleCloseModal}
             query={searchQuery}
+            handleShowMainModal={handleShowMainModal}
           />
         )}
       </table>

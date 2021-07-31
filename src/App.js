@@ -16,6 +16,9 @@ import Assets from "./routes/assets/Assets";
 import NewAssetPage from "./routes/assets/NewAssetPage";
 import AssetPage from "./routes/assets/AssetPage";
 import Page404 from "./routes/page404/Page404";
+import MainModal from "./components/MainModal";
+import MainModalLogic from "./components/MainModalLogic";
+import apiClient from "./service/api/api";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 sessionStorage.setItem("loginStatus", "false");
@@ -24,6 +27,13 @@ const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [loginErrorMsg, setLoginErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    handleShowMainModal,
+    handleCloseMainModal,
+    showMainModal,
+    CheckInModal,
+  } = MainModalLogic({ setIsLoading });
 
   return (
     <>
@@ -74,6 +84,7 @@ const App = () => {
               setLoggedIn={setAuthenticated}
               setLoginErrorMsg={setLoginErrorMsg}
               toast={toast}
+              handleShowMainModal={handleShowMainModal}
             />
           </Route>
 
@@ -143,6 +154,11 @@ const App = () => {
           </Route>
         </Switch>
       </Router>
+      <MainModal
+        show={showMainModal}
+        handleClose={() => handleCloseMainModal()}
+        form={CheckInModal()}
+      />
       <Modal
         show={isLoading}
         centered

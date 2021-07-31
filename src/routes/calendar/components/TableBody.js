@@ -1,7 +1,13 @@
 import CalendarEvent from "./CalendarEvent";
 // import moment from "moment";
 
-const CalendarBody = ({ tableData, handleModalOpen, query, setIsLoading }) => {
+const CalendarBody = ({
+  tableData,
+  handleModalOpen,
+  query,
+  setIsLoading,
+  handleShowMainModal,
+}) => {
   // search function
   function search(event) {
     // console.log(event);
@@ -32,6 +38,7 @@ const CalendarBody = ({ tableData, handleModalOpen, query, setIsLoading }) => {
             <CalendarEvent
               key={index + "." + index2}
               // {...cell}
+              props={cell}
               setIsLoading={setIsLoading}
               eventId={cell.event_id}
               isHighlighted={search(cell)}
@@ -44,6 +51,7 @@ const CalendarBody = ({ tableData, handleModalOpen, query, setIsLoading }) => {
               others={typeof cell.others === "object" ? "-----" : cell.others}
               status={cell.status}
               handleModalOpen={handleModalOpen}
+              handleShowMainModal={handleShowMainModal}
             />
           ))}
         </tr>
