@@ -153,12 +153,13 @@ const App = () => {
             <Page404 />
           </Route>
         </Switch>
+        <MainModal
+          show={showMainModal}
+          handleClose={() => handleCloseMainModal()}
+          form={CheckInModal()}
+          setLoginErrorMsg={setLoginErrorMsg}
+        />
       </Router>
-      <MainModal
-        show={showMainModal}
-        handleClose={() => handleCloseMainModal()}
-        form={CheckInModal()}
-      />
       <Modal
         show={isLoading}
         centered

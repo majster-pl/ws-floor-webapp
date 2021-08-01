@@ -25,7 +25,7 @@ const CheckIn = ({ data, handleCloseMainModal }) => {
   return (
     <>
       <Formik
-        initialValues={{ name: "jared" }}
+        initialValues={{ ...data }}
         onSubmit={(values, actions) => {
           setTimeout(() => {
             alert(JSON.stringify(values, null, 2));
@@ -79,10 +79,10 @@ const CheckIn = ({ data, handleCloseMainModal }) => {
                     name="others"
                     placeholder="Customer Name"
                     // defaultValue={modalData.others}
-                    value={props.values.customer}
+                    value={props.values.customer_name}
                   />
                   <Form.Text className="text-danger ms-2">
-                    {props.errors.customer}
+                    {props.errors.customer_name}
                   </Form.Text>
                 </Col>
               </Form.Group>

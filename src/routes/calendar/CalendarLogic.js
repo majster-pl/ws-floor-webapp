@@ -88,7 +88,7 @@ const CalendarLogic = ({ toast, setIsLoading }) => {
         .catch((err) => {
           // console.log("UUU...");
           setIsLoading(false);
-          toast.error("Error" + JSON.stringify(err));
+          toast.error("Error: " + err.data.message);
           history.push("/login");
         });
     } else {
