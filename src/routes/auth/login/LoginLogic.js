@@ -16,11 +16,27 @@ const LoginLogic = ({ setLoggedIn }, setIsLoading, setLoginErrorMsg, toast) => {
 
   // console.log("eee? -- " + setLoginErrorMsg);
 
+  const goToLastPage = () => {
+    console.log("checking history", window.history.length);
+
+    console.log("CURRENT PATH:", window.location.pathname);
+
+    // for (var i = 0; i > window.history.length; i++) {
+    //   // console.log(window.history[i]);
+    //   console.log(window.history[3]);
+    // }
+  };
+  if (sessionStorage.getItem("redirect_path") === null) {
+    sessionStorage.setItem("redirect_path", "/dashboard");
+  }
+  // goToLastPage();
+
   useEffect(() => {
     apiClient
       .get("/api/v1/logged-in")
       .then(() => {
-        history.push("/dashboard");
+        // history.push("/dashboard");
+        history.push(sessionStorage.getItem("redirect_path"));
       })
       .catch((error) => {
         setIsLoading(false);
@@ -61,7 +77,8 @@ const LoginLogic = ({ setLoggedIn }, setIsLoading, setLoginErrorMsg, toast) => {
             // sessionStorage.setItem("isLoggedIn", "true");
             sessionStorage.setItem("loginStatus", "true");
 
-            history.push("/dashboard");
+            history.push(sessionStorage.getItem("redirect_path"));
+            // history.go(-2);
           })
           .catch((err) => {
             // history.push("/dashboard");
@@ -73,7 +90,8 @@ const LoginLogic = ({ setLoggedIn }, setIsLoading, setLoginErrorMsg, toast) => {
               .then((response) => {
                 sessionStorage.setItem("loginStatus", "true");
                 toast.success("Welcome back " + response.data.name + "!");
-                history.push("/dashboard");
+                // history.push("/dashboard");
+                history.push(sessionStorage.getItem("redirect_path"));
               })
               .catch((err) => {
                 if (typeof err.data.errors === "object") {
