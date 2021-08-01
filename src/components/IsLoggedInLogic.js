@@ -8,9 +8,9 @@ const IsLoggedIn = (setLoginErrorMsg, setIsLoading, setLoggedIn) => {
   const [isLoading, setLoading] = useState(true);
   const history = useHistory();
 
-  if (window.location.pathname !== "/login") {
-    sessionStorage.setItem("redirect_path", window.location.pathname);
-  }
+  // if (window.location.pathname !== "/login") {
+  //   sessionStorage.setItem("redirect_path", window.location.pathname);
+  // }
 
   //check if user still logged in
   const checkIfAuthenticated = () => {
@@ -26,9 +26,9 @@ const IsLoggedIn = (setLoginErrorMsg, setIsLoading, setLoggedIn) => {
         setLoggedIn(false);
         // if user was logged in return message that he is not
         // longer logged in, otherwise return server error.
-        if (window.location.pathname !== "/login") {
-          sessionStorage.setItem("redirect_path", window.location.pathname);
-        }
+        // if (window.location.pathname !== "/login") {
+        //   sessionStorage.setItem("redirect_path", window.location.pathname);
+        // }
         switch (sessionStorage.getItem("loginStatus")) {
           case "true":
             setLoginErrorMsg(
