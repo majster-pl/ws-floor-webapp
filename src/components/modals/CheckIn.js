@@ -97,14 +97,11 @@ const CheckIn = ({ data, handleCloseMainModal, toast }) => {
                     // defaultValue={modalData.others}
                     value={props.values.reg}
                   />
-                  <Form.Text className="text-danger ms-2">
-                    {props.errors.reg}
-                  </Form.Text>
                 </Col>
               </Form.Group>
 
               {/* Customer */}
-              <Form.Group as={Row} controlId="formCustomer">
+              <Form.Group as={Row} controlId="formCustomer" className="mb-2">
                 <Form.Label column sm="3" className="text-md-end">
                   Customer
                 </Form.Label>
@@ -117,9 +114,6 @@ const CheckIn = ({ data, handleCloseMainModal, toast }) => {
                     // defaultValue={modalData.others}
                     value={props.values.customer_name}
                   />
-                  <Form.Text className="text-danger ms-2">
-                    {props.errors.customer_name}
-                  </Form.Text>
                 </Col>
               </Form.Group>
 
@@ -135,15 +129,17 @@ const CheckIn = ({ data, handleCloseMainModal, toast }) => {
                       autoComplete="off"
                       type="text"
                       name="odometer_in"
-                      placeholder="Mileage in (km)"
+                      placeholder="Current mileage (km)"
                       onChange={props.handleChange("odometer_in")}
                       value={props.values.odometer_in}
-                      isInvalid={!!props.errors.odometer_in}
+                      isInvalid={
+                        props.touched.odometer_in && !!props.errors.odometer_in
+                      }
                     />
                     <InputGroup.Text>km</InputGroup.Text>
                   </InputGroup>
                   <Form.Text className="text-danger ms-2">
-                    {props.errors.odometer_in}
+                    {props.touched.odometer_in && props.errors.odometer_in}
                   </Form.Text>
                 </Col>
               </Form.Group>
