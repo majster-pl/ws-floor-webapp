@@ -129,10 +129,10 @@ const CalendarEvent = ({
             <div className="col-7 text-white ">{others}</div>
           </div>
         </div>
-        <div className={"card-footer m-0 p-0  " + setStatusColors(status).bg}>
+        <div className={"card-footer m-0 p-0 " + setStatusColors(status).bg}>
           <small
             className={
-              "fst-italic fw-bold ps-1 " + setStatusColors(status).text
+              "fst-italic fw-bold ps-2 " + setStatusColors(status).text
             }
           >
             {status}
