@@ -33,7 +33,7 @@ const App = () => {
     handleCloseMainModal,
     showMainModal,
     CheckInModal,
-  } = MainModalLogic({ setIsLoading });
+  } = MainModalLogic({ setIsLoading, toast });
 
   return (
     <>

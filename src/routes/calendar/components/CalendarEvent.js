@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import apiClient from "../../../service/api/api";
 import { Row, Col, Nav } from "react-bootstrap";
+// import { useEffect, useState } from "react";
 
 const CalendarEvent = ({
   props,
@@ -51,6 +52,36 @@ const CalendarEvent = ({
     handleModalOpen(null, event_id);
   };
 
+  const setStatusColors = (status) => {
+    switch (status) {
+      case "booked":
+        return { bg: "bg-light", text: "text-darker" };
+
+      case "awaiting_labour":
+        return { bg: "bg-info", text: "text-secondary" };
+
+      case "awaiting_estimates":
+      case "awaiting_authorisation":
+      case "awaiting_qc":
+        return { bg: "bg-info", text: "text-darker" };
+
+      case "awaiting_part":
+        return { bg: "bg-light-blue", text: "text-darker" };
+
+      case "work_in_progress":
+        return { bg: "bg-primary", text: "text-white" };
+
+      case "at_3rd_party":
+        return { bg: "bg-dark-green", text: "text-white" };
+
+      case "completed":
+        return { bg: "bg-success", text: "text-white" };
+
+      default:
+        return { bg: "bg-gray", text: "text-mutted" };
+    }
+  };
+
   return (
     <td colSpan="2">
       <div
@@ -98,8 +129,14 @@ const CalendarEvent = ({
             <div className="col-7 text-white ">{others}</div>
           </div>
         </div>
-        <div className="card-footer p-0 card-body-row">
-          <small className="text-info fst-italic ps-1">{status}</small>
+        <div className={"card-footer m-0 p-0  " + setStatusColors(status).bg}>
+          <small
+            className={
+              "fst-italic fw-bold ps-1 " + setStatusColors(status).text
+            }
+          >
+            {status}
+          </small>
         </div>
       </div>
     </td>

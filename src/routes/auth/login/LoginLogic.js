@@ -65,7 +65,7 @@ const LoginLogic = ({ setLoggedIn }, setIsLoading, setLoginErrorMsg, toast) => {
       .get("/sanctum/csrf-cookie")
       .then((res) => {
         // console.log(res);
-        console.log("HEERE I AM!");
+        // console.log("HEERE I AM!");
         apiClient
           .post("/login", {
             email: username,

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import apiClient from "../../service/api/api";
 import { useHistory } from "react-router-dom";
 
-const CalendarLogic = ({ toast, setIsLoading }) => {
+const CalendarLogic = ({ toast, setIsLoading, handleSuccess }) => {
   const history = useHistory();
   const todaysDate = moment().startOf("isoweek");
   const [currentDate, setCurrentDate] = useState(() => {

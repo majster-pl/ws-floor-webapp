@@ -17,6 +17,8 @@ $theme-colors: (
   "info": #ffbb00,
   "lime": #dfea87,
   "pink": #f00fa6,
+  "light-blue": #32beff,
+  "dark-green": #137265,
 );
 
 $h4-font-size: 0.9rem;
@@ -109,6 +111,12 @@ label {
   width: 100%;
 }
 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 // .form-control::placeholder {
 //   color: rgb(170, 170, 170) !important;
 // }
@@ -132,12 +140,13 @@ label {
 // // CARD
 .card {
   background-color: $color-gray !important;
-  border-radius: 10px !important;
+  // border-radius: 10px !important;
 }
 
 // GENERAL
 $border-color: $color-gray;
 $border-radius: 0.75rem;
+$card-border-width: 2px;
 $border-radius-sm: 1rem;
 $border-radius-lg: 0.75rem;
 // $border-width: 0em;
@@ -175,6 +184,7 @@ $input-color: $color-white;
 $input-focus-border-color: $color-pink;
 $input-transition: border-color 0.35s ease-in-out, box-shadow 0.35s ease-in-out;
 $input-plaintext-color: $color-white;
+$input-group-addon-bg: $color-gray;
 
 // $form-check-input-focus-box-shadow: $color-orange;
 //form group
