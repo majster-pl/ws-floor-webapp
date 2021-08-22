@@ -232,9 +232,13 @@ const CalendarModal = ({
             <Modal.Header>
               {/* {modalData.id == undefined ? ( */}
               {modalData.new_booking ? (
-                <Modal.Title>Add New Booking</Modal.Title>
+                <Modal.Title>
+                  <h3 className="my-auto">Add New Booking</h3>
+                </Modal.Title>
               ) : (
-                <Modal.Title>Edit booking</Modal.Title>
+                <Modal.Title>
+                  <h3 className="my-auto">Edit booking</h3>
+                </Modal.Title>
               )}
               <button
                 type="button"

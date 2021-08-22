@@ -73,7 +73,9 @@ const CheckIn = ({ data, handleCloseMainModal, toast }) => {
         {(props) => (
           <Form onSubmit={props.handleSubmit}>
             <Modal.Header>
-              <Modal.Title>Check in</Modal.Title>
+              <Modal.Title>
+                <h3 className="my-auto">Check in</h3>
+              </Modal.Title>
               <button
                 type="button"
                 className="btn-close"
