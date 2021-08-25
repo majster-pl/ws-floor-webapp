@@ -8,9 +8,9 @@ const Column = ({ column, tasks, searchQuery }) => {
     return (
       <Card.Header className="bg-secondary workshop-col-header">
         <Card.Title className="">
-          <h4 className="text-info text-uppercase text-truncate fw-bold">
+          <h5 className="text-info text-uppercase text-truncate fw-bold">
             {title}
-          </h4>
+          </h5>
         </Card.Title>
       </Card.Header>
     );
@@ -46,10 +46,10 @@ const Column = ({ column, tasks, searchQuery }) => {
       </Droppable>
       <Card.Footer className="bg-secondary text-pink workshop-col-footer h4 m-0 py-0">
         <Row>
-          <Col className="col-12 h5 m-0">
+          <Col className="col-12 h5 m-0 mt-1 ps-1">
             Jobsd: {Object.keys(tasks).length}
           </Col>
-          <Col className="col-12 m-0 text-lime h5">Hours: {sum}h</Col>
+          <Col className="col-12 m-0 text-lime h5 ps-1">Hours: {sum}h</Col>
         </Row>
       </Card.Footer>
     </div>

@@ -3,6 +3,7 @@ import { Row, Col, Modal, Form, Button, InputGroup } from "react-bootstrap";
 import { Formik } from "formik";
 import apiClient from "../../service/api/api";
 import * as yup from "yup";
+import moment from "moment";
 
 const CheckIn = ({ data, handleCloseMainModal, toast }) => {
   // const [specialInstText, setSpecialInstText] = useState("");
@@ -20,6 +21,7 @@ const CheckIn = ({ data, handleCloseMainModal, toast }) => {
     let url = "/api/v1/events/" + data.event_id;
     // change/override event status
     values["status"] = "awaiting_labour";
+    values["arrived_date"] = moment(Date()).format("YYYY-MM-DD HH:mm:ss");
     values["order"] = "100"; //workaround... need to find highest order in group and add bigger digit to last
 
     apiClient
