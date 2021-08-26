@@ -1,8 +1,10 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { Card, Row, Col } from "react-bootstrap";
+import moment from "moment";
 
 const Task = ({ task, index, options, searchQuery }) => {
+  var today = moment(Date()).format("YYYY-MM-DD");
   // search function
   function search(event) {
     // console.log(searchQuery);
@@ -38,7 +40,11 @@ const Task = ({ task, index, options, searchQuery }) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
-          className={`m-1 disable-select  ${search(task) ? "d-none" : ""} `}
+          className={`m-1 disable-select  ${search(task) ? "d-none" : ""} ${
+            task.booked_date < today && task.status === "booked"
+              ? "bg-darker text-light"
+              : ""
+          }`}
         >
           <Card.Body className="m-1 mx-2 p-0">
             <Row>
@@ -49,6 +55,10 @@ const Task = ({ task, index, options, searchQuery }) => {
               </Col>
               <Col className="col-12 text-truncate-2 h5 fw-normal">
                 {task.description}
+              </Col>
+              <Col className="col-12 text-truncate-2  h6 fw-normal fst-italic text-lime">
+                {task.special_instructions &&
+                  "Extra: " + task.special_instructions}
               </Col>
               <Col
                 className={`col-12 text-truncate-2 h6 fw-normal ${
@@ -61,7 +71,20 @@ const Task = ({ task, index, options, searchQuery }) => {
                 >
                   {task.age} day{`${task.age <= 1 ? "" : "s"}`}
                 </label>
-                {/* <br></br>test: {current} */}
+              </Col>
+              <Col
+                className={`col-12 text-truncate-2 h6 fw-normal ${
+                  task.status !== "booked" ? "d-none" : ""
+                }  `}
+              >
+                Booked:{" "}
+                <label
+                  className={`${
+                    task.booked_date < today ? "text-danger fw-bold" : ""
+                  }`}
+                >
+                  {task.booked_date}
+                </label>
               </Col>
               <Col className="col-12">
                 <Row className="row-justify-end">
