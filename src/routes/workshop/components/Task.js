@@ -41,7 +41,7 @@ const Task = ({ task, index, options, searchQuery }) => {
           {...provided.dragHandleProps}
           ref={provided.innerRef}
           className={`m-1 disable-select  ${search(task) ? "d-none" : ""} ${
-            task.booked_date < today && task.status === "booked"
+            task.booked_date_time < today && task.status === "booked"
               ? "bg-darker text-light"
               : ""
           }`}
@@ -80,10 +80,10 @@ const Task = ({ task, index, options, searchQuery }) => {
                 Booked:{" "}
                 <label
                   className={`${
-                    task.booked_date < today ? "text-danger fw-bold" : ""
+                    task.booked_date_time < today ? "text-danger fw-bold" : ""
                   }`}
                 >
-                  {task.booked_date}
+                  {moment(task.booked_date_time).format("DD-MM-YYYY")}
                 </label>
               </Col>
               <Col className="col-12">

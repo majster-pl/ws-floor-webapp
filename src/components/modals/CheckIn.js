@@ -21,8 +21,6 @@ const CheckIn = ({ data, handleCloseMainModal, toast }) => {
     let url = "/api/v1/events/" + data.event_id;
     // change/override event status
     values["status"] = "awaiting_labour";
-    // values["arrived_date"] = moment(Date()).format("YYYY-MM-DD HH:mm:ss");
-    // values["order"] = "100"; //workaround... need to find highest order in group and add bigger digit to last
 
     apiClient
       .get("/sanctum/csrf-cookie")
@@ -32,14 +30,8 @@ const CheckIn = ({ data, handleCloseMainModal, toast }) => {
           .then((response) => {
             // setTableData(response.data.data);
             console.log(response.data);
-            // setModalData(response.data.data);
-            // setShowModal(true);
             handleCloseMainModal();
-            // handleCloseModal();
-            // setModalData([]);
-            // reloadCalendar();
             toast.success("Event saved.");
-            // setBookedDate();
           })
           .catch((err) => {
             console.log("error:", err);

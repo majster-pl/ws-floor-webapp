@@ -57,6 +57,7 @@ const ChartLine = () => {
     apiClient
       .get("/api/v1/stats?from=" + startDate + "&days=" + numberOfSelectedDays)
       .then((response) => {
+        console.log("data: ", response);
         setEventsPerDay(response.data.data);
       })
       .catch((err) => {

@@ -47,14 +47,14 @@ const CalendarLogic = ({ toast, setIsLoading, handleSuccess }) => {
       "/api/v1/events?days=" +
       numberOfDays +
       "&from=" +
-      moment(currentDate).format("YYYY-MM-DD") +
+      moment(currentDate).format("YYYY-MM-DD 00:01") +
       "&format=grid";
 
     apiClient
       .get(url)
       .then((response) => {
         // console.log(response.isAuthenticated);
-        // console.log(response.data);
+        console.log(response.data);
         setIsLoading(false);
         setTableData(response.data.data);
       })

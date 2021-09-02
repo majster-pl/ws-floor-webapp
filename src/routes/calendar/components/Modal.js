@@ -24,7 +24,7 @@ const CalendarModal = ({
   const [isAssetInvalid, setIsAssetInvalid] = useState();
   const [customers, setCustomers] = useState([]);
   const [selectedBookedDate, setSelectedBookedDate] = useState(() => {
-    return moment(modalData.booked_date).format("YYYY-MM-DD");
+    return moment(modalData.booked_date_time).format("YYYY-MM-DD H:mm");
   });
   //   const [customerSelections, setCustomerSelections] = useState([]);
   const [assetSelections, setAssetSelections] = useState(() => {
@@ -38,7 +38,7 @@ const CalendarModal = ({
     apiClient
       .get(url)
       .then((response) => {
-        console.log(response.data.data);
+        // console.log(response.data.data);
         setAssets(response.data.data);
       })
       .catch((err) => {
@@ -54,7 +54,7 @@ const CalendarModal = ({
     apiClient
       .get(url)
       .then((response) => {
-        console.log(response.data.data);
+        // console.log(response.data.data);
         setCustomers(response.data.data);
       })
       .catch((err) => {
@@ -78,7 +78,7 @@ const CalendarModal = ({
       }),
     description: yup.string().min(3).required(),
     allowed_time: yup.number().required(),
-    booked_date: yup.date().required(),
+    booked_date_time: yup.date().required(),
   });
   // // Date picker
   const CustomInput = ({ onClick }) => (
@@ -86,7 +86,7 @@ const CalendarModal = ({
       name="booked_at"
       onClick={onClick}
       placeholder="Booked date"
-      defaultValue={moment(selectedBookedDate).format("DD-MM-YYYY")}
+      defaultValue={moment(selectedBookedDate).format("DD-MM-YYYY H:mm")}
     />
   );
   // // When new date selected from date picker
@@ -94,7 +94,7 @@ const CalendarModal = ({
     // setBookedDate(currentDate);
     setModalData({
       ...modalData,
-      ["booked_date"]: moment(currentDate).format("YYYY-MM-DD"),
+      ["booked_date_time"]: moment(currentDate).format("YYYY-MM-DD H:mm"),
     });
   };
   // // disable weeknd on calendar picker (in future to days off to be able to be set)
@@ -395,32 +395,34 @@ const CalendarModal = ({
               <Form.Group as={Row} controlId="formBookedAt">
                 <Form.Label column sm="3" className="text-md-end">
                   Booked date
+                  {selectedBookedDate}
                 </Form.Label>
                 <Col sm="9">
                   <DatePicker
                     style={{ display: "revert" }}
-                    dateFormat="dd-MM-yyyy"
+                    dateFormat="dd-MM-yyyy H:mm"
                     calendarStartDay={1}
                     // disabledKeyboardNavigation
+                    showTimeSelect
                     customInput={
-                      <CustomInput selected={props.values.booked_date} />
+                      <CustomInput selected={props.values.booked_date_time} />
                     }
                     closeOnScroll={true}
                     todayButton="This Week"
                     filterDate={isWeekday}
                     // highlightDates={[subDays(new Date(selectedBookedDate), 1)]}
                     selected={new Date(selectedBookedDate)}
-                    value={props.values.booked_date}
+                    value={props.values.booked_date_time}
                     onChange={(selected) => {
-                      // console.log(selected);
-                      props.values.booked_date =
-                        moment(selected).format("YYYY-MM-DD");
-                      setSelectedBookedDate(selected);
+                      console.log(selected);
+                      var newDate = moment(selected).format("YYYY-MM-DD H:mm");
+                      props.values.booked_date_time = newDate;
+                      setSelectedBookedDate(newDate);
                       // console.log(JSON.stringify(props.values));
                     }}
                   />
                   <Form.Text className="text-danger ms-2">
-                    {props.errors.booked_date}
+                    {props.errors.booked_date_time}
                   </Form.Text>
                 </Col>
               </Form.Group>
@@ -439,7 +441,7 @@ const CalendarModal = ({
                     value={props.values.others}
                   />
                   <Form.Text className="text-danger ms-2">
-                    {props.errors.booked_date}
+                    {props.errors.others}
                   </Form.Text>
                 </Col>
               </Form.Group>
