@@ -19,7 +19,7 @@ const CalendarNavbar = ({
   setCurrentDate,
   searchQuery,
   setSearchQuery,
-  handleModalOpen,
+  // handleModalOpen,
   numberOfDays,
   setNumberOfDays,
 }) => {

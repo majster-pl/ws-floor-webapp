@@ -51,26 +51,26 @@ const Calendar = ({
       <table className="calendar-table">
         <TableHeader
           currentDate={currentDate}
-          // setCurrentDate={setCurrentDate}
-          // searchQuery={searchQuery}
-          // setSearchQuery={setSearchQuery}
+          setCurrentDate={setCurrentDate}
           handleModalOpen={handleModalOpen}
           numberOfDays={numberOfDays}
-          // setNumberOfDays={setNumberOfDays}
+          setNumberOfDays={setNumberOfDays}
+          // searchQuery={searchQuery}
+          // setSearchQuery={setSearchQuery}
         />
 
         {isCalendarLoading ? (
           <CalendarSpinner numberOfDays={numberOfDays} />
         ) : (
           <TableBody
-            setIsLoading={setIsLoading}
             tableData={tableData}
-            setModalEditData={setModalEventId}
             handleModalOpen={handleModalOpen}
-            handleShowModal={handleShowModal}
-            handleCloseModal={handleCloseModal}
             query={searchQuery}
+            setIsLoading={setIsLoading}
             handleShowMainModal={handleShowMainModal}
+            // setModalEditData={setModalEventId}
+            // handleShowModal={handleShowModal}
+            // handleCloseModal={handleCloseModal}
           />
         )}
       </table>
