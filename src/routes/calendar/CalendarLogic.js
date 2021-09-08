@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import apiClient from "../../service/api/api";
 import { useHistory } from "react-router-dom";
 
-const CalendarLogic = ({ toast, setIsLoading, handleSuccess }) => {
+const CalendarLogic = ({ toast, setIsLoading }) => {
   const history = useHistory();
   const todaysDate = moment().startOf("isoweek");
   const [currentDate, setCurrentDate] = useState(() => {
@@ -20,7 +20,7 @@ const CalendarLogic = ({ toast, setIsLoading, handleSuccess }) => {
   const [modalData, setModalData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const handleCloseModal = () => {
-    setModalData([]);
+    // setModalData([]);
     setShowModal(false);
   };
 
@@ -42,6 +42,7 @@ const CalendarLogic = ({ toast, setIsLoading, handleSuccess }) => {
   // Loading calendar from api when currentDate changes
   useEffect(() => {
     // setIsCalendarLoading(true);
+
     setIsLoading(true);
     const url =
       "/api/v1/events?days=" +
@@ -55,8 +56,9 @@ const CalendarLogic = ({ toast, setIsLoading, handleSuccess }) => {
       .then((response) => {
         // console.log(response.isAuthenticated);
         console.log(response.data);
+        console.log("RELOAD from useEffect!!!!!!!!!!");
         setIsLoading(false);
-        setTableData(response.data.data);
+        setTableData([...response.data.data]);
       })
 
       .catch((error) => {
@@ -94,7 +96,7 @@ const CalendarLogic = ({ toast, setIsLoading, handleSuccess }) => {
     } else {
       setModalData({
         new_booking: true,
-        booked_date: date,
+        booked_date_time: date,
       });
       setShowModal(true);
       setIsLoading(false);

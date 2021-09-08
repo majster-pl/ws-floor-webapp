@@ -1,5 +1,13 @@
 // import axios from "axios";
-import { Modal, Button, Form, Row, Col } from "react-bootstrap";
+import {
+  Modal,
+  Button,
+  Form,
+  Row,
+  Col,
+  Container,
+  Collapse,
+} from "react-bootstrap";
 import moment from "moment";
 import React, { useState, useEffect, Fragment } from "react";
 import DatePicker from "react-datepicker";
@@ -9,6 +17,7 @@ import apiClient from "../../../service/api/api";
 import { addDays, subDays, getDay } from "date-fns";
 import { Formik } from "formik";
 import * as yup from "yup";
+import HistoryListItem from "./HistoryListItem";
 
 // const CalendarModal = ({ modalData, setmodalData, showModal, handleCloseModal, reloadCalendar, assetsOptions, customerOptions }) => {
 const CalendarModal = ({
@@ -30,9 +39,14 @@ const CalendarModal = ({
   const [assetSelections, setAssetSelections] = useState(() => {
     return [modalData.reg];
   });
+  const [open, setOpen] = useState(false);
+
+  if (typeof modalData.activities !== "object") {
+    modalData.activities = Object.keys({});
+  }
 
   const getAssets = () => {
-    console.log("getAssets function...");
+    // console.log("getAssets function...");
     let url = "/api/v1/assets";
 
     apiClient
@@ -48,7 +62,7 @@ const CalendarModal = ({
 
   //fetching customers list
   const getCustomers = () => {
-    console.log("getCustomers function...");
+    // console.log("getCustomers function...");
     let url = "/api/v1/customers";
 
     apiClient
@@ -105,7 +119,7 @@ const CalendarModal = ({
 
   // // on asset input changed, check if selected from list or created new
   const handleAssetChange = (s, e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setIsAssetInvalid(true);
     // setModalData({
     //   ...modalData,
@@ -146,12 +160,17 @@ const CalendarModal = ({
   const handleOnShow = () => {
     getAssets();
     getCustomers();
-    console.log(JSON.stringify(modalData));
+    // console.log(JSON.stringify(modalData.activities));
+    console.log(modalData);
+    // modalData.activities.forEach((element) => {
+    //   console.log(element);
+    // });
+    // console.log(modalData.activities);
   };
 
   const handleSubmit = (values) => {
-    console.log("handleSubmit");
-    console.log("MODAL: " + JSON.stringify(values));
+    // console.log("handleSubmit");
+    // console.log("MODAL: " + JSON.stringify(values));
 
     if (modalData.new_booking) {
       let url = "/api/v1/events";
@@ -159,7 +178,7 @@ const CalendarModal = ({
         .post(url, values)
         .then((response) => {
           // setTableData(response.data.data);
-          console.log(response.data);
+          // console.log(response.data);
           // setModalData(response.data.data);
           // setShowModal(true);
           handleCloseModal();
@@ -182,11 +201,11 @@ const CalendarModal = ({
             .patch(url, values)
             .then((response) => {
               // setTableData(response.data.data);
-              console.log(response.data);
+              // console.log(response.data);
               // setModalData(response.data.data);
               // setShowModal(true);
               handleCloseModal();
-              setModalData([]);
+              // setModalData([]);
               reloadCalendar();
               toast.success("Event saved.");
               // setBookedDate();
@@ -284,7 +303,7 @@ const CalendarModal = ({
                         onInputChange={handleAssetChange}
                         options={assets}
                         isInvalid={isAssetInvalid}
-                        value={props.values.reg}
+                        value={props.values.reg || ""}
                         placeholder="Vehicle Reg..."
                         defaultSelected={
                           modalData.new_booking ? "" : [modalData]
@@ -335,7 +354,7 @@ const CalendarModal = ({
                         // onInputChange={handleAssetChange}
                         options={customers}
                         // isInvalid={isAssetInvalid}
-                        value={props.values.customer_name}
+                        value={props.values.customer_name || ""}
                         placeholder="Customer..."
                         defaultSelected={
                           modalData.new_booking ? "" : [modalData]
@@ -361,7 +380,7 @@ const CalendarModal = ({
                     name="description"
                     placeholder="Visit description"
                     onChange={props.handleChange("description")}
-                    value={props.values.description}
+                    value={props.values.description || ""}
                     // defaultValue={modalData.description}
                   />
                   <Form.Text className="text-danger ms-2">
@@ -381,7 +400,7 @@ const CalendarModal = ({
                     placeholder="Number of hours allowed for a job"
                     // onChange={handleChange}
                     onChange={props.handleChange("allowed_time")}
-                    value={props.values.allowed_time}
+                    value={props.values.allowed_time || ""}
                     defaultValue={modalData.allowed_time}
                     isInvalid={!!props.errors.allowed_time}
                   />
@@ -395,7 +414,6 @@ const CalendarModal = ({
               <Form.Group as={Row} controlId="formBookedAt">
                 <Form.Label column sm="3" className="text-md-end">
                   Booked date
-                  {selectedBookedDate}
                 </Form.Label>
                 <Col sm="9">
                   <DatePicker
@@ -412,7 +430,7 @@ const CalendarModal = ({
                     filterDate={isWeekday}
                     // highlightDates={[subDays(new Date(selectedBookedDate), 1)]}
                     selected={new Date(selectedBookedDate)}
-                    value={props.values.booked_date_time}
+                    value={props.values.booked_date_time || ""}
                     onChange={(selected) => {
                       console.log(selected);
                       var newDate = moment(selected).format("YYYY-MM-DD H:mm");
@@ -438,7 +456,7 @@ const CalendarModal = ({
                     placeholder="Other informations"
                     onChange={props.handleChange("others")}
                     defaultValue={modalData.others}
-                    value={props.values.others}
+                    value={props.values.others || ""}
                   />
                   <Form.Text className="text-danger ms-2">
                     {props.errors.others}
@@ -488,12 +506,49 @@ const CalendarModal = ({
             </Modal.Body>
 
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleCloseModal}>
-                Close
-              </Button>
-              <Button variant="success" type="submit">
-                Save
-              </Button>
+              <Container fluid>
+                <Collapse in={open}>
+                  <div
+                    id="example-collapse-text"
+                    className="overflow-auto"
+                    style={{ maxHeight: "5rem" }}
+                  >
+                    {modalData.activities.map((element, i) => {
+                      return (
+                        <HistoryListItem
+                          key={i}
+                          date={moment(element.updated_at).format(
+                            "HH:mm:ss DD-MM-Y"
+                          )}
+                          description={element.description}
+                          properties={element.properties}
+                        />
+                      );
+                    })}
+                  </div>
+                </Collapse>
+                <div className="row justify-content-between pt-1">
+                  <div className="col-4">
+                    <Button
+                      className="fas fa-history text-decoration-none link-success"
+                      variant="link"
+                      onClick={() => setOpen(!open)}
+                    ></Button>
+                  </div>
+                  <div className="col-6 text-end">
+                    <Button
+                      className="mx-1"
+                      variant="secondary"
+                      onClick={handleCloseModal}
+                    >
+                      Close
+                    </Button>
+                    <Button className="mx-1" variant="success" type="submit">
+                      Save
+                    </Button>
+                  </div>
+                </div>
+              </Container>
             </Modal.Footer>
           </Form>
         )}

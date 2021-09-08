@@ -6,7 +6,13 @@ import { useHistory } from "react-router-dom";
 import { Formik } from "formik";
 import CheckIn from "./modals/CheckIn";
 
-const MainModalLogic = ({ setIsLoading, toast, handleSuccess }) => {
+const MainModalLogic = ({
+  setIsLoading,
+  toast,
+  // handleSuccess,
+  reloadCalendar,
+  // handleReloadCalendar,
+}) => {
   const [showMainModal, setShowMainModal] = useState(false);
   const [mainModalData, setMainModalData] = useState();
   const [status, setStatus] = useState();
@@ -57,6 +63,7 @@ const MainModalLogic = ({ setIsLoading, toast, handleSuccess }) => {
             data={mainModalData}
             handleCloseMainModal={handleCloseMainModal}
             toast={toast}
+            reloadCalendar={reloadCalendar}
           />
         );
         break;
@@ -73,6 +80,7 @@ const MainModalLogic = ({ setIsLoading, toast, handleSuccess }) => {
     handleShowMainModal,
     handleCloseMainModal,
     showMainModal,
+    reloadCalendar,
     CheckInModal,
   };
 };

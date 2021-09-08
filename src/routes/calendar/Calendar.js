@@ -1,5 +1,4 @@
 import IsLoggedInLogic from "../../components/IsLoggedInLogic";
-import CalendarLogic from "./CalendarLogic";
 import TableHeader from "./components/TableHeader";
 import CalendarNavbar from "./components/CalendarNavbar";
 import Modal from "./components/Modal";
@@ -13,26 +12,23 @@ const Calendar = ({
   toast,
   setLoginErrorMsg,
   handleShowMainModal,
+  currentDate,
+  setCurrentDate,
+  searchQuery,
+  setSearchQuery,
+  handleModalOpen,
+  showModal,
+  setModalEventId,
+  handleCloseModal,
+  handleShowModal,
+  tableData,
+  numberOfDays,
+  setNumberOfDays,
+  isCalendarLoading,
+  modalData,
+  setModalData,
+  reloadCalendar,
 }) => {
-  const {
-    currentDate,
-    setCurrentDate,
-    searchQuery,
-    setSearchQuery,
-    handleModalOpen,
-    showModal,
-    setModalEventId,
-    handleCloseModal,
-    handleShowModal,
-    tableData,
-    numberOfDays,
-    setNumberOfDays,
-    isCalendarLoading,
-    modalData,
-    setModalData,
-    reloadCalendar,
-  } = CalendarLogic({ toast, setIsLoading });
-
   // when page oppened check if user logged in, if not redirect to login page
   const { isLoading, SpinnerComponent } = IsLoggedInLogic(
     setLoginErrorMsg,

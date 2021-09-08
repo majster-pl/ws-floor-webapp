@@ -5,7 +5,7 @@ import apiClient from "../../service/api/api";
 import * as yup from "yup";
 import moment from "moment";
 
-const CheckIn = ({ data, handleCloseMainModal, toast }) => {
+const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
   // const [specialInstText, setSpecialInstText] = useState("");
   // Form validation
   const reviewShema = yup.object({
@@ -31,6 +31,7 @@ const CheckIn = ({ data, handleCloseMainModal, toast }) => {
             // setTableData(response.data.data);
             console.log(response.data);
             handleCloseMainModal();
+            reloadCalendar();
             toast.success("Event saved.");
           })
           .catch((err) => {
@@ -91,7 +92,7 @@ const CheckIn = ({ data, handleCloseMainModal, toast }) => {
                     plaintext
                     onChange={props.handleChange("others")}
                     // defaultValue={modalData.others}
-                    value={props.values.reg}
+                    value={props.values.reg || ""}
                   />
                 </Col>
               </Form.Group>
@@ -108,7 +109,7 @@ const CheckIn = ({ data, handleCloseMainModal, toast }) => {
                     name="others"
                     placeholder="Customer Name"
                     // defaultValue={modalData.others}
-                    value={props.values.customer_name}
+                    value={props.values.customer_name || ""}
                   />
                 </Col>
               </Form.Group>
@@ -127,7 +128,7 @@ const CheckIn = ({ data, handleCloseMainModal, toast }) => {
                       name="odometer_in"
                       placeholder="Current mileage (km)"
                       onChange={props.handleChange("odometer_in")}
-                      value={props.values.odometer_in}
+                      value={props.values.odometer_in || ""}
                       isInvalid={
                         props.touched.odometer_in && !!props.errors.odometer_in
                       }
@@ -156,7 +157,7 @@ const CheckIn = ({ data, handleCloseMainModal, toast }) => {
                     // onKeyUp={setSpecialInstText(
                     //   props.values.special_instructions
                     // )}
-                    value={props.values.special_instructions}
+                    value={props.values.special_instructions || ""}
                     // defaultValue={modalData.description}
                   />
                   {/* <p className="p-0 m-0 me-1 text-end text-muted">

@@ -219,6 +219,10 @@ $btn-close-opacity: 1;
   background-color: $color-success !important;
 }
 
+.cursor-pointer:hover {
+  cursor: pointer;
+}
+
 .disable-select {
   user-select: none; /* supported by Chrome and Opera */
   -webkit-user-select: none; /* Safari */

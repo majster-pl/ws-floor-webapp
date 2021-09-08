@@ -7,6 +7,7 @@ import Header from "./components/header/Header";
 import Home from "./routes/home/Home";
 import Login from "./routes/auth/login/Login";
 import Calendar from "./routes/calendar/Calendar";
+import CalendarLogic from "./routes/calendar/CalendarLogic";
 import Dashboard from "./routes/dashboard/Dashboard";
 import Workshop from "./routes/workshop/Workshop";
 import Customers from "./routes/customers/Customers";
@@ -28,12 +29,38 @@ const App = () => {
   const [loginErrorMsg, setLoginErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  // const reloadCalendar = () => {
+  //   console.log("reload Calendar!");
+  //   // handleReloadCalendar();
+  // };
+
+  // const { reloadCalendar } = CalendarLogic({ toast, setIsLoading });
+  const {
+    currentDate,
+    setCurrentDate,
+    searchQuery,
+    setSearchQuery,
+    handleModalOpen,
+    showModal,
+    setModalEventId,
+    handleCloseModal,
+    handleShowModal,
+    tableData,
+    numberOfDays,
+    setNumberOfDays,
+    isCalendarLoading,
+    modalData,
+    setModalData,
+    reloadCalendar,
+  } = CalendarLogic({ toast, setIsLoading });
+
   const {
     handleShowMainModal,
     handleCloseMainModal,
+    // reloadCalendar,
     showMainModal,
     CheckInModal,
-  } = MainModalLogic({ setIsLoading, toast });
+  } = MainModalLogic({ setIsLoading, toast, reloadCalendar });
 
   return (
     <>
@@ -85,6 +112,22 @@ const App = () => {
               setLoginErrorMsg={setLoginErrorMsg}
               toast={toast}
               handleShowMainModal={handleShowMainModal}
+              currentDate={currentDate}
+              setCurrentDate={setCurrentDate}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              handleModalOpen={handleModalOpen}
+              showModal={showModal}
+              setModalEventId={setModalEventId}
+              handleCloseModal={handleCloseModal}
+              handleShowModal={handleShowModal}
+              tableData={tableData}
+              numberOfDays={numberOfDays}
+              setNumberOfDays={setNumberOfDays}
+              isCalendarLoading={isCalendarLoading}
+              modalData={modalData}
+              setModalData={setModalData}
+              reloadCalendar={reloadCalendar}
             />
           </Route>
 
