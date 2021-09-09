@@ -5,6 +5,7 @@ import apiClient from "../service/api/api";
 import { useHistory } from "react-router-dom";
 import { Formik } from "formik";
 import CheckIn from "./modals/CheckIn";
+import UpdateStatus from "./modals/UpdateStatus";
 
 const MainModalLogic = ({
   setIsLoading,
@@ -68,10 +69,27 @@ const MainModalLogic = ({
         );
         break;
 
-      case "awaiting_labour":
-        return <h3>awaiting_labour</h3>;
+      // case "awaiting_labour":
+      //   return (
+      //     <UpdateStatus
+      //       data={mainModalData}
+      //       handleCloseMainModal={handleCloseMainModal}
+      //       toast={toast}
+      //       reloadCalendar={reloadCalendar}
+      //     />
+      //   );
+      //   break;
 
       default:
+        return (
+          <UpdateStatus
+            data={mainModalData}
+            handleCloseMainModal={handleCloseMainModal}
+            toast={toast}
+            reloadCalendar={reloadCalendar}
+          />
+        );
+
         break;
     }
   };

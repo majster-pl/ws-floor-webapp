@@ -137,6 +137,7 @@ const App = () => {
               setLoggedIn={setAuthenticated}
               setLoginErrorMsg={setLoginErrorMsg}
               toast={toast}
+              reloadCalendar={reloadCalendar}
             />
           </Route>
 

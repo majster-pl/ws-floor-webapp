@@ -56,7 +56,6 @@ const CalendarLogic = ({ toast, setIsLoading }) => {
       .then((response) => {
         // console.log(response.isAuthenticated);
         console.log(response.data);
-        console.log("RELOAD from useEffect!!!!!!!!!!");
         setIsLoading(false);
         setTableData([...response.data.data]);
       })

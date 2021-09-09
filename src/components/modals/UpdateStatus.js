@@ -5,7 +5,12 @@ import apiClient from "../../service/api/api";
 import * as yup from "yup";
 import moment from "moment";
 
-const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
+const UpdateStatus = ({
+  data,
+  handleCloseMainModal,
+  toast,
+  reloadCalendar,
+}) => {
   // Form validation
   const reviewShema = yup.object({
     odometer_in: yup
@@ -17,29 +22,19 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
   // Submit function
   const handleSubmit = (values) => {
     let url = "/api/v1/events/" + data.event_id;
-    // change/override event status
-    values["status"] = "awaiting_labour";
-    values["arrived_date"] = moment().format("YYYY-MM-DD  HH:mm:ss.000");
 
     apiClient
-      .get("/sanctum/csrf-cookie")
-      .then(() => {
-        apiClient
-          .patch(url, values)
-          .then((response) => {
-            // setTableData(response.data.data);
-            console.log(response.data);
-            handleCloseMainModal();
-            reloadCalendar();
-            toast.success("Event saved.");
-          })
-          .catch((err) => {
-            console.log("error:", err);
-            toast.error(err.statusText + " - Event NOT saved!");
-          });
+      .patch(url, values)
+      .then((response) => {
+        // setTableData(response.data.data);
+        console.log(response.data);
+        handleCloseMainModal();
+        reloadCalendar();
+        toast.success("Event saved.");
       })
       .catch((err) => {
-        console.error(err);
+        console.log("error:", err);
+        toast.error(err.statusText + " - Event NOT saved!");
       });
   };
 
@@ -60,7 +55,7 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
           <Form onSubmit={props.handleSubmit}>
             <Modal.Header>
               <Modal.Title>
-                <h3 className="my-auto">Check in</h3>
+                <h3 className="my-auto">Update Status</h3>
               </Modal.Title>
               <button
                 type="button"
@@ -108,26 +103,37 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
               {/* Odometer reading */}
               <Form.Group as={Row} controlId="formOdometer">
                 <Form.Label column sm="3" className="text-md-end">
-                  Mileage In
+                  New status
                 </Form.Label>
                 <Col sm="9">
-                  <InputGroup>
-                    <Form.Control
-                      maxLength={10}
-                      autoComplete="off"
-                      type="text"
-                      name="odometer_in"
-                      placeholder="Current mileage (km)"
-                      onChange={props.handleChange("odometer_in")}
-                      value={props.values.odometer_in || ""}
-                      isInvalid={
-                        props.touched.odometer_in && !!props.errors.odometer_in
-                      }
-                    />
-                    <InputGroup.Text>km</InputGroup.Text>
-                  </InputGroup>
+                  <Form.Control
+                    required
+                    as="select"
+                    type="select"
+                    name="status"
+                    defaultValue={props.values.status}
+                    onChange={props.handleChange("status")}
+                    // onChange={setFormValue}
+                    // value={form.payment_method}
+                  >
+                    <option disabled>-- select status --</option>
+                    <option value="booked">Booked</option>
+                    <option value="awaiting_labour">Awaiting Labour</option>
+                    <option value="work_in_progress">Work in Progress</option>
+                    <option value="awaiting_estimates">
+                      Awaiting Estimates
+                    </option>
+                    <option value="awaiting_part">Awaiting Parts</option>
+                    <option value="awaiting_authorisation">
+                      Awaiting Authorisation
+                    </option>
+                    <option value="awaiting_qc">Awaiting QC</option>
+                    <option value="at_3rd_party">At 3rd party</option>
+                    <option value="completed">Completed</option>
+                  </Form.Control>
+
                   <Form.Text className="text-danger ms-2">
-                    {props.touched.odometer_in && props.errors.odometer_in}
+                    {props.touched.odometer_in && props.errors.status}
                   </Form.Text>
                 </Col>
               </Form.Group>
@@ -135,36 +141,22 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
               {/* Special Inst */}
               <Form.Group as={Row} controlId="formSpecialInst">
                 <Form.Label column sm="3" className="text-md-end">
-                  Special inst.
+                  Job Notes
                 </Form.Label>
                 <Col sm="9">
                   <Form.Control
                     maxLength={100}
                     as="textarea"
                     rows={3}
-                    name="special_instructions"
-                    placeholder="Special instructions (max 100 characters)"
-                    onChange={props.handleChange("special_instructions")}
-                    value={props.values.special_instructions || ""}
+                    name="free_text"
+                    placeholder="Notes for a job (internal use)"
+                    onChange={props.handleChange("free_text")}
+                    value={props.values.free_text || ""}
                   />
                   <Form.Text className="text-danger ms-2">
-                    {props.errors.special_inst}
+                    {props.errors.free_text}
                   </Form.Text>
                 </Col>
-              </Form.Group>
-
-              {/* Customer Waiting */}
-              <Form.Group className="mb-3" controlId="formWaiting">
-                <Form.Check
-                  className="disable-select"
-                  type="checkbox"
-                  label="Customer waiting"
-                  name="waiting"
-                  checked={props.values.waiting}
-                  onChange={() =>
-                    props.setFieldValue("waiting", !props.values.waiting)
-                  }
-                />
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
@@ -172,7 +164,7 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
                 Close
               </Button>
               <Button variant="success" type="submit">
-                Check In
+                Save
               </Button>
             </Modal.Footer>
           </Form>
@@ -181,4 +173,4 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
     </>
   );
 };
-export default CheckIn;
+export default UpdateStatus;

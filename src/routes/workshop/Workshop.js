@@ -21,6 +21,7 @@ const Workshop = ({
   setLoggedIn,
   setLoginErrorMsg,
   toast,
+  reloadCalendar,
 }) => {
   // when page oppened check if user logged in, if not redirect to login page
   const { isLoading, SpinnerComponent } = IsLoggedInLogic(
@@ -94,6 +95,7 @@ const Workshop = ({
           hideProgressBar: true,
           position: "bottom-right",
         });
+        reloadCalendar();
         // updateOrder(destination.droppableId);
         // loadWorkshopData();
         console.log(response.data);
