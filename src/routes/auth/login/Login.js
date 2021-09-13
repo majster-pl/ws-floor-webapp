@@ -12,7 +12,7 @@ const Login = ({
   const {
     username,
     password,
-    sendGetRequest,
+    submitLoginForm,
     setUsername,
     setPassword,
     isSpinning,
@@ -27,7 +27,7 @@ const Login = ({
         noValidate
         // validated={validated}
         onSubmit={(e) => {
-          sendGetRequest(e);
+          submitLoginForm(e);
         }}
       >
         <Form.Group controlId="formBasicEmail" className="mb-3">

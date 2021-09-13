@@ -19,22 +19,14 @@ import AssetPage from "./routes/assets/AssetPage";
 import Page404 from "./routes/page404/Page404";
 import MainModal from "./components/MainModal";
 import MainModalLogic from "./components/MainModalLogic";
-import apiClient from "./service/api/api";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-sessionStorage.setItem("loginStatus", "false");
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [loginErrorMsg, setLoginErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  // const reloadCalendar = () => {
-  //   console.log("reload Calendar!");
-  //   // handleReloadCalendar();
-  // };
-
-  // const { reloadCalendar } = CalendarLogic({ toast, setIsLoading });
   const {
     currentDate,
     setCurrentDate,
@@ -42,9 +34,7 @@ const App = () => {
     setSearchQuery,
     handleModalOpen,
     showModal,
-    setModalEventId,
     handleCloseModal,
-    handleShowModal,
     tableData,
     numberOfDays,
     setNumberOfDays,
@@ -118,9 +108,7 @@ const App = () => {
               setSearchQuery={setSearchQuery}
               handleModalOpen={handleModalOpen}
               showModal={showModal}
-              setModalEventId={setModalEventId}
               handleCloseModal={handleCloseModal}
-              handleShowModal={handleShowModal}
               tableData={tableData}
               numberOfDays={numberOfDays}
               setNumberOfDays={setNumberOfDays}

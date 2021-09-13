@@ -14,36 +14,22 @@ const LoginLogic = ({ setLoggedIn }, setIsLoading, setLoginErrorMsg, toast) => {
 
   const history = useHistory();
 
-  // console.log("eee? -- " + setLoginErrorMsg);
-
-  const goToLastPage = () => {
-    console.log("checking history", window.history.length);
-
-    console.log("CURRENT PATH:", window.location.pathname);
-
-    // for (var i = 0; i > window.history.length; i++) {
-    //   // console.log(window.history[i]);
-    //   console.log(window.history[3]);
-    // }
-  };
   if (sessionStorage.getItem("redirect_path") === null) {
     sessionStorage.setItem("redirect_path", "/dashboard");
   }
-  // goToLastPage();
 
   useEffect(() => {
     apiClient
       .get("/api/v1/logged-in")
       .then(() => {
-        // history.push("/dashboard");
         history.push(sessionStorage.getItem("redirect_path"));
       })
-      .catch((error) => {
+      .catch(() => {
         setIsLoading(false);
       });
   }, []);
 
-  const sendGetRequest = (e) => {
+  const submitLoginForm = (e) => {
     e.preventDefault();
     setIsEmailValid(true);
     setIsPasswordValid(true);
@@ -85,6 +71,7 @@ const LoginLogic = ({ setLoggedIn }, setIsLoading, setLoginErrorMsg, toast) => {
             // WORKAROUND: when user logged in, server throwing empty response until
             // next request from server, check if looged in then redirect
             setIsSpinning(false);
+
             apiClient
               .get("/api/v1/logged-in")
               .then((response) => {
@@ -119,7 +106,7 @@ const LoginLogic = ({ setLoggedIn }, setIsLoading, setLoginErrorMsg, toast) => {
   return {
     username,
     password,
-    sendGetRequest,
+    submitLoginForm,
     setUsername,
     setPassword,
     isSpinning,

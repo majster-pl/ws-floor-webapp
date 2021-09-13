@@ -8,10 +8,6 @@ const IsLoggedIn = (setLoginErrorMsg, setIsLoading, setLoggedIn) => {
   const [isLoading, setLoading] = useState(true);
   const history = useHistory();
 
-  // if (window.location.pathname !== "/login") {
-  //   sessionStorage.setItem("redirect_path", window.location.pathname);
-  // }
-
   //check if user still logged in
   const checkIfAuthenticated = () => {
     apiClient

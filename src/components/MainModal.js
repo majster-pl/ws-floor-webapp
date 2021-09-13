@@ -19,9 +19,6 @@ const MainModal = ({ show, handleClose, form, setLoginErrorMsg }) => {
           setAuthenticated(false);
           setLoginErrorMsg("You are no longer logged in, please log in again.");
           sessionStorage.setItem("loginStatus", "false");
-          //   if (window.location.pathname !== "/login") {
-          //     sessionStorage.setItem("redirect_path", window.location.pathname);
-          //   }
           history.push("/login");
         });
     };

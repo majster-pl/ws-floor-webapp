@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 
 const CalendarLogic = ({ toast, setIsLoading }) => {
   const history = useHistory();
-  const todaysDate = moment().startOf("isoweek");
+  const todaysDate = moment().startOf("isoWeek");
   const [currentDate, setCurrentDate] = useState(() => {
     return todaysDate;
   });
@@ -17,33 +17,17 @@ const CalendarLogic = ({ toast, setIsLoading }) => {
   const [isCalendarLoading, setIsCalendarLoading] = useState(false);
   const [dateFormat, setDateFormat] = useState("YYYY-MM-DD");
   // modal
-  const [modalData, setModalData] = useState([]);
+  const [modalData, setModalData] = useState({
+    new_booking: false,
+    booked_date_time: null,
+  });
   const [showModal, setShowModal] = useState(false);
   const handleCloseModal = () => {
-    // setModalData([]);
     setShowModal(false);
   };
 
-  // function to turn off spinner
-  useEffect(() => {
-    // setIsCalendarLoading(false);
-  }, [tableData]);
-
-  // useEffect(() => {
-  //   console.log("=====================================================");
-  //   console.log("todaysDate:", new Date(moment(todaysDate)));
-  //   console.log("currentDate:", new Date(moment(currentDate)));
-  //   console.log("searchQuery:", searchQuery);
-  //   console.log("showModal:", showModal);
-  //   console.log("modalEditData:", modalEditData);
-  //   // console.log('searchQuery:', searchQuery);
-  // }, []);
-
   // Loading calendar from api when currentDate changes
   useEffect(() => {
-    // setIsCalendarLoading(true);
-
-    setIsLoading(true);
     const url =
       "/api/v1/events?days=" +
       numberOfDays +
@@ -51,22 +35,17 @@ const CalendarLogic = ({ toast, setIsLoading }) => {
       moment(currentDate).format("YYYY-MM-DD 00:01") +
       "&format=grid";
 
+    setIsLoading(true);
+
     apiClient
       .get(url)
       .then((response) => {
-        // console.log(response.isAuthenticated);
-        console.log(response.data);
         setIsLoading(false);
         setTableData([...response.data.data]);
       })
 
       .catch((error) => {
         setIsLoading(false);
-        console.log(error);
-        toast.error("Error! " + error.data.message);
-
-        // console.log(error.isAuthenticated);
-        // history.push("/login");
       });
   }, [currentDate]);
 
@@ -100,12 +79,6 @@ const CalendarLogic = ({ toast, setIsLoading }) => {
       setShowModal(true);
       setIsLoading(false);
     }
-
-    // console.log(initialFormData);
-    // setModalEventId(initialFormData);
-    // showModal();
-    // setShowModal(true);
-    // console.log('show modal here?');
   };
 
   function reloadCalendar() {

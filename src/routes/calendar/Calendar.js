@@ -5,6 +5,8 @@ import Modal from "./components/Modal";
 import TableBody from "./components/TableBody";
 import "./Calendar.css";
 import CalendarSpinner from "./components/CalendarSpinner";
+import { useEffect } from "react";
+import moment from "moment";
 
 const Calendar = ({
   setIsLoading,
@@ -18,9 +20,7 @@ const Calendar = ({
   setSearchQuery,
   handleModalOpen,
   showModal,
-  setModalEventId,
   handleCloseModal,
-  handleShowModal,
   tableData,
   numberOfDays,
   setNumberOfDays,
@@ -36,7 +36,11 @@ const Calendar = ({
     setLoggedIn
   );
 
-  // console.log("rendering calendar.js");
+  const todaysDate = moment().startOf("isoWeek");
+  useEffect(() => {
+    reloadCalendar();
+    setCurrentDate(todaysDate);
+  }, []);
 
   return (
     <div className="calendar-main scroll">
@@ -55,8 +59,6 @@ const Calendar = ({
           handleModalOpen={handleModalOpen}
           numberOfDays={numberOfDays}
           setNumberOfDays={setNumberOfDays}
-          // searchQuery={searchQuery}
-          // setSearchQuery={setSearchQuery}
         />
 
         {isCalendarLoading ? (
@@ -68,9 +70,6 @@ const Calendar = ({
             query={searchQuery}
             setIsLoading={setIsLoading}
             handleShowMainModal={handleShowMainModal}
-            // setModalEditData={setModalEventId}
-            // handleShowModal={handleShowModal}
-            // handleCloseModal={handleCloseModal}
           />
         )}
       </table>
