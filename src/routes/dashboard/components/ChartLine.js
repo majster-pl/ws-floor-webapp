@@ -23,7 +23,7 @@ const ChartLine = () => {
   };
 
   const Chart = () => {
-    console.log("running new chart...");
+    // console.log("running new chart...");
 
     setChartData({
       datasets: [
@@ -57,7 +57,7 @@ const ChartLine = () => {
     apiClient
       .get("/api/v1/stats?from=" + startDate + "&days=" + numberOfSelectedDays)
       .then((response) => {
-        console.log("data: ", response);
+        // console.log("data: ", response);
         setEventsPerDay(response.data.data);
       })
       .catch((err) => {
