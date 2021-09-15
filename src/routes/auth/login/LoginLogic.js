@@ -94,7 +94,7 @@ const LoginLogic = ({ setLoggedIn }, setIsLoading, setLoginErrorMsg, toast) => {
                   // any other error
                   setLoginErrorMsg(err.data.message);
                 }
-                console.log("Error2 is: " + JSON.stringify(err));
+                // console.log("Error: " + JSON.stringify(err));
               });
           });
       })
