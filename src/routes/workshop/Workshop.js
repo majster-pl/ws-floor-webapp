@@ -98,7 +98,7 @@ const Workshop = ({
         reloadCalendar();
         // updateOrder(destination.droppableId);
         // loadWorkshopData();
-        console.log(response.data);
+        // console.log(response.data);
       })
       .catch((err) => {
         console.log("error:", err);
@@ -125,7 +125,7 @@ const Workshop = ({
       .get(url)
       .then((response) => {
         setIsLoading(false);
-        console.log(response.data.data);
+        // console.log(response.data.data);
         setData(response.data.data);
 
         // setData(response.data.data);
