@@ -285,6 +285,22 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                       <Form.Group
                         as={Col}
                         className="col-12 col-md-6"
+                        controlId="formMail"
+                      >
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control
+                          plaintext={toggleEditForm}
+                          disabled={toggleEditForm}
+                          onChange={props.handleChange("email")}
+                          value={props.values.email}
+                          type="text"
+                          placeholder="Contact email"
+                        />
+                      </Form.Group>
+
+                      <Form.Group
+                        as={Col}
+                        className="col-12 col-md-6"
                         controlId="formStatus"
                       >
                         <Form.Label>Status:</Form.Label>
