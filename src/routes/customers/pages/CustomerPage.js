@@ -16,6 +16,7 @@ import apiClient from "../../../service/api/api";
 import moment from "moment";
 import { Formik } from "formik";
 import { useHistory } from "react-router-dom";
+import * as yup from "yup";
 
 function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   // when page oppened check if user logged in, if not redirect to login page
@@ -48,6 +49,20 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   });
   const [toggleEditForm, setToggleEditForm] = useState(true); // state of edit/save button
   const [key, setKey] = useState("general"); // current tab state
+
+  const phoneRegExp =
+    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
+  const reviewSchema = yup.object({
+    customer_contact: yup
+      .string()
+      .required()
+      .matches(phoneRegExp, "Phone number is not valid"),
+    customer_name: yup
+      .string()
+      .min(3, "Customer name must be at least 3 characters"),
+    email: yup.string().email(),
+  });
 
   // function to remove customer
   const removeCustomer = () => {
@@ -194,6 +209,7 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
               <Formik
                 initialValues={formGeneral}
                 validateOnChange={true}
+                validationSchema={reviewSchema}
                 enableReinitialize={true}
                 onSubmit={(values) => {
                   updateCustomer(values);
@@ -260,10 +276,21 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                           plaintext={toggleEditForm}
                           disabled={toggleEditForm}
                           type="text"
+                          isInvalid={
+                            props.touched.customer_name &&
+                            props.errors.customer_name
+                          }
                           placeholder="Enter customer name"
                           onChange={props.handleChange("customer_name")}
                           value={props.values.customer_name}
                         />
+                        <Form.Control.Feedback
+                          type="invalid"
+                          className="d-block"
+                        >
+                          {props.touched.customer_name &&
+                            props.errors.customer_name}
+                        </Form.Control.Feedback>
                       </Form.Group>
 
                       <Form.Group
@@ -275,11 +302,22 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                         <Form.Control
                           plaintext={toggleEditForm}
                           disabled={toggleEditForm}
+                          isInvalid={
+                            props.touched.customer_contact &&
+                            props.errors.customer_contact
+                          }
                           onChange={props.handleChange("customer_contact")}
                           value={props.values.customer_contact}
                           type="text"
                           placeholder="Contact number"
                         />
+                        <Form.Control.Feedback
+                          type="invalid"
+                          className="d-block"
+                        >
+                          {props.touched.customer_contact &&
+                            props.errors.customer_contact}
+                        </Form.Control.Feedback>
                       </Form.Group>
 
                       <Form.Group
@@ -293,9 +331,16 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                           disabled={toggleEditForm}
                           onChange={props.handleChange("email")}
                           value={props.values.email}
+                          isInvalid={props.touched.email && props.errors.email}
                           type="text"
                           placeholder="Contact email"
                         />
+                        <Form.Control.Feedback
+                          type="invalid"
+                          className="d-block"
+                        >
+                          {props.touched.email && props.errors.email}
+                        </Form.Control.Feedback>
                       </Form.Group>
 
                       <Form.Group
