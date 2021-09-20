@@ -5,8 +5,9 @@ import Modal from "./components/Modal";
 import TableBody from "./components/TableBody";
 import "./Calendar.css";
 import CalendarSpinner from "./components/CalendarSpinner";
-import { useEffect } from "react";
-import moment from "moment";
+import { useEffect, useState } from "react";
+import Pusher from "pusher-js";
+import Echo from "laravel-echo";
 
 const Calendar = ({
   setIsLoading,
@@ -28,6 +29,7 @@ const Calendar = ({
   modalData,
   setModalData,
   reloadCalendar,
+  siletReload,
 }) => {
   // when page oppened check if user logged in, if not redirect to login page
   const { isLoading, SpinnerComponent } = IsLoggedInLogic(
@@ -36,11 +38,29 @@ const Calendar = ({
     setLoggedIn
   );
 
-  const todaysDate = moment().startOf("isoWeek");
+  // vaible to trigger silent calendar reload when changed
+  const [triggerUpdate, setTriggerUpdate] = useState(0);
+
   useEffect(() => {
-    reloadCalendar();
-    setCurrentDate(todaysDate);
+    Pusher.logToConsole = true;
+
+    let echo = new Echo({
+      broadcaster: "pusher",
+      key: "7c76a1124748bac977da",
+      cluster: "eu",
+      forceTLS: true,
+    });
+
+    var channel = echo.channel("events");
+    channel.listen(".events-updated", function (data) {
+      console.log("events-updated type: " + JSON.stringify(data));
+      setTriggerUpdate(Math.random());
+    });
   }, []);
+
+  useEffect(() => {
+    siletReload(currentDate);
+  }, [triggerUpdate]);
 
   return (
     <div className="calendar-main scroll">
@@ -51,6 +71,7 @@ const Calendar = ({
         setSearchQuery={setSearchQuery}
         numberOfDays={numberOfDays}
         setNumberOfDays={setNumberOfDays}
+        reloadCalendar={reloadCalendar}
       />
       <table className="calendar-table">
         <TableHeader

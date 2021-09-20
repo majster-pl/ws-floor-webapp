@@ -22,6 +22,7 @@ const CalendarNavbar = ({
   // handleModalOpen,
   numberOfDays,
   setNumberOfDays,
+  reloadCalendar,
 }) => {
   const {
     // currentDate,
@@ -30,12 +31,13 @@ const CalendarNavbar = ({
     handleClickNext,
     handleClickPrevious,
     handleNumberOfDaysChange,
-  } = TableHeaderLogic(
+  } = TableHeaderLogic({
     currentDate,
     setCurrentDate,
     numberOfDays,
-    setNumberOfDays
-  );
+    setNumberOfDays,
+    reloadCalendar,
+  });
 
   // Date picker custom button
   const ref = React.createRef();
@@ -143,10 +145,11 @@ const CalendarNavbar = ({
                 size="sm"
                 variant="success"
                 onClick={() => {
-                  console.log("handleModalOpen()");
+                  reloadCalendar();
+                  // console.log("handleModalOpen()");
                 }}
               >
-                New Event
+                Refresh
               </Button>
             </Col>
             <Col xs="auto">

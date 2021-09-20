@@ -21,12 +21,19 @@ import MainModal from "./components/MainModal";
 import MainModalLogic from "./components/MainModalLogic";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import moment from "moment";
+// import Pusher from "pusher-js/react-native";
+// import Pusher from 'pusher-js';
+// import Echo from "laravel-echo";
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [loginErrorMsg, setLoginErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
+  // const todaysDate = moment().startOf("isoWeek");
+  // const [currentDate, setCurrentDate] = useState(() => {
+  //   return todaysDate;
+  // });
   const {
     currentDate,
     setCurrentDate,
@@ -42,6 +49,7 @@ const App = () => {
     modalData,
     setModalData,
     reloadCalendar,
+    siletReload,
   } = CalendarLogic({ toast, setIsLoading });
 
   const {
@@ -51,6 +59,40 @@ const App = () => {
     showMainModal,
     CheckInModal,
   } = MainModalLogic({ setIsLoading, toast, reloadCalendar });
+
+  useEffect(() => {
+    // reloadCalendar();
+    // setCurrentDate(todaysDate);
+    console.log("APP: currentDate: " + moment(currentDate).format("D-M-yyyy"));
+  }, [currentDate]);
+
+  // useEffect(() => {
+  //   Pusher.logToConsole = true;
+
+  //   let PusherClient = new Pusher("7c76a1124748bac977da", {
+  //     cluster: "eu",
+  //     enabledTransports: ["ws"],
+  //     forceTLS: false,
+  //   });
+
+  //   let echo = new Echo({
+  //     broadcaster: "pusher",
+  //     key: "7c76a1124748bac977da",
+  //     cluster: "eu",
+  //     forceTLS: true,
+  //   });
+
+  //   var channel = echo.channel("events");
+  //   channel.listen(".events-updated", function (data) {
+  //     alert(JSON.stringify(data));
+  //   });
+
+  //   // echo.channel("events").listen("events-updated", (e) => {
+  //   //   console.log("KURWA COS JEST!!");
+
+  //   // });
+  // }, []);
+  
 
   return (
     <>
@@ -116,6 +158,7 @@ const App = () => {
               modalData={modalData}
               setModalData={setModalData}
               reloadCalendar={reloadCalendar}
+              siletReload={siletReload}
             />
           </Route>
 
@@ -126,6 +169,8 @@ const App = () => {
               setLoginErrorMsg={setLoginErrorMsg}
               toast={toast}
               reloadCalendar={reloadCalendar}
+              siletReload={siletReload}
+              currentDate={currentDate}
             />
           </Route>
 

@@ -219,6 +219,19 @@ $btn-close-opacity: 1;
   background-color: $color-success !important;
 }
 
+
+element.style {
+}
+.modal-backdrop.show {
+    opacity: 0.5;
+}
+.modal-backdrop.fade {
+    opacity: 0;
+}
+.modal-backdrop {
+  z-index: 1000 !important;
+}
+
 .cursor-pointer:hover {
   cursor: pointer;
 }

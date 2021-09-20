@@ -14,6 +14,8 @@ import Column from "./components/Column";
 import { DragDropContext } from "react-beautiful-dnd";
 import apiClient from "../../service/api/api";
 import "./Workshop.css";
+import Pusher from "pusher-js";
+import Echo from "laravel-echo";
 
 const Workshop = ({
   // isLoading,
@@ -22,6 +24,8 @@ const Workshop = ({
   setLoginErrorMsg,
   toast,
   reloadCalendar,
+  siletReload,
+  currentDate,
 }) => {
   // when page oppened check if user logged in, if not redirect to login page
   const { isLoading, SpinnerComponent } = IsLoggedInLogic(
@@ -34,6 +38,8 @@ const Workshop = ({
   const [loadingError, setLoadingError] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const history = useHistory();
+  // vaible to trigger silent calendar reload when changed
+  const [triggerUpdate, setTriggerUpdate] = useState(0);
 
   ondragend = (result) => {
     const { destination, source, draggableId } = result;
@@ -115,8 +121,8 @@ const Workshop = ({
       });
   };
 
-  const loadWorkshopData = () => {
-    setIsLoading(true);
+  const loadWorkshopData = (feedback) => {
+    feedback ? setIsLoading(true) : setIsLoading(false);
     setLoadingError(false);
     let url = "/api/v1/workshop";
 
@@ -157,15 +163,30 @@ const Workshop = ({
     // }, 5000);
   };
 
+  // run when component mounted
   useEffect(() => {
-    loadWorkshopData();
+    Pusher.logToConsole = true;
+
+    let echo = new Echo({
+      broadcaster: "pusher",
+      key: "7c76a1124748bac977da",
+      cluster: "eu",
+      forceTLS: true,
+    });
+
+    var channel = echo.channel("events");
+    channel.listen(".events-updated", function (data) {
+      console.log("events-updated type: " + JSON.stringify(data));
+      setTriggerUpdate(Math.random());
+    });
+    loadWorkshopData(false);
   }, []);
 
-  // useEffect(() => {
-  //   if (typeof data["columns"] !== "undefined") {
-  //     console.log(data["columns"]["awaiting_workshop"]["taskIds"]);
-  //   }
-  // }, [data]);
+
+  useEffect(() => {
+    // siletReload(currentDate);
+    loadWorkshopData();
+  }, [triggerUpdate]);
 
   return data.length !== 0 && !loadingError ? (
     <DragDropContext onDragEnd={ondragend}>

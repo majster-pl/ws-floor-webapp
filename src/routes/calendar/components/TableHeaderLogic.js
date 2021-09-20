@@ -1,12 +1,13 @@
 import moment from "moment";
 // import {apiClient} from "../../../service/api/api";
 
-const TableHeaderLogic = (
+const TableHeaderLogic = ({
   currentDate,
   setCurrentDate,
   numberOfDays,
-  setNumberOfDays
-) => {
+  setNumberOfDays,
+  reloadCalendar,
+}) => {
   // disable all days enable only mondays to be selected on calendar picker
   const isMonday = (date) => {
     const day = moment(date).day();
@@ -30,6 +31,7 @@ const TableHeaderLogic = (
   // when user change numebr of days in a calendars header
   const handleNumberOfDaysChange = (param) => {
     setNumberOfDays(param);
+    // reloadCalendar();
   };
 
   return {
