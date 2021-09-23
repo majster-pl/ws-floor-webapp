@@ -22,9 +22,6 @@ import MainModalLogic from "./components/MainModalLogic";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import moment from "moment";
-// import Pusher from "pusher-js/react-native";
-// import Pusher from 'pusher-js';
-// import Echo from "laravel-echo";
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState(false);

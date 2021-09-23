@@ -163,7 +163,7 @@ const Workshop = ({
     // }, 5000);
   };
 
-  // run when component mounted
+  // run when component mounted, initial pusher to listen for any changes
   useEffect(() => {
     Pusher.logToConsole = true;
 

@@ -7,6 +7,7 @@ import {
   Col,
   Container,
   Collapse,
+  // Offcanvas,
 } from "react-bootstrap";
 import moment from "moment";
 import React, { useState, useEffect, Fragment } from "react";
@@ -44,6 +45,11 @@ const CalendarModal = ({
   if (typeof modalData.activities !== "object") {
     modalData.activities = Object.keys({});
   }
+
+  const [showOffcanvas, setShowOffcanvas] = useState(false);
+
+  const handleCloseOffcanvas = () => setShowOffcanvas(false);
+  const handleShowOffcanvas = () => setShowOffcanvas(true);
 
   const getAssets = () => {
     // console.log("getAssets function...");
@@ -237,6 +243,39 @@ const CalendarModal = ({
       backdrop="static"
       centered
     >
+      {/* <Offcanvas show={true} onHide={handleClose}> */}
+      {/* <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          Some text as placeholder. In real life you can have the elements you
+          have chosen. Like, text, images, lists, etc.
+        </Offcanvas.Body> */}
+      {/* </Offcanvas> */}
+
+      <div
+        className="offcanvas offcanvas-start"
+        tabindex="-1"
+        id="offcanvas"
+        aria-labelledby="offcanvasLabel"
+      >
+        <div className="offcanvas-header">
+          <h5 className="offcanvas-title" id="offcanvasLabel">
+            Offcanvas
+          </h5>
+          <button
+            type="button"
+            className="btn-close text-reset"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div className="offcanvas-body">
+          Content for the offcanvas goes here. You can place just about any
+          Bootstrap component or custom elements here.
+        </div>
+      </div>
+
       <Formik
         initialValues={modalData}
         validationSchema={reviewShema}
@@ -252,23 +291,23 @@ const CalendarModal = ({
               {/* {modalData.id == undefined ? ( */}
               {modalData.new_booking ? (
                 <Modal.Title>
-                  <h3 className="my-auto">Add New Booking</h3>
+                  <h3 classNameName="my-auto">Add New Booking</h3>
                 </Modal.Title>
               ) : (
                 <Modal.Title>
-                  <h3 className="my-auto">Edit booking</h3>
+                  <h3 classNameName="my-auto">Edit booking</h3>
                 </Modal.Title>
               )}
               <button
                 type="button"
-                className="btn-close"
+                classNameName="btn-close"
                 aria-label="Close"
                 onClick={handleCloseModal}
               ></button>
             </Modal.Header>
             <Modal.Body>
               <Form.Group as={Row} controlId="formReg">
-                <Form.Label column sm="3" className="text-md-end">
+                <Form.Label column sm="3" classNameName="text-md-end">
                   Reg
                 </Form.Label>
                 <Col sm="9">
@@ -311,14 +350,14 @@ const CalendarModal = ({
                       />
                     </Form.Group>
                   </Fragment>
-                  <Form.Text className="text-danger ms-2">
+                  <Form.Text classNameName="text-danger ms-2">
                     {props.errors.reg}
                   </Form.Text>
                 </Col>
               </Form.Group>
 
               <Form.Group as={Row} controlId="formCustomer">
-                <Form.Label column sm="3" className="text-md-end">
+                <Form.Label column sm="3" classNameName="text-md-end">
                   Customer
                 </Form.Label>
                 <Col sm="9">
@@ -362,7 +401,7 @@ const CalendarModal = ({
                       />
                     </Form.Group>
                   </Fragment>
-                  <Form.Text className="text-danger ms-2">
+                  <Form.Text classNameName="text-danger ms-2">
                     {props.errors.customer_name}
                   </Form.Text>
                 </Col>
@@ -370,7 +409,7 @@ const CalendarModal = ({
 
               {/* DESCRIPTION */}
               <Form.Group as={Row} controlId="formDescription">
-                <Form.Label column sm="3" className="text-md-end ">
+                <Form.Label column sm="3" classNameName="text-md-end ">
                   Description
                 </Form.Label>
                 <Col sm="9">
@@ -383,7 +422,7 @@ const CalendarModal = ({
                     value={props.values.description || ""}
                     // defaultValue={modalData.description}
                   />
-                  <Form.Text className="text-danger ms-2">
+                  <Form.Text classNameName="text-danger ms-2">
                     {props.errors.description}
                   </Form.Text>
                 </Col>
@@ -391,7 +430,7 @@ const CalendarModal = ({
 
               {/* ALLOWED TIME */}
               <Form.Group as={Row} controlId="formAllowedTime">
-                <Form.Label column sm="3" className="text-md-end">
+                <Form.Label column sm="3" classNameName="text-md-end">
                   Allowed time
                 </Form.Label>
                 <Col sm="9">
@@ -404,7 +443,7 @@ const CalendarModal = ({
                     defaultValue={modalData.allowed_time}
                     isInvalid={!!props.errors.allowed_time}
                   />
-                  <Form.Text className="text-danger ms-2">
+                  <Form.Text classNameName="text-danger ms-2">
                     {props.errors.allowed_time}
                   </Form.Text>
                 </Col>
@@ -412,7 +451,7 @@ const CalendarModal = ({
 
               {/* BOOKED DATE */}
               <Form.Group as={Row} controlId="formBookedAt">
-                <Form.Label column sm="3" className="text-md-end">
+                <Form.Label column sm="3" classNameName="text-md-end">
                   Booked date
                 </Form.Label>
                 <Col sm="9">
@@ -439,7 +478,7 @@ const CalendarModal = ({
                       // console.log(JSON.stringify(props.values));
                     }}
                   />
-                  <Form.Text className="text-danger ms-2">
+                  <Form.Text classNameName="text-danger ms-2">
                     {props.errors.booked_date_time}
                   </Form.Text>
                 </Col>
@@ -447,7 +486,7 @@ const CalendarModal = ({
 
               {/* OTHERS */}
               <Form.Group as={Row} controlId="formOthers">
-                <Form.Label column sm="3" className="text-md-end">
+                <Form.Label column sm="3" classNameName="text-md-end">
                   Others
                 </Form.Label>
                 <Col sm="9">
@@ -458,7 +497,7 @@ const CalendarModal = ({
                     defaultValue={modalData.others}
                     value={props.values.others || ""}
                   />
-                  <Form.Text className="text-danger ms-2">
+                  <Form.Text classNameName="text-danger ms-2">
                     {props.errors.others}
                   </Form.Text>
                 </Col>
@@ -466,7 +505,7 @@ const CalendarModal = ({
 
               {/* STATUS */}
               <Form.Group as={Row} controlId="formStatus">
-                <Form.Label column sm="3" className="text-md-end">
+                <Form.Label column sm="3" classNameName="text-md-end">
                   Status
                 </Form.Label>
                 <Col sm="9">
@@ -498,52 +537,52 @@ const CalendarModal = ({
                     </option>
                     <option value="completed">Completed</option>
                   </Form.Control>
-                  <Form.Text className="text-muted d-none">
+                  <Form.Text classNameName="text-muted d-none">
                     We'll never share your email with anyone else.
                   </Form.Text>
                 </Col>
               </Form.Group>
+              <Collapse in={open}>
+                <div
+                  id="example-collapse-text"
+                  classNameName="overflow-auto"
+                  style={{ maxHeight: "5rem" }}
+                >
+                  {modalData.activities.map((element, i) => {
+                    return (
+                      <HistoryListItem
+                        key={i}
+                        date={moment(element.updated_at).format(
+                          "HH:mm:ss DD-MM-Y"
+                        )}
+                        description={element.description}
+                        properties={element.properties}
+                      />
+                    );
+                  })}
+                </div>
+              </Collapse>
             </Modal.Body>
 
             <Modal.Footer>
-              <Container fluid>
-                <Collapse in={open}>
-                  <div
-                    id="example-collapse-text"
-                    className="overflow-auto"
-                    style={{ maxHeight: "5rem" }}
-                  >
-                    {modalData.activities.map((element, i) => {
-                      return (
-                        <HistoryListItem
-                          key={i}
-                          date={moment(element.updated_at).format(
-                            "HH:mm:ss DD-MM-Y"
-                          )}
-                          description={element.description}
-                          properties={element.properties}
-                        />
-                      );
-                    })}
-                  </div>
-                </Collapse>
-                <div className="row justify-content-between pt-1">
-                  <div className="col-4">
+              <Container classNameName="px-0" fluid>
+                <div classNameName="row justify-content-between pt-1">
+                  <div classNameName="col-4">
                     <Button
-                      className="fas fa-history text-decoration-none link-success"
+                      classNameName="fas fa-history text-decoration-none link-success"
                       variant="link"
                       onClick={() => setOpen(!open)}
                     ></Button>
                   </div>
-                  <div className="col-6 text-end">
+                  <div classNameName="col-6 text-end">
                     <Button
-                      className="mx-1"
+                      classNameName="mx-1"
                       variant="secondary"
                       onClick={handleCloseModal}
                     >
                       Close
                     </Button>
-                    <Button className="mx-1" variant="success" type="submit">
+                    <Button classNameName="mx-1" variant="success" type="submit">
                       Save
                     </Button>
                   </div>
