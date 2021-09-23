@@ -48,20 +48,20 @@ const Task = ({ task, index, options, searchQuery }) => {
         >
           <Card.Body className="m-1 mx-2 p-0">
             <Row>
-              <Col className="col-12 text-light h5 fw-bold text-truncate-1">
+              <Col className="col-12 text-light h5 fw-bold text-truncate-1 mb-0">
                 <span className="text-success">{task.reg}</span>
                 <span className="text-white">{" - "}</span>{" "}
                 <span className="">{task.customer_name}</span>
               </Col>
-              <Col className="col-12 text-truncate-2 h5 fw-normal">
+              <Col className="col-12 text-truncate-2 h5 fw-normal mb-1">
                 {task.description}
               </Col>
-              <Col className="col-12 text-truncate-2  h6 fw-normal fst-italic text-lime">
+              <Col className="col-12 text-truncate-2 h6 fw-normal fst-italic text-lime m-0">
                 {task.special_instructions &&
                   "Extra: " + task.special_instructions}
               </Col>
               <Col
-                className={`col-12 text-truncate-2 h6 fw-normal ${
+                className={`col-12 text-truncate-2 h6 mb-1 fw-normal ${
                   task.status === "booked" ? "d-none" : ""
                 }  `}
               >
@@ -73,7 +73,7 @@ const Task = ({ task, index, options, searchQuery }) => {
                 </label>
               </Col>
               <Col
-                className={`col-12 text-truncate-2 h6 fw-normal ${
+                className={`col-12 text-truncate-2 h6 fw-normal mb-1 ${
                   task.status !== "booked" ? "d-none" : ""
                 }  `}
               >
@@ -89,13 +89,13 @@ const Task = ({ task, index, options, searchQuery }) => {
               <Col className="col-12">
                 <Row className="row-justify-end">
                   <Col className="col-5">
-                    <h6>
+                    <h6 className="mb-0">
                       <span className="fw-bold text-info">Allowed:</span>{" "}
                       {task.allowed_time}h{" "}
                     </h6>
                   </Col>
                   <Col className="col-7">
-                    <h6>
+                    <h6 className="mb-0">
                       <span className="fw-bold text-info">Others:</span>{" "}
                       {!task.others ? "n/a" : task.others}
                     </h6>

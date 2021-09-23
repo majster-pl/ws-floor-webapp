@@ -206,7 +206,7 @@ const Workshop = ({
       </Row>
       <div className="scroll" style={{ height: "calc(100vh - 6.2rem)" }}>
         <Row
-          className="p-0 m-0 row-cols-sm-2 row-cols-md-4 row-cols-xl-5 row-cols-xxl-5 h-100"
+          className="p-0 m-0 row-cols-sm-2 row-cols-md-4 row-cols-xl-6 row-cols-xxl-8 h-100"
           // style={{ minWidth: "1248px" }}
         >
           {data.length !== 0 && !loadingError ? (
