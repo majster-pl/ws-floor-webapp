@@ -12,12 +12,20 @@ const HistoryListItem = ({ date, description, properties }) => {
   return (
     <>
       <div
-        className="font-monospace fs-5 cursor-pointer"
+        className="font-monospace fs-5 cursor-pointer text-info"
         onClick={() => setOpen(!open)}
       >
-        [{date}] {description}
+        {"[" + date + "] " + description}
+        <div className="container text-white">
+          {Object.keys(properties.attributes).map((keyName, i) => (
+            <div>
+              {keyName + " new value: "} 
+              <span className="text-success">{properties.attributes[keyName]}</span>
+            </div>
+          ))}
+        </div>
       </div>
-      <Collapse in={open}>
+      {/* <Collapse in={open}>
         <Container>
           <Row className="font-monospace fs-5">
             <Col md={4}>
@@ -35,7 +43,7 @@ const HistoryListItem = ({ date, description, properties }) => {
             </Col>
           </Row>
         </Container>
-      </Collapse>
+      </Collapse> */}
     </>
   );
 };

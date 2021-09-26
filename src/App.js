@@ -89,7 +89,6 @@ const App = () => {
 
   //   // });
   // }, []);
-  
 
   return (
     <>
@@ -232,6 +231,7 @@ const App = () => {
           handleClose={() => handleCloseMainModal()}
           form={CheckInModal()}
           setLoginErrorMsg={setLoginErrorMsg}
+          toast={toast}
         />
       </Router>
       <Modal

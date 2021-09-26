@@ -114,7 +114,7 @@ const CalendarLogic = ({
           // console.log("UUU...");
           setIsLoading(false);
           toast.error("Error: " + err.data.message);
-          history.push("/login");
+          // history.push("/login");
         });
     } else {
       setModalData({

@@ -1,55 +1,36 @@
 //racfe
-import { useState, useEffect } from "react";
-import { Form, Modal, Row, Col, Button } from "react-bootstrap";
+import { useState } from "react";
 import apiClient from "../service/api/api";
-import { useHistory } from "react-router-dom";
-import { Formik } from "formik";
 import CheckIn from "./modals/CheckIn";
 import UpdateStatus from "./modals/UpdateStatus";
 
-const MainModalLogic = ({
-  setIsLoading,
-  toast,
-  // handleSuccess,
-  reloadCalendar,
-  // handleReloadCalendar,
-}) => {
+const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {
   const [showMainModal, setShowMainModal] = useState(false);
   const [mainModalData, setMainModalData] = useState();
   const [status, setStatus] = useState();
 
   const handleShowMainModal = (id, status, data) => {
     setIsLoading(true);
-    // setMainModalData(data);
     setStatus(status);
-    // setShowMainModal(true);
-    // setIsLoading(false);
 
-    console.log(id, status);
-    // console.log(data);
-
-    setTimeout(doSomething, 10);
+    // setTimeout(pullDataFromAPI, 0);
 
     let url = "/api/v1/events/" + id;
-    function doSomething() {
-      apiClient
-        .get(url)
-        .then((response) => {
-          // setTableData(response.data.data);
-          //   console.log(response.data);
-          setMainModalData(response.data.data);
-          setShowMainModal(true);
-          // setShowModal(true);
-          setIsLoading(false);
-          //   window.location.reload();
-        })
-        .catch((err) => {
-          console.log("UUU...");
-          setIsLoading(false);
-          toast.error("Error" + JSON.stringify(err));
-          // history.push("/login");
-        });
-    }
+    // function pullDataFromAPI() {
+    apiClient
+      .get(url)
+      .then((response) => {
+        setMainModalData(response.data.data);
+        setShowMainModal(true);
+        setIsLoading(false);
+        //   window.location.reload();
+      })
+      .catch((err) => {
+        console.log("UUU...");
+        setShowMainModal(true);
+        setIsLoading(false);
+      });
+    // }
   };
 
   const handleCloseMainModal = () => {
