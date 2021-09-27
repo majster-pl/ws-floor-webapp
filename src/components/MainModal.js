@@ -28,7 +28,7 @@ const MainModal = ({ show, handleClose, form, setLoginErrorMsg, toast }) => {
           setAuthenticated(false);
           setLoginErrorMsg("You are no longer logged in, please log in again.");
           sessionStorage.setItem("loginStatus", "false");
-          notify("Error message: " + error.data.message);
+          notify(error.data.message);
           history.push("/login");
         });
     };

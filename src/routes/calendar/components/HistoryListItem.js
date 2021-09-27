@@ -9,6 +9,9 @@ const HistoryListItem = ({ date, description, properties }) => {
     old_atr = Object.keys({});
   }
 
+  console.log(properties);
+  
+
   return (
     <>
       <div
@@ -19,31 +22,17 @@ const HistoryListItem = ({ date, description, properties }) => {
         <div className="container text-white">
           {Object.keys(properties.attributes).map((keyName, i) => (
             <div>
-              {keyName + " new value: "} 
-              <span className="text-success">{properties.attributes[keyName]}</span>
+              <span className="text-success">{keyName}</span>
+              {": "}
+              <span className="text-light">{old_atr[keyName]}</span>
+              {" -> "}
+              <span className="text-danger">
+                {properties.attributes[keyName]}
+              </span>
             </div>
           ))}
         </div>
       </div>
-      {/* <Collapse in={open}>
-        <Container>
-          <Row className="font-monospace fs-5">
-            <Col md={4}>
-              <div className="text-info">attribute:</div>
-              {Object.keys(properties.attributes).map((keyName, i) => (
-                <div key={"name-" + i}>{keyName}</div>
-              ))}
-            </Col>
-
-            <Col md={8}>
-              <div className="text-success">changed to:</div>
-              {Object.keys(properties.attributes).map((keyName, i) => (
-                <div key={"val" + i}>{properties.attributes[keyName]}</div>
-              ))}
-            </Col>
-          </Row>
-        </Container>
-      </Collapse> */}
     </>
   );
 };

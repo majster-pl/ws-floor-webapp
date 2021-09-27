@@ -13,15 +13,17 @@ const UpdateStatus = ({
 }) => {
   // Form validation
   const reviewShema = yup.object({
-    odometer_in: yup
-      .number()
-      .typeError("You must specify mileage")
-      .required("Vehicle current mileage is required"),
+    // odometer_in: yup
+    //   .number()
+    //   .typeError("You must specify mileage")
+    //   .required("Vehicle current mileage is required"),
+    status: yup.string().required(),
   });
 
   // Submit function
   const handleSubmit = (values) => {
     let url = "/api/v1/events/" + data.event_id;
+    console.log("RUNNING SUBMIT!");
 
     apiClient
       .patch(url, values)
@@ -47,6 +49,7 @@ const UpdateStatus = ({
         initialValues={{ ...data }}
         validationSchema={reviewShema}
         onSubmit={(values, actions) => {
+          console.log("RUNNING SUBMIT!");
           handleSubmit(values);
           actions.setSubmitting(false);
         }}
@@ -137,6 +140,9 @@ const UpdateStatus = ({
                   </Form.Text>
                 </Col>
               </Form.Group>
+              <Form.Text className="text-danger ms-2">
+                {props.touched.status && props.errors.status}
+              </Form.Text>
 
               {/* Special Inst */}
               <Form.Group as={Row} controlId="formSpecialInst">
@@ -158,6 +164,9 @@ const UpdateStatus = ({
                   </Form.Text>
                 </Col>
               </Form.Group>
+              <Form.Text className="text-danger ms-2">
+                {props.touched.free_text && props.errors.free_text}
+              </Form.Text>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleCloseMainModal}>
