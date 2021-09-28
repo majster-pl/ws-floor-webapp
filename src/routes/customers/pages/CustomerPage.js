@@ -9,6 +9,7 @@ import {
   Col,
   Accordion,
   Modal,
+  useAccordionButton,
 } from "react-bootstrap";
 import IsLoggedInLogic from "../../../components/IsLoggedInLogic";
 import { useState, useEffect } from "react";
@@ -129,6 +130,18 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   //   // return <SpinnerComponent />;
   //   return <></>;
   // }
+
+  function CustomToggle({ children, eventKey }) {
+    const decoratedOnClick = useAccordionButton(eventKey, () =>
+      console.log("totally custom!")
+    );
+
+    return (
+      <Button variant="link-none text-info" onClick={decoratedOnClick}>
+        {children}
+      </Button>
+    );
+  }
 
   return (
     <div className="scroll">
@@ -357,13 +370,13 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                         >
                           <option
                             value="active"
-                            selected={"active" == props.values.status}
+                            defaultValue={"active" == props.values.status}
                           >
                             Active
                           </option>
                           <option
                             value="on_hold"
-                            selected={"on_hold" == props.values.status}
+                            defaultValue={"on_hold" == props.values.status}
                           >
                             On Hold
                           </option>
@@ -371,17 +384,9 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                       </Form.Group>
                     </Row>
                     <hr></hr>
-                    <Container className="my-3 text-muted">
-                      <Accordion>
-                        <small>
-                          <Accordion.Toggle
-                            as={Button}
-                            variant="link-none text-info"
-                            eventKey="0"
-                          >
-                            More
-                          </Accordion.Toggle>
-                        </small>
+                    <Accordion>
+                      <Container className="my-3 text-muted">
+                        <CustomToggle eventKey="0">More</CustomToggle>
                         <Accordion.Collapse eventKey="0">
                           <Container className="ms-3">
                             <Col>
@@ -418,8 +423,8 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                             </Col>
                           </Container>
                         </Accordion.Collapse>
-                      </Accordion>
-                    </Container>
+                      </Container>
+                    </Accordion>
                   </>
                 )}
               </Formik>

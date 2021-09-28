@@ -9,6 +9,7 @@ import {
   Col,
   Accordion,
   Modal,
+  useAccordionButton,
 } from "react-bootstrap";
 import IsLoggedInLogic from "../../components/IsLoggedInLogic";
 import { useState, useEffect } from "react";
@@ -124,6 +125,17 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   //   // return <SpinnerComponent />;
   //   return <></>;
   // }
+  function CustomToggle({ children, eventKey }) {
+    const decoratedOnClick = useAccordionButton(eventKey, () =>
+      console.log("totally custom!")
+    );
+
+    return (
+      <Button variant="link-none text-info" onClick={decoratedOnClick}>
+        {children}
+      </Button>
+    );
+  }
 
   return (
     <div className="scroll">
@@ -324,15 +336,7 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                     <hr></hr>
                     <Container className="my-3 text-muted">
                       <Accordion>
-                        <small>
-                          <Accordion.Toggle
-                            as={Button}
-                            variant="link-none text-info"
-                            eventKey="0"
-                          >
-                            More
-                          </Accordion.Toggle>
-                        </small>
+                        <CustomToggle eventKey="0">More</CustomToggle>
                         <Accordion.Collapse eventKey="0">
                           <Container className="ms-3">
                             <Col>
