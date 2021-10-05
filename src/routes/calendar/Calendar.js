@@ -1,7 +1,6 @@
 import IsLoggedInLogic from "../../components/IsLoggedInLogic";
 import TableHeader from "./components/TableHeader";
 import CalendarNavbar from "./components/CalendarNavbar";
-import Modal from "./components/Modal";
 import TableBody from "./components/TableBody";
 import "./Calendar.css";
 import CalendarSpinner from "./components/CalendarSpinner";
@@ -20,14 +19,10 @@ const Calendar = ({
   searchQuery,
   setSearchQuery,
   handleModalOpen,
-  showModal,
-  handleCloseModal,
   tableData,
   numberOfDays,
   setNumberOfDays,
   isCalendarLoading,
-  modalData,
-  setModalData,
   reloadCalendar,
   siletReload,
 }) => {
@@ -78,6 +73,7 @@ const Calendar = ({
           currentDate={currentDate}
           setCurrentDate={setCurrentDate}
           handleModalOpen={handleModalOpen}
+          handleShowMainModal={handleShowMainModal}
           numberOfDays={numberOfDays}
           setNumberOfDays={setNumberOfDays}
         />
@@ -87,23 +83,12 @@ const Calendar = ({
         ) : (
           <TableBody
             tableData={tableData}
-            handleModalOpen={handleModalOpen}
             query={searchQuery}
             setIsLoading={setIsLoading}
             handleShowMainModal={handleShowMainModal}
           />
         )}
       </table>
-      {showModal == true && (
-        <Modal
-          showModal={showModal}
-          handleCloseModal={handleCloseModal}
-          modalData={modalData}
-          setModalData={setModalData}
-          reloadCalendar={reloadCalendar}
-          toast={toast}
-        />
-      )}
     </div>
   );
 };

@@ -1,2 +1,2 @@
 export const EVENT_EDIT = "eventEdited";
-export const SIGN_IN = "signIn";
+export const AUTHENTICATED = "signIn";

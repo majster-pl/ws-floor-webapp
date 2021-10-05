@@ -3,7 +3,6 @@ import CalendarEvent from "./CalendarEvent";
 
 const CalendarBody = ({
   tableData,
-  handleModalOpen,
   query,
   setIsLoading,
   handleShowMainModal,
@@ -50,7 +49,6 @@ const CalendarBody = ({
               allowedTime={cell.allowed_time}
               others={typeof cell.others === "object" ? "-----" : cell.others}
               status={cell.status}
-              handleModalOpen={handleModalOpen}
               handleShowMainModal={handleShowMainModal}
             />
           ))}

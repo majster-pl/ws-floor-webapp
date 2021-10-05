@@ -1,40 +1,9 @@
 import PropTypes from "prop-types";
-import apiClient from "../../../service/api/api";
 import { Row, Col, Nav } from "react-bootstrap";
-// import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setModal } from "../../../actions";
 
-const CalendarEvent = ({
-  props,
-  handleModalOpen,
-  setModalEventId,
-  isHighlighted,
-  showModal,
-  handleShowMainModal,
-}) => {
-  // Date navigation buttons
-  const handleModalOpen2 = () => {
-    setModalEventId(event_id);
-    // let url = "/api/v1/events/"+eventId;
-
-    // apiClient.get(url).then((response) => {
-    //   // setTableData(response.data.data);
-    //   console.log(response.data);
-    // });
-    // const initialFormData = Object.freeze({
-    //   id: eventId,
-    //   veh_id: vehicleId,
-    //   customer_id: customerName,
-    //   description: description,
-    //   others: others,
-    //   allowed_time: allowedTime,
-    //   booked_at: bookedDate,
-    //   status: status,
-    // });
-    // console.log(initialFormData);
-    // setModalEditData(initialFormData);
-    // showModal();
-  };
-
+const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
   const {
     isUsed,
     event_id,
@@ -47,9 +16,17 @@ const CalendarEvent = ({
     status,
   } = props;
 
+  const dispatch = useDispatch();
+
   const handleEditClick = (e) => {
     e.stopPropagation();
-    handleModalOpen(null, event_id);
+    dispatch(setModal("edit"));
+    handleShowMainModal(event_id, status);
+  };
+
+  const handleEventClick = () => {
+    dispatch(setModal("other"));
+    handleShowMainModal(event_id, status);
   };
 
   const setStatusColors = (status) => {
@@ -91,8 +68,7 @@ const CalendarEvent = ({
           (!isUsed ? "d-none " : "card h-100 disable-select ") +
           (!isHighlighted ? "" : "d-none")
         }
-        // onClick={() => handleModalOpen(null, event_id)}
-        onClick={() => handleShowMainModal(event_id, status, props)}
+        onClick={() => handleEventClick()}
         style={{ minHeight: "150px", maxHeight: "250px" }}
       >
         <div className="card-header p-0 text-success">

@@ -153,19 +153,28 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
                 </Col>
               </Form.Group>
 
-              {/* Customer Waiting */}
-              <Form.Group className="mb-3" controlId="formWaiting">
-                <Form.Check
-                  className="disable-select"
-                  type="checkbox"
-                  label="Customer waiting"
-                  name="waiting"
-                  checked={props.values.waiting}
-                  onChange={() =>
-                    props.setFieldValue("waiting", !props.values.waiting)
-                  }
-                />
+              {/* WAITING */}
+              <Form.Group as={Row} controlId="formWaiting">
+                <Form.Label column sm="3" className="text-md-end">
+                  Appointment:
+                </Form.Label>
+                <Col sm="9">
+                  <Form.Check
+                    className="disable-select mt-1"
+                    type="checkbox"
+                    label="Customer waiting"
+                    name="waiting"
+                    checked={props.values.waiting}
+                    onChange={() =>
+                      props.setFieldValue("waiting", !props.values.waiting)
+                    }
+                  />
+                  <Form.Text className="text-danger ms-2">
+                    {props.touched.status && props.errors.status}
+                  </Form.Text>
+                </Col>
               </Form.Group>
+              
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleCloseMainModal}>

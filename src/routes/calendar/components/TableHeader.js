@@ -5,12 +5,15 @@ import Moment from "react-moment";
 import { Button } from "react-bootstrap";
 import TableHeaderLogic from "./TableHeaderLogic";
 import "react-datepicker/dist/react-datepicker.css";
+import { useDispatch } from "react-redux";
+import { setModal } from "../../../actions";
 
 const Header = ({
   currentDate,
   setCurrentDate,
   // searchQuery,
   // setSearchQuery,
+  handleShowMainModal,
   handleModalOpen,
   numberOfDays,
   setNumberOfDays,
@@ -28,6 +31,8 @@ const Header = ({
     numberOfDays,
     setNumberOfDays
   );
+
+  const dispatch = useDispatch();
 
   // Date picker custom button
   const ref = React.createRef();
@@ -107,14 +112,13 @@ const Header = ({
                 <Button
                   variant="success"
                   size="sm"
-                  block
-                  onClick={() =>
-                    handleModalOpen(
-                      moment(currentDate)
-                        .add(index, "days")
-                        .format("YYYY-MM-DD")
-                    )
-                  }
+                  onClick={() => {
+                    let selectedDate = moment(currentDate)
+                      .add(index, "days")
+                      .format("YYYY-MM-DD 08:00");
+                    dispatch(setModal("new"));
+                    handleShowMainModal(0, "booked", selectedDate);
+                  }}
                 >
                   {" "}
                   Add new booking{" "}

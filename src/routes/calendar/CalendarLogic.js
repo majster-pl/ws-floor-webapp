@@ -21,15 +21,7 @@ const CalendarLogic = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [isCalendarLoading, setIsCalendarLoading] = useState(false);
   const [dateFormat, setDateFormat] = useState("YYYY-MM-DD");
-  // modal
-  const [modalData, setModalData] = useState({
-    new_booking: false,
-    booked_date_time: null,
-  });
-  const [showModal, setShowModal] = useState(false);
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
+
 
   // useEffect(() => {
   //   console.log(moment(currentDate).format("YYYY-MM-DD 00:01"));
@@ -94,37 +86,6 @@ const CalendarLogic = ({
       });
   };
 
-  // Modal handler
-  const handleModalOpen = (date, eventId) => {
-    setIsLoading(true);
-
-    if (!date) {
-      let url = "/api/v1/events/" + eventId;
-
-      apiClient
-        .get(url)
-        .then((response) => {
-          // setTableData(response.data.data);
-          // console.log(response.data);
-          setModalData(response.data.data);
-          setShowModal(true);
-          setIsLoading(false);
-        })
-        .catch((err) => {
-          // console.log("UUU...");
-          setIsLoading(false);
-          toast.error("Error: " + err.data.message);
-          // history.push("/login");
-        });
-    } else {
-      setModalData({
-        new_booking: true,
-        booked_date_time: date,
-      });
-      setShowModal(true);
-      setIsLoading(false);
-    }
-  };
 
   function reloadCalendar() {
     // console.log("reloading calendar!");
@@ -158,15 +119,10 @@ const CalendarLogic = ({
     setCurrentDate,
     searchQuery,
     setSearchQuery,
-    handleModalOpen,
-    showModal,
-    handleCloseModal,
     tableData,
     numberOfDays,
     setNumberOfDays,
     isCalendarLoading,
-    modalData,
-    setModalData,
     reloadCalendar,
     siletReload,
   };

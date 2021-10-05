@@ -36,15 +36,10 @@ const App = () => {
     setCurrentDate,
     searchQuery,
     setSearchQuery,
-    handleModalOpen,
-    showModal,
-    handleCloseModal,
     tableData,
     numberOfDays,
     setNumberOfDays,
     isCalendarLoading,
-    modalData,
-    setModalData,
     reloadCalendar,
     siletReload,
   } = CalendarLogic({ toast, setIsLoading });
@@ -144,15 +139,10 @@ const App = () => {
               setCurrentDate={setCurrentDate}
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
-              handleModalOpen={handleModalOpen}
-              showModal={showModal}
-              handleCloseModal={handleCloseModal}
               tableData={tableData}
               numberOfDays={numberOfDays}
               setNumberOfDays={setNumberOfDays}
               isCalendarLoading={isCalendarLoading}
-              modalData={modalData}
-              setModalData={setModalData}
               reloadCalendar={reloadCalendar}
               siletReload={siletReload}
             />

@@ -37,7 +37,7 @@ const MainModal = ({ show, handleClose, form, setLoginErrorMsg, toast }) => {
 
   if (authenticated) {
     return (
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose} backdrop="static">
         {form}
       </Modal>
     );

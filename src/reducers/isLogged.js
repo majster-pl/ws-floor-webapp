@@ -2,7 +2,7 @@ import * as actions from "../actionTypes";
 
 const loggedReducer = (state = false, action) => {
   switch (action.type) {
-    case actions.SIGN_IN:
+    case actions.AUTHENTICATED:
       return !state;
 
     default:
