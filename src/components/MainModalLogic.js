@@ -26,7 +26,7 @@ const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {
       setMainModalData({
         asset_id: 0,
         customer_id: 0,
-        description: "",
+        description: " ",
         allowed_time: 0,
         booked_date_time: date,
         others: "",
