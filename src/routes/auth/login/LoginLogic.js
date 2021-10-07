@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const LoginLogic = ({ setLoggedIn }, setIsLoading, setLoginErrorMsg, toast) => {
   const [username, setUsername] = useState("admin@gmail.com");
-  const [password, setPassword] = useState("password");
+  const [password, setPassword] = useState("");
   const [isSpinning, setIsSpinning] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);

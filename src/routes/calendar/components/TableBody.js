@@ -44,6 +44,7 @@ const CalendarBody = ({
               isUsed={cell.isUsed}
               vehicleId={cell.reg}
               // bookedDate={cell.booked_at}
+              booked_date_time={cell.booked_date_time}
               customerName={cell.customer_name}
               description={cell.description}
               allowedTime={cell.allowed_time}

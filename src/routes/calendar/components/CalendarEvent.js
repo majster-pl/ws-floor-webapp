@@ -2,12 +2,13 @@ import PropTypes from "prop-types";
 import { Row, Col, Nav } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { setModal } from "../../../actions";
+import moment from "moment";
 
 const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
   const {
     isUsed,
     event_id,
-    booked_date,
+    booked_date_time,
     customer_name,
     reg,
     description,
@@ -17,6 +18,16 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
   } = props;
 
   const dispatch = useDispatch();
+  var today = new moment(Date()).format("DD-MM-YYYY");
+  var booked_date = moment(new Date(booked_date_time)).format("DD-MM-YYYY");
+
+  function isNoShow() {
+    if (booked_date < today && status === "booked") {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   const handleEditClick = (e) => {
     e.stopPropagation();
@@ -66,7 +77,8 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
         // data-target="#modalEditEvent"
         className={
           (!isUsed ? "d-none " : "card h-100 disable-select ") +
-          (!isHighlighted ? "" : "d-none")
+          (!isHighlighted ? "" : "d-none") +
+          (isNoShow() ? "bg-sendary-extra" : "")
         }
         onClick={() => handleEventClick()}
         style={{ minHeight: "150px", maxHeight: "250px" }}
@@ -74,11 +86,19 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
         <div className="card-header p-0 text-success">
           <Row>
             <Col>
-              <div className="card-text fw-bold ps-2">{reg}</div>
+              <div
+                className={`card-text fw-bold ps-2  ${
+                  isNoShow() ? "text-light" : ""
+                }`}
+              >
+                {reg}
+              </div>
             </Col>
             <Col className="col-auto">
               <Nav.Link
-                className="text-end p-0 me-2 "
+                className={`text-end p-0 me-2   ${
+                  isNoShow() ? "text-secondary" : "text-info"
+                }`}
                 onClick={handleEditClick}
               >
                 Edit
