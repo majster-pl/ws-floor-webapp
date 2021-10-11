@@ -18,7 +18,6 @@ const Calendar = ({
   setCurrentDate,
   searchQuery,
   setSearchQuery,
-  handleModalOpen,
   tableData,
   numberOfDays,
   setNumberOfDays,
@@ -37,7 +36,7 @@ const Calendar = ({
   const [triggerUpdate, setTriggerUpdate] = useState(0);
 
   useEffect(() => {
-    Pusher.logToConsole = true;
+    // Pusher.logToConsole = true;
 
     let echo = new Echo({
       broadcaster: "pusher",
@@ -72,7 +71,6 @@ const Calendar = ({
         <TableHeader
           currentDate={currentDate}
           setCurrentDate={setCurrentDate}
-          handleModalOpen={handleModalOpen}
           handleShowMainModal={handleShowMainModal}
           numberOfDays={numberOfDays}
           setNumberOfDays={setNumberOfDays}

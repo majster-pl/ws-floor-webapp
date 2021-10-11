@@ -22,15 +22,17 @@ import MainModalLogic from "./components/MainModalLogic";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import moment from "moment";
+import apiClient from "./service/api/api";
+import { useDispatch, useSelector } from "react-redux";
+// import { , setDepotsList } from "actions";
+import { setUser, setDepot } from "./actions";
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [loginErrorMsg, setLoginErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  // const todaysDate = moment().startOf("isoWeek");
-  // const [currentDate, setCurrentDate] = useState(() => {
-  //   return todaysDate;
-  // });
+  const dispatch = useDispatch();
+
   const {
     currentDate,
     setCurrentDate,
@@ -52,38 +54,18 @@ const App = () => {
     CheckInModal,
   } = MainModalLogic({ setIsLoading, toast, reloadCalendar });
 
+
   useEffect(() => {
-    // reloadCalendar();
-    // setCurrentDate(todaysDate);
-    console.log("APP: currentDate: " + moment(currentDate).format("D-M-yyyy"));
-  }, [currentDate]);
-
-  // useEffect(() => {
-  //   Pusher.logToConsole = true;
-
-  //   let PusherClient = new Pusher("7c76a1124748bac977da", {
-  //     cluster: "eu",
-  //     enabledTransports: ["ws"],
-  //     forceTLS: false,
-  //   });
-
-  //   let echo = new Echo({
-  //     broadcaster: "pusher",
-  //     key: "7c76a1124748bac977da",
-  //     cluster: "eu",
-  //     forceTLS: true,
-  //   });
-
-  //   var channel = echo.channel("events");
-  //   channel.listen(".events-updated", function (data) {
-  //     alert(JSON.stringify(data));
-  //   });
-
-  //   // echo.channel("events").listen("events-updated", (e) => {
-  //   //   console.log("KURWA COS JEST!!");
-
-  //   // });
-  // }, []);
+    apiClient
+      .get("/api/v1/logged-in")
+      .then((response) => {
+        dispatch(setUser(response.data));
+        // console.log(response.data);        
+      })
+      .catch(() => {
+        console.log("NOT LOGGED IN!");        
+      });
+  }, []);
 
   return (
     <>
@@ -103,6 +85,8 @@ const App = () => {
           isLoggedIn={authenticated}
           setLoggedIn={setAuthenticated}
           setLoginErrorMsg={setLoginErrorMsg}
+          reloadCalendar={reloadCalendar}
+          toast={toast}
         />
         <Switch>
           <Route exact path="/">

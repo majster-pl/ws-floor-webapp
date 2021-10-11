@@ -6,14 +6,16 @@ import EditEvent from "./modals/EditEvent";
 import NewEvent from "./modals/NewEvent";
 import UpdateStatus from "./modals/UpdateStatus";
 import { useSelector, useDispatch } from "react-redux";
-import { setModal } from "../actions";
+// import { setModal } from "../actions";
+// import { useSelector } from "react-redux";
 
 const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {
   const [showMainModal, setShowMainModal] = useState(false);
   const [mainModalData, setMainModalData] = useState();
   const [status, setStatus] = useState();
   const modal = useSelector((state) => state.modal);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+  const selectedDepot = useSelector((state) => state.depot);
 
   const handleShowMainModal = (id, status, date) => {
     setIsLoading(true);
@@ -32,7 +34,7 @@ const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {
         others: "",
         status: "booked",
         waiting: 0,
-        
+        depot: selectedDepot,
       });
       setShowMainModal(true);
       setIsLoading(false);

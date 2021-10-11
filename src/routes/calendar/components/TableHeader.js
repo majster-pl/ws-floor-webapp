@@ -14,7 +14,6 @@ const Header = ({
   // searchQuery,
   // setSearchQuery,
   handleShowMainModal,
-  handleModalOpen,
   numberOfDays,
   setNumberOfDays,
 }) => {

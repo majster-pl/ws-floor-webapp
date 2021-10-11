@@ -1,8 +1,8 @@
 import * as actions from "../actionTypes";
 
-const modalReducer = (state = null, action) => {
+const userReducer = (state = 0, action) => {
   switch (action.type) {
-    case actions.EVENT_EDIT:
+    case actions.USER_SET:
       return action.payload;
 
     default:
@@ -10,4 +10,4 @@ const modalReducer = (state = null, action) => {
   }
 };
 
-export default modalReducer;
+export default userReducer;

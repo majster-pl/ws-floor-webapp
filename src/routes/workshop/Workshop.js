@@ -16,6 +16,7 @@ import apiClient from "../../service/api/api";
 import "./Workshop.css";
 import Pusher from "pusher-js";
 import Echo from "laravel-echo";
+import { useSelector } from "react-redux";
 
 const Workshop = ({
   // isLoading,
@@ -40,6 +41,9 @@ const Workshop = ({
   const history = useHistory();
   // vaible to trigger silent calendar reload when changed
   const [triggerUpdate, setTriggerUpdate] = useState(0);
+  const selectedDepot = useSelector((state) => state.depot);
+
+  let url = "/api/v1/workshop?depot=" + selectedDepot;
 
   ondragend = (result) => {
     const { destination, source, draggableId } = result;
@@ -124,7 +128,7 @@ const Workshop = ({
   const loadWorkshopData = (feedback) => {
     feedback ? setIsLoading(true) : setIsLoading(false);
     setLoadingError(false);
-    let url = "/api/v1/workshop";
+    // let url = "/api/v1/workshop?depot=" + selectedDepot;
 
     // setTimeout(() => {
     apiClient
@@ -165,7 +169,7 @@ const Workshop = ({
 
   // run when component mounted, initial pusher to listen for any changes
   useEffect(() => {
-    Pusher.logToConsole = true;
+    // Pusher.logToConsole = true;
 
     let echo = new Echo({
       broadcaster: "pusher",
@@ -182,11 +186,10 @@ const Workshop = ({
     loadWorkshopData(false);
   }, []);
 
-
   useEffect(() => {
     // siletReload(currentDate);
     loadWorkshopData();
-  }, [triggerUpdate]);
+  }, [triggerUpdate, selectedDepot]);
 
   return data.length !== 0 && !loadingError ? (
     <DragDropContext onDragEnd={ondragend}>

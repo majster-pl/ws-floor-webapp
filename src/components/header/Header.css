@@ -1,3 +1,25 @@
 .navbar-user-dropdown {
-    left: -130px !important;
+    left: -8.1rem !important;
+}
+
+.nav-dropdown-depot .nav-link {
+    color       : #1e2125 !important;
+    padding-left: 1rem !important;
+}
+
+.nav-dropdown-depot .nav-link:focus {
+    color: #f00fa6 !important;
+}
+
+.nav-dropdown-depot .nav-link:hover {
+    background-color: #e9ecef !important;
+}
+
+.bottom-right {
+    /* position: absolute; */
+    bottom     : -0.3rem !important;
+    /* right   : 16px !important; */
+    left       : 4.4rem !important;
+    font-size  : 1rem;
+    color      : #ffbb00;
 }

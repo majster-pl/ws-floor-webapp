@@ -18,6 +18,7 @@ const Login = ({
     isSpinning,
     isEmailValid,
     isPasswordValid,
+    depots,
   } = LoginLogic(setIsLoading, setLoggedIn, setLoginErrorMsg, toast);
 
   return (

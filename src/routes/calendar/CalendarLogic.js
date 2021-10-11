@@ -2,6 +2,7 @@ import moment from "moment";
 import { useState, useEffect } from "react";
 import apiClient from "../../service/api/api";
 import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 const CalendarLogic = ({
   toast,
@@ -21,21 +22,24 @@ const CalendarLogic = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [isCalendarLoading, setIsCalendarLoading] = useState(false);
   const [dateFormat, setDateFormat] = useState("YYYY-MM-DD");
-
+  const depot = useSelector((state) => state.depot);
 
   // useEffect(() => {
   //   console.log(moment(currentDate).format("YYYY-MM-DD 00:01"));
   // }, [currentDate]);
 
   // Loading calendar from api when currentDate changes
-  useEffect(() => {
-    const url =
-      "/api/v1/events?days=" +
-      numberOfDays +
-      "&from=" +
-      moment(currentDate).format("YYYY-MM-DD 00:01") +
-      "&format=grid";
+  const url =
+    "/api/v1/events?days=" +
+    numberOfDays +
+    "&from=" +
+    moment(currentDate).format("YYYY-MM-DD 00:01") +
+    "&format=grid" +
+    (sessionStorage.getItem("selected_depot")
+      ? "&depot=" + sessionStorage.getItem("selected_depot")
+      : "");
 
+  useEffect(() => {
     // console.log('RELAODING ??');
 
     setIsLoading(true);
@@ -44,8 +48,8 @@ const CalendarLogic = ({
       .get(url)
       .then((response) => {
         setIsLoading(false);
-        console.log("CalendarLogic: currentDate changed useState???");
-        console.log(response);
+        // console.log("CalendarLogic: currentDate changed useState???");
+        // console.log(response);
 
         setTableData([...response.data.data]);
       })
@@ -57,22 +61,6 @@ const CalendarLogic = ({
   }, [currentDate]);
 
   const siletReload = (current_Date) => {
-    console.log("silent reload calendar...");
-    console.log("currentDate: " + moment(current_Date).format("D-M-yyyy"));
-
-    const url =
-      "/api/v1/events?days=" +
-      numberOfDays +
-      "&from=" +
-      moment(current_Date).format("YYYY-MM-DD 00:01") +
-      "&format=grid";
-
-    // console.log('RELAODING ??');
-
-    console.log("URL: " + url);
-
-    // silentReload ? setIsLoading(false) : setIsLoading(true);
-
     apiClient
       .get(url)
       .then((response) => {
@@ -86,20 +74,7 @@ const CalendarLogic = ({
       });
   };
 
-
   function reloadCalendar() {
-    // console.log("reloading calendar!");
-    // setCurrentDate(moment(currentDate, "DD-MM-YYYY"));
-    const url =
-      "/api/v1/events?days=" +
-      numberOfDays +
-      "&from=" +
-      moment(currentDate).format("YYYY-MM-DD 00:01") +
-      "&format=grid";
-
-    // console.log('RELAODING ??');
-
-    // silentReload ? setIsLoading(false) : setIsLoading(true);
     setIsLoading(true);
 
     apiClient

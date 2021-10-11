@@ -1,4 +1,4 @@
-import React from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import {
   Navbar,
@@ -8,32 +8,46 @@ import {
   Row,
   Col,
   Button,
+  Form,
 } from "react-bootstrap";
 import apiClient from "../../service/api/api";
 import { useHistory } from "react-router";
+import { useDispatch, useSelector, useStore } from "react-redux";
+import { setDepot, setDepotsList } from "../../actions";
 
 import "./Header.css";
 
-const Header = ({ isLoggedIn, setLoggedIn, setLoginErrorMsg }) => {
+const Header = ({
+  isLoggedIn,
+  setLoggedIn,
+  setLoginErrorMsg,
+  reloadCalendar,
+  toast,
+}) => {
   const history = useHistory();
   const location = useLocation();
+  const dispatch = useDispatch();
+  const depotsList = useSelector((state) => state.depots);
+  const selectedDepot = useSelector((state) => state.depot);
+  const user = useSelector((state) => state.user);
+
   const logout = () => {
     apiClient.post("/logout").then((response) => {
       // console.log(response);
       if (response.status === 204) {
         setLoggedIn(false);
-        // sessionStorage.setItem("loggedIn", false);
-        // Cookies.remove("logged-in", { path: "" });
-        // sessionStorage.clear();
         sessionStorage.setItem("loginStatus", "false");
         setLoginErrorMsg("You have been successfully logged out.");
-        // sessionStorage.setItem("isLoggedIn", "false");
         history.push("/login");
       } else {
         history.push("/login");
       }
     });
   };
+
+  useEffect(() => {
+    reloadCalendar();
+  }, [selectedDepot]);
 
   // function to set Dropdown active
   const setDropdown1Active = () => {
@@ -43,8 +57,22 @@ const Header = ({ isLoggedIn, setLoggedIn, setLoginErrorMsg }) => {
       return false;
     }
   };
+  useEffect(() => {
+    async function fetchDepots() {
+      const depots = await apiClient
+        .get("/api/v1/depot")
+        .then((response) => {
+          dispatch(setDepotsList(response.data));
+        })
+        .catch((err) => {
+          // toast.error("Error! " + err);
+          return [];
+        });
+    }
+    fetchDepots();
+  }, []);
 
-  const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+  const CustomToggle = forwardRef(({ children, onClick }, ref) => (
     <Button
       ref={ref}
       onClick={(e) => {
@@ -78,13 +106,24 @@ const Header = ({ isLoggedIn, setLoggedIn, setLoginErrorMsg }) => {
       className="navbar-fixed-top bg-sendary-extra navbar-main"
     >
       <Navbar.Brand eventkey="1" href="/">
-        <img
-          alt=""
-          src="/img/logo-full.png"
-          width="230"
-          // height="60"
-          className="d-inline-block align-top sticky-top"
-        />
+        <div class="position-relative">
+          <img
+            alt=""
+            src="/img/logo-full-new.png"
+            width="230"
+            // height="60"
+            className="d-inline-block align-top sticky-top"
+          />
+          {isLoggedIn && (
+            <div className="position-absolute bottom-right">
+              {user.company +
+                " " +
+                depotsList
+                  .filter((depot) => depot.id === selectedDepot)
+                  .map((dep) => dep.name)}
+            </div>
+          )}
+        </div>
       </Navbar.Brand>
       {isLoggedIn && (
         <>
@@ -106,6 +145,7 @@ const Header = ({ isLoggedIn, setLoggedIn, setLoginErrorMsg }) => {
                     <NavDropdown
                       active={setDropdown1Active()}
                       title="More"
+                      menuVariant="dark"
                       id="nav-dropdown"
                     >
                       <NavDropdown.Item
@@ -124,6 +164,45 @@ const Header = ({ isLoggedIn, setLoggedIn, setLoginErrorMsg }) => {
                       </NavDropdown.Item>
                     </NavDropdown>
                   </Nav>
+                  <Dropdown.Divider className="d-block d-lg-none me-auto" />
+                  <Nav className="d-block d-lg-none me-auto">
+                    <NavDropdown
+                      className="nav-dropdown-depot2 disable-select"
+                      // title={depotsList.filter(depot => depot.id === selectedDepot).map(dep => (dep.name))}
+                      title="Site"
+                      drop="down"
+                      menuVariant="dark"
+                    >
+                      {depotsList.map((depot) => {
+                        return (
+                          <NavDropdown.Item
+                            className="nav-dropdown-depot-item disable-select"
+                            eventKey={"d-" + depot.id}
+                            as={Link}
+                            active={selectedDepot === depot.id}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              dispatch(setDepot(depot.id));
+                              sessionStorage.setItem(
+                                "selected_depot",
+                                depot.id
+                              );
+                              // reloadCalendar();
+                            }}
+                          >
+                            {depot.name}
+                          </NavDropdown.Item>
+                        );
+                      })}
+                    </NavDropdown>
+                  </Nav>
+
+                  <Nav className="d-block d-lg-none me-auto">
+                    <Nav.Link eventKey="11a" as={Link} to="/settings">
+                      Settings{" "}
+                    </Nav.Link>
+                  </Nav>
+                  <Dropdown.Divider className="d-block d-lg-none me-auto" />
 
                   <Nav className="d-block d-lg-none me-auto">
                     <Nav.Link eventKey="5" onClick={logout}>
@@ -134,16 +213,40 @@ const Header = ({ isLoggedIn, setLoggedIn, setLoginErrorMsg }) => {
 
                 <Col className="col-auto my-auto">
                   <Nav className="d-none d-lg-block justify-content-end ">
-                    <Dropdown align="end">
-                      <Dropdown.Toggle
-                        as={CustomToggle}
-                        id="dropdown-custom-components"
-                      ></Dropdown.Toggle>
+                    <Dropdown align="end" menuVariant="dark">
+                      <Dropdown.Toggle as={CustomToggle}></Dropdown.Toggle>
 
                       <Dropdown.Menu className="navbar-user-dropdown">
-                        <Dropdown.Item eventKey="10" as={Link} to="/add-user">
-                          Add User
-                        </Dropdown.Item>
+                        <NavDropdown
+                          className="nav-dropdown-depot disable-select"
+                          // title={depotsList.filter(depot => depot.id === selectedDepot).map(dep => (dep.name))}
+                          title="Site"
+                          drop="start"
+                          menuVariant="light"
+                        >
+                          {depotsList.map((depot) => {
+                            return (
+                              <NavDropdown.Item
+                                className="nav-dropdown-depot-item disable-select"
+                                eventKey={"d-" + depot.id}
+                                as={Link}
+                                active={selectedDepot === depot.id}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  dispatch(setDepot(depot.id));
+                                  sessionStorage.setItem(
+                                    "selected_depot",
+                                    depot.id
+                                  );
+                                  // reloadCalendar();
+                                }}
+                              >
+                                {depot.name}
+                              </NavDropdown.Item>
+                            );
+                          })}
+                        </NavDropdown>
+
                         <Dropdown.Item eventKey="11" as={Link} to="/settings">
                           Settings
                         </Dropdown.Item>
