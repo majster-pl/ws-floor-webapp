@@ -16,10 +16,17 @@
 }
 
 .bottom-right {
-    /* position: absolute; */
-    bottom     : -0.3rem !important;
-    /* right   : 16px !important; */
-    left       : 4.4rem !important;
-    font-size  : 1rem;
-    color      : #ffbb00;
+    bottom        : -0.2rem !important;
+    left          : 4.5rem !important;
+    font-size     : 1rem;
+    /* color         : #dfea87; */
+    color      : #32beff;
+}
+
+.text-depot {
+    font-size : 0.8rem;
+}
+
+.font-orbitron {
+    font-family: Orbitron;
 }

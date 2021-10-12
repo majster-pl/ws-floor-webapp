@@ -106,7 +106,7 @@ const Header = ({
       className="navbar-fixed-top bg-sendary-extra navbar-main"
     >
       <Navbar.Brand eventkey="1" href="/">
-        <div class="position-relative">
+        <div class="position-relative font-orbitron">
           <img
             alt=""
             src="/img/logo-full-new.png"
@@ -116,11 +116,12 @@ const Header = ({
           />
           {isLoggedIn && (
             <div className="position-absolute bottom-right">
-              {user.company +
-                " " +
-                depotsList
+              <span className="pe-2">{user.company}</span>
+              <span className="text-white text-depot">
+                {depotsList
                   .filter((depot) => depot.id === selectedDepot)
                   .map((dep) => dep.name)}
+              </span>
             </div>
           )}
         </div>

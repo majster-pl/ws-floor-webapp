@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 
 const LoginLogic = ({ setLoggedIn }, setIsLoading, setLoginErrorMsg, toast) => {
   const [username, setUsername] = useState("admin@gmail.com");
-  const [password, setPassword] = useState("password123");
+  const [password, setPassword] = useState("password");
   const [isSpinning, setIsSpinning] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
