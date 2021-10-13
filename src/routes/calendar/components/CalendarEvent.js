@@ -18,14 +18,12 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
   } = props;
 
   const dispatch = useDispatch();
-  var today = new moment(Date()).format("DD-MM-YYYY");
-  var booked_date = moment(new Date(booked_date_time)).format("DD-MM-YYYY");
+  var today = new Date();
+  var booked_date = new Date(booked_date_time);
 
   function isNoShow() {
     if (booked_date < today && status === "booked") {
       return true;
-    } else {
-      return false;
     }
   }
 
@@ -97,7 +95,7 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
             <Col className="col-auto">
               <Nav.Link
                 className={`text-end p-0 me-2   ${
-                  isNoShow() ? "text-secondary" : "text-info"
+                  isNoShow() ? "text-light" : "text-info"
                 }`}
                 onClick={handleEditClick}
               >
@@ -109,20 +107,40 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
         <div className="card-body p-0">
           <div className="row card-body-row">
             <div className="col-5 card-text">Customer:</div>
-            <div className="col-7 card-text text-white text-truncate">
+            <div
+              className={`col-7 card-text text-truncate ${
+                isNoShow() ? "text-light" : "text-white"
+              }`}
+            >
               {customer_name}
             </div>
             {/* <div className="col-5 card-text">Reg:</div>
             <div className="col-7 card-text fw-bold">{vehicleId}</div> */}
             <div className="col-5 card-text">Desc:</div>
-            <div className="col-7 text-truncate-3 text-white ">
+            <div
+              className={`col-7 card-text text-truncate ${
+                isNoShow() ? "text-light" : "text-white"
+              }`}
+            >
               {description}
               {/* <div className="text-truncate-3">{description}</div> */}
             </div>
             <div className="col-5 card-text">Allowed:</div>
-            <div className="col-7 text-white ">{allowed_time} h</div>
+            <div
+              className={`col-7 card-text text-truncate ${
+                isNoShow() ? "text-light" : "text-white"
+              }`}
+            >
+              {allowed_time} h
+            </div>
             <div className="col-5 card-text">Others:</div>
-            <div className="col-7 text-white ">{others}</div>
+            <div
+              className={`col-7 card-text text-truncate ${
+                isNoShow() ? "text-light" : "text-white"
+              }`}
+            >
+              {others}
+            </div>
           </div>
         </div>
         <div className={"card-footer m-0 p-0 " + setStatusColors(status).bg}>

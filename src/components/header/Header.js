@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import {
   Navbar,
@@ -167,12 +167,11 @@ const Header = ({
                       </NavDropdown.Item>
                     </NavDropdown>
                   </Nav>
-                  <Dropdown.Divider className="d-block d-lg-none me-auto" />
                   <Nav className="d-block d-lg-none me-auto">
                     <NavDropdown
                       className="nav-dropdown-depot2 disable-select"
                       // title={depotsList.filter(depot => depot.id === selectedDepot).map(dep => (dep.name))}
-                      title="Site"
+                      title="Branch"
                       drop="down"
                       menuVariant="dark"
                     >
@@ -223,7 +222,7 @@ const Header = ({
                         <NavDropdown
                           className="nav-dropdown-depot disable-select"
                           // title={depotsList.filter(depot => depot.id === selectedDepot).map(dep => (dep.name))}
-                          title="Site"
+                          title="Branch"
                           drop="start"
                           menuVariant="light"
                         >
