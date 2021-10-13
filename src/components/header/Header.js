@@ -23,6 +23,7 @@ const Header = ({
   setLoginErrorMsg,
   reloadCalendar,
   toast,
+  setTableData,
 }) => {
   const history = useHistory();
   const location = useLocation();
@@ -36,6 +37,7 @@ const Header = ({
       // console.log(response);
       if (response.status === 204) {
         setLoggedIn(false);
+        setTableData([]);
         sessionStorage.setItem("loginStatus", "false");
         setLoginErrorMsg("You have been successfully logged out.");
         history.push("/login");

@@ -91,11 +91,11 @@ const LoginLogic = ({ setLoggedIn }, setIsLoading, setLoginErrorMsg, toast) => {
               .then((response) => {
                 sessionStorage.setItem("loginStatus", "true");
                 // console.log(response.data);
-                dispatch(setDepot(response.data.default_depot));
+                dispatch(setDepot(response.data.default_branch));
                 dispatch(setUser(response.data));
                 sessionStorage.setItem(
                   "selected_depot",
-                  response.data.default_depot
+                  response.data.default_branch
                 );
 
                 toast.success("Welcome back " + response.data.name + "!");

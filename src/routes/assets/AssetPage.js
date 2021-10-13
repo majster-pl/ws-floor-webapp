@@ -32,6 +32,7 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
   const [removeAll, setRemoveAll] = useState(false);
+  const [valid, setValid] = useState(true);
 
   const { id } = useParams(); // parameter from url
 
@@ -114,6 +115,8 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
         setFormGeneral(result.data.data);
         setIsLoading(false);
       } catch (error) {
+        toast.error(error.data.message);
+        setValid(false);
         setIsLoading(false);
       }
     };
@@ -151,6 +154,7 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                 Back
               </Button>
             </div>
+            {valid ? 
             <div className="col-12 col-md-6">
               <div className="row mx-auto my-2">
                 <div className="col-5 mx-auto bg-info rounded text-center">
@@ -177,7 +181,8 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> : <div></div>
+            }
           </div>
         </Container>
 
@@ -190,200 +195,206 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
             eventKey="general"
             title="General"
             className="bg-darker border-start border-end border-bottom shadow"
+            disabled={!valid}
           >
-            <Container className="py-3 ">
-              <Formik
-                initialValues={formGeneral}
-                validateOnChange={true}
-                validationSchema={reviewSchema}
-                enableReinitialize={true}
-                onSubmit={(values) => {
-                  updateCustomer(values);
-                  // console.log(values);
-                }}
-              >
-                {(props) => (
-                  <>
-                    <Row className="justify-content-end">
-                      <Col className="col-auto">
-                        <Button
-                          variant="danger"
-                          onClick={() => {
-                            let data = {
-                              reg: props.values.reg,
-                              id: props.values.id,
-                            };
-                            handleShowModal();
-                            setModaldata(data);
-                          }}
-                        >
-                          Remove
-                        </Button>
-                      </Col>
-                      <Col className="col-auto mx-2">
-                        <Button
-                          variant={
-                            toggleEditForm
-                              ? "info"
-                              : !props.dirty
-                              ? "light"
-                              : "success"
-                          }
-                          disabled={props.isSubmitting}
-                          onClick={() => {
-                            if (toggleEditForm) {
-                              setToggleEditForm(false);
-                            } else {
-                              if (props.dirty) {
-                                props.submitForm();
-                              } else {
-                                setToggleEditForm(true);
-                              }
+            {valid ? (
+              <Container className="py-3 ">
+                <Formik
+                  initialValues={formGeneral}
+                  validateOnChange={true}
+                  validationSchema={reviewSchema}
+                  enableReinitialize={true}
+                  onSubmit={(values) => {
+                    updateCustomer(values);
+                    // console.log(values);
+                  }}
+                >
+                  {(props) => (
+                    <>
+                      <Row className="justify-content-end">
+                        <Col className="col-auto">
+                          <Button
+                            variant="danger"
+                            onClick={() => {
+                              let data = {
+                                reg: props.values.reg,
+                                id: props.values.id,
+                              };
+                              handleShowModal();
+                              setModaldata(data);
+                            }}
+                          >
+                            Remove
+                          </Button>
+                        </Col>
+                        <Col className="col-auto mx-2">
+                          <Button
+                            variant={
+                              toggleEditForm
+                                ? "info"
+                                : !props.dirty
+                                ? "light"
+                                : "success"
                             }
-                          }}
-                        >
-                          {toggleEditForm
-                            ? "Edit"
-                            : !props.dirty
-                            ? "Cancel"
-                            : "Save"}
-                        </Button>
-                      </Col>
-                    </Row>
-                    <hr></hr>
-                    <Row className="mx-1 g-3">
-                      <Form.Group
-                        as={Col}
-                        className="col-12 col-md-6"
-                        controlId="formReg"
-                      >
-                        <FormInput
-                          _label="Reg"
-                          _errors={props.errors.reg}
-                          _touched={props.touched.reg}
-                          _maxLength={7}
-                          _disabled={toggleEditForm}
-                          _type="text"
-                          _placeholder="Vehicle Reg"
-                          _value={props.values.reg.toUpperCase()}
-                          _onChange={props.handleChange("reg")}
-                        />
-                      </Form.Group>
-
-                      <Form.Group
-                        as={Col}
-                        className="col-12 col-md-6"
-                        controlId="formMake"
-                      >
-                        <FormInput
-                          _label="Make"
-                          _errors={props.errors.make}
-                          _touched={props.touched.make}
-                          _maxLength={20}
-                          _disabled={toggleEditForm}
-                          _type="text"
-                          _placeholder="Vehicle Make"
-                          _value={props.values.make}
-                          _onChange={props.handleChange("make")}
-                        />
-                      </Form.Group>
-
-                      <Form.Group
-                        as={Col}
-                        className="col-12 col-md-6"
-                        controlId="formModel"
-                      >
-                        <FormInput
-                          _label="Model"
-                          _errors={props.errors.model}
-                          _touched={props.touched.model}
-                          _maxLength={20}
-                          _disabled={toggleEditForm}
-                          _type="text"
-                          _placeholder="Vehicle Model"
-                          _value={props.values.model}
-                          _onChange={props.handleChange("model")}
-                        />
-                      </Form.Group>
-
-                      <Form.Group
-                        as={Col}
-                        className="col-12 col-md-6"
-                        controlId="formStatus"
-                      >
-                        <Form.Label>Status:</Form.Label>
-                        <Form.Control
-                          as="select"
-                          plaintext={toggleEditForm}
-                          disabled={toggleEditForm}
-                          onChange={props.handleChange("status")}
-                        >
-                          <option
-                            value="active"
-                            selected={"active" == props.values.status}
+                            disabled={props.isSubmitting}
+                            onClick={() => {
+                              if (toggleEditForm) {
+                                setToggleEditForm(false);
+                              } else {
+                                if (props.dirty) {
+                                  props.submitForm();
+                                } else {
+                                  setToggleEditForm(true);
+                                }
+                              }
+                            }}
                           >
-                            Active
-                          </option>
-                          <option
-                            value="on_hold"
-                            selected={"on_hold" == props.values.status}
-                          >
-                            On Hold
-                          </option>
-                        </Form.Control>
-                      </Form.Group>
-                    </Row>
-                    <hr></hr>
-                    <Container className="my-3 text-muted">
-                      <Accordion>
-                        <CustomToggle eventKey="0">More</CustomToggle>
-                        <Accordion.Collapse eventKey="0">
-                          <Container className="ms-3">
-                            <Col>
-                              <small className="font-monospace">
-                                Creadted by: {props.values.created_by_name}
-                              </small>
-                            </Col>
-                            <Col>
-                              <small className="font-monospace">
-                                Created at:{" "}
-                                {moment(
-                                  new Date(props.values.created_at)
-                                ).format("DD-MMM-YYYY HH:mm")}
-                              </small>
-                            </Col>
+                            {toggleEditForm
+                              ? "Edit"
+                              : !props.dirty
+                              ? "Cancel"
+                              : "Save"}
+                          </Button>
+                        </Col>
+                      </Row>
+                      <hr></hr>
+                      <Row className="mx-1 g-3">
+                        <Form.Group
+                          as={Col}
+                          className="col-12 col-md-6"
+                          controlId="formReg"
+                        >
+                          <FormInput
+                            _label="Reg"
+                            _errors={props.errors.reg}
+                            _touched={props.touched.reg}
+                            _maxLength={7}
+                            _disabled={toggleEditForm}
+                            _type="text"
+                            _placeholder="Vehicle Reg"
+                            _value={props.values.reg.toUpperCase()}
+                            _onChange={props.handleChange("reg")}
+                          />
+                        </Form.Group>
 
-                            <Col>
-                              <small className="font-monospace">
-                                Last update:{" "}
-                                {moment(
-                                  new Date(props.values.updated_at)
-                                ).format("DD-MMM-YYYY HH:mm")}
-                              </small>
-                            </Col>
-                            <Col>
-                              <small className="font-monospace">
-                                Unique customer id: {props.values.uuid}
-                              </small>
-                            </Col>
-                            <Col>
-                              <small className="font-monospace">
-                                Status: {props.values.status}
-                              </small>
-                            </Col>
-                          </Container>
-                        </Accordion.Collapse>
-                      </Accordion>
-                    </Container>
-                  </>
-                )}
-              </Formik>
-            </Container>
+                        <Form.Group
+                          as={Col}
+                          className="col-12 col-md-6"
+                          controlId="formMake"
+                        >
+                          <FormInput
+                            _label="Make"
+                            _errors={props.errors.make}
+                            _touched={props.touched.make}
+                            _maxLength={20}
+                            _disabled={toggleEditForm}
+                            _type="text"
+                            _placeholder="Vehicle Make"
+                            _value={props.values.make}
+                            _onChange={props.handleChange("make")}
+                          />
+                        </Form.Group>
+
+                        <Form.Group
+                          as={Col}
+                          className="col-12 col-md-6"
+                          controlId="formModel"
+                        >
+                          <FormInput
+                            _label="Model"
+                            _errors={props.errors.model}
+                            _touched={props.touched.model}
+                            _maxLength={20}
+                            _disabled={toggleEditForm}
+                            _type="text"
+                            _placeholder="Vehicle Model"
+                            _value={props.values.model}
+                            _onChange={props.handleChange("model")}
+                          />
+                        </Form.Group>
+
+                        <Form.Group
+                          as={Col}
+                          className="col-12 col-md-6"
+                          controlId="formStatus"
+                        >
+                          <Form.Label>Status:</Form.Label>
+                          <Form.Control
+                            as="select"
+                            plaintext={toggleEditForm}
+                            disabled={toggleEditForm}
+                            onChange={props.handleChange("status")}
+                          >
+                            <option
+                              value="active"
+                              selected={"active" == props.values.status}
+                            >
+                              Active
+                            </option>
+                            <option
+                              value="on_hold"
+                              selected={"on_hold" == props.values.status}
+                            >
+                              On Hold
+                            </option>
+                          </Form.Control>
+                        </Form.Group>
+                      </Row>
+                      <hr></hr>
+                      <Container className="my-3 text-muted">
+                        <Accordion>
+                          <CustomToggle eventKey="0">More</CustomToggle>
+                          <Accordion.Collapse eventKey="0">
+                            <Container className="ms-3">
+                              <Col>
+                                <small className="font-monospace">
+                                  Creadted by: {props.values.created_by_name}
+                                </small>
+                              </Col>
+                              <Col>
+                                <small className="font-monospace">
+                                  Created at:{" "}
+                                  {moment(
+                                    new Date(props.values.created_at)
+                                  ).format("DD-MMM-YYYY HH:mm")}
+                                </small>
+                              </Col>
+
+                              <Col>
+                                <small className="font-monospace">
+                                  Last update:{" "}
+                                  {moment(
+                                    new Date(props.values.updated_at)
+                                  ).format("DD-MMM-YYYY HH:mm")}
+                                </small>
+                              </Col>
+                              <Col>
+                                <small className="font-monospace">
+                                  Unique customer id: {props.values.uuid}
+                                </small>
+                              </Col>
+                              <Col>
+                                <small className="font-monospace">
+                                  Status: {props.values.status}
+                                </small>
+                              </Col>
+                            </Container>
+                          </Accordion.Collapse>
+                        </Accordion>
+                      </Container>
+                    </>
+                  )}
+                </Formik>
+              </Container>
+            ) : (
+              <Container className="py-3">No data availabe</Container>
+            )}
           </Tab>
           <Tab
             eventKey="owner"
             title="Owner"
             className="bg-darker border-start border-end border-bottom shadow"
+            disabled={!valid}
           >
             <Container className="py-3">
               Here will be displayed current owner of the vehicle.
@@ -393,6 +404,7 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
             eventKey="history"
             title="History"
             className="bg-darker border-start border-end border-bottom shadow"
+            disabled={!valid}
           >
             <Container className="py-3">
               Here will be displayed history for the vehicle.
@@ -403,6 +415,7 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
             eventKey="bookings"
             title="Bookigns"
             className="bg-darker border-start border-end border-bottom shadow"
+            disabled={!valid}
           >
             <Container className="py-3">
               Here will be displayed all future booking for this asset.

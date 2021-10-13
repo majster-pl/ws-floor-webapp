@@ -44,6 +44,7 @@ const App = () => {
     isCalendarLoading,
     reloadCalendar,
     siletReload,
+    setTableData,
   } = CalendarLogic({ toast, setIsLoading });
 
   const {
@@ -87,6 +88,7 @@ const App = () => {
           setLoginErrorMsg={setLoginErrorMsg}
           reloadCalendar={reloadCalendar}
           toast={toast}
+          setTableData={setTableData}
         />
         <Switch>
           <Route exact path="/">

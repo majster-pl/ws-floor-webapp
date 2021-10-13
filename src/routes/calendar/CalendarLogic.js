@@ -21,8 +21,8 @@ const CalendarLogic = ({
   const [tableData, setTableData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isCalendarLoading, setIsCalendarLoading] = useState(false);
-  const [dateFormat, setDateFormat] = useState("YYYY-MM-DD");
-  const depot = useSelector((state) => state.depot);
+  // const [dateFormat, setDateFormat] = useState("YYYY-MM-DD");
+  // const depot = useSelector((state) => state.depot);
 
   // useEffect(() => {
   //   console.log(moment(currentDate).format("YYYY-MM-DD 00:01"));
@@ -100,6 +100,7 @@ const CalendarLogic = ({
     isCalendarLoading,
     reloadCalendar,
     siletReload,
+    setTableData,
   };
 };
 

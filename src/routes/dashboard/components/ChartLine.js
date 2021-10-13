@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import moment from "moment";
 import apiClient from "../../../service/api/api";
+import { useSelector, useDispatch } from "react-redux";
 
 const ChartLine = () => {
-  const todaysDate = moment().startOf("isoweek").format("YYYY-MM-DD");
+  const todaysDate = moment().startOf("isoWeek").format("YYYY-MM-DD");
   const [startDate, setStartDate] = useState(() => {
     return todaysDate;
   });
@@ -15,6 +16,7 @@ const ChartLine = () => {
   const [eventsCompleted, setEventsCompleted] = useState([]);
   const [numberOfSelectedDays, setNumberOfSelectedDays] = useState(7);
   const [dropdownLabel, setDropdownLabel] = useState("This Week");
+  const depot = useSelector((state) => state.depot);
 
   const setLabel = (days, label, startDay) => {
     setDropdownLabel(label);
@@ -28,7 +30,7 @@ const ChartLine = () => {
     setChartData({
       datasets: [
         {
-          label: "Total booked jobs",
+          label: "Total jobs",
           data: eventsPerDay,
           borderColor: "#ffbb00",
           fill: false,
@@ -36,14 +38,14 @@ const ChartLine = () => {
           tension: 0.4,
         },
         {
-          label: "With status: booked",
+          label: "Completed",
           data: eventsBooked,
           borderColor: "#39a883",
           fill: false,
           tension: 0.4,
         },
         {
-          label: "Completed Jobs",
+          label: "Awaiting labour",
           data: eventsCompleted,
           borderColor: "#f00fa6",
           tension: 0.4,
@@ -55,7 +57,15 @@ const ChartLine = () => {
 
   const getBookedDays = () => {
     apiClient
-      .get("/api/v1/stats?from=" + startDate + "&days=" + numberOfSelectedDays)
+      .get(
+        "/api/v1/stats?from=" +
+          startDate +
+          "&days=" +
+          numberOfSelectedDays +
+          (sessionStorage.getItem("selected_depot")
+            ? "&depot=" + sessionStorage.getItem("selected_depot")
+            : "")
+      )
       .then((response) => {
         // console.log("data: ", response);
         setEventsPerDay(response.data.data);
@@ -72,7 +82,10 @@ const ChartLine = () => {
           startDate +
           "&days=" +
           numberOfSelectedDays +
-          "&status=work_in_progress"
+          "&status=completed" +
+          (sessionStorage.getItem("selected_depot")
+            ? "&depot=" + sessionStorage.getItem("selected_depot")
+            : "")
       )
       .then((response) => {
         setEventsBooked(response.data.data);
@@ -86,7 +99,10 @@ const ChartLine = () => {
           startDate +
           "&days=" +
           numberOfSelectedDays +
-          "&status=completed"
+          "&status=awaiting_labour" +
+          (sessionStorage.getItem("selected_depot")
+            ? "&depot=" + sessionStorage.getItem("selected_depot")
+            : "")
       )
       .then((response) => {
         setEventsCompleted(response.data.data);
@@ -101,7 +117,7 @@ const ChartLine = () => {
     getBookedDays();
     getWorkInProgess();
     getCompleted();
-  }, [numberOfSelectedDays]);
+  }, [numberOfSelectedDays, depot]);
 
   useEffect(() => {
     Chart();

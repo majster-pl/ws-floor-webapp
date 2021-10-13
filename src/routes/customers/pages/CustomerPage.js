@@ -35,11 +35,14 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
   const [removeAll, setRemoveAll] = useState(false);
+  const [valid, setValid] = useState(true);
 
   const { id } = useParams(); // parameter from url
 
   const [formGeneral, setFormGeneral] = useState({
+    id: "",
     customer_name: "",
+    email: "",
     status: "",
     assets_total: "",
     created_at: "",
@@ -119,6 +122,8 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
         setFormGeneral(result.data.data);
         setIsLoading(false);
       } catch (error) {
+        toast.error(error.data.message);
+        setValid(false);
         setIsLoading(false);
       }
     };
@@ -158,51 +163,55 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
               </Button>
             </div>
             <div className="col-12 col-md-6">
-              <div className="row mx-auto my-2">
-                <div className="col-auto my-auto">
-                  <div className="number-circle-large fs-2 text-pink text-uppercase">
-                    {formGeneral.customer_name !== ""
-                      ? formGeneral.customer_name
-                          .match(/\b(\w)/g)
-                          .join("")
-                          .substring(0, 2)
-                      : ""}
-                  </div>
-                </div>
-                <div className="col text-start">
-                  <div className="fs-4">{formGeneral.customer_name}</div>
-                  <div className="row ">
-                    <div className="col-auto">
-                      <div>
-                        <span className="fs-5 me-2 text-success">
-                          {formGeneral.assets_total}
-                        </span>
-                        Assets
-                      </div>
-                    </div>
-                    <div className="col-auto">
-                      <div>
-                        Since
-                        <span className="fs-5 mx-2 text-success">
-                          {moment(formGeneral.created_at).format("MMM-YYYY")}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="col-auto">
-                      <span
-                        className={
-                          "fs-5 text-capitalize " +
-                          (formGeneral.status == "on_hold"
-                            ? "text-info"
-                            : "text-success")
-                        }
-                      >
-                        {formGeneral.status.replace("_", " ")}
-                      </span>
+              {valid ? (
+                <div className="row mx-auto my-2">
+                  <div className="col-auto my-auto">
+                    <div className="number-circle-large fs-2 text-pink text-uppercase">
+                      {formGeneral.customer_name !== ""
+                        ? formGeneral.customer_name
+                            .match(/\b(\w)/g)
+                            .join("")
+                            .substring(0, 2)
+                        : ""}
                     </div>
                   </div>
+                  <div className="col text-start">
+                    <div className="fs-4">{formGeneral.customer_name}</div>
+                    <div className="row ">
+                      <div className="col-auto">
+                        <div>
+                          <span className="fs-5 me-2 text-success">
+                            {formGeneral.assets_total}
+                          </span>
+                          Assets
+                        </div>
+                      </div>
+                      <div className="col-auto">
+                        <div>
+                          Since
+                          <span className="fs-5 mx-2 text-success">
+                            {moment(formGeneral.created_at).format("MMM-YYYY")}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="col-auto">
+                        <span
+                          className={
+                            "fs-5 text-capitalize " +
+                            (formGeneral.status == "on_hold"
+                              ? "text-info"
+                              : "text-success")
+                          }
+                        >
+                          {formGeneral.status.replace("_", " ")}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div></div>
+              )}
             </div>
           </div>
         </Container>
@@ -217,224 +226,241 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
             eventKey="general"
             title="General"
             className="bg-darker border-start border-end border-bottom shadow"
+            disabled={!valid}
           >
-            <Container className="py-3 ">
-              <Formik
-                initialValues={formGeneral}
-                validateOnChange={true}
-                validationSchema={reviewSchema}
-                enableReinitialize={true}
-                onSubmit={(values) => {
-                  updateCustomer(values);
-                  // console.log(values);
-                }}
-              >
-                {(props) => (
-                  <>
-                    <Row className="justify-content-end">
-                      <Col className="col-auto">
-                        <Button
-                          variant="danger"
-                          onClick={() => {
-                            let data = {
-                              customer_name: props.values.customer_name,
-                              id: props.values.id,
-                            };
-                            handleShowModal();
-                            setModaldata(data);
-                          }}
-                        >
-                          Remove
-                        </Button>
-                      </Col>
-                      <Col className="col-auto mx-2">
-                        <Button
-                          variant={
-                            toggleEditForm
-                              ? "info"
-                              : !props.dirty
-                              ? "light"
-                              : "success"
-                          }
-                          disabled={props.isSubmitting}
-                          onClick={() => {
-                            if (toggleEditForm) {
-                              setToggleEditForm(false);
-                            } else {
-                              if (props.dirty) {
-                                props.submitForm();
-                              } else {
-                                setToggleEditForm(true);
-                              }
+            {valid ? (
+              <Container className="py-3 ">
+                <Formik
+                  initialValues={formGeneral}
+                  validateOnChange={true}
+                  validationSchema={reviewSchema}
+                  enableReinitialize={true}
+                  onSubmit={(values) => {
+                    updateCustomer(values);
+                    // console.log(values);
+                  }}
+                >
+                  {(props) => (
+                    <>
+                      <Row className="justify-content-end">
+                        <Col className="col-auto">
+                          <Button
+                            variant="danger"
+                            onClick={() => {
+                              const data = {
+                                customer_name: props.values.customer_name,
+                                id: props.values.id,
+                              };
+                              handleShowModal();
+                              setModaldata(data);
+                            }}
+                          >
+                            Remove
+                          </Button>
+                        </Col>
+                        <Col className="col-auto mx-2">
+                          <Button
+                            variant={
+                              toggleEditForm
+                                ? "info"
+                                : !props.dirty
+                                ? "light"
+                                : "success"
                             }
-                          }}
-                        >
-                          {toggleEditForm
-                            ? "Edit"
-                            : !props.dirty
-                            ? "Cancel"
-                            : "Save"}
-                        </Button>
-                      </Col>
-                    </Row>
-                    <hr></hr>
-                    <Row className="mx-1 g-3">
-                      <Form.Group
-                        as={Col}
-                        className="col-12 col-md-6"
-                        controlId="formName"
-                      >
-                        <Form.Label>Customer Name</Form.Label>
-                        <Form.Control
-                          plaintext={toggleEditForm}
-                          disabled={toggleEditForm}
-                          type="text"
-                          isInvalid={
-                            props.touched.customer_name &&
-                            props.errors.customer_name
-                          }
-                          placeholder="Enter customer name"
-                          onChange={props.handleChange("customer_name")}
-                          value={props.values.customer_name}
-                        />
-                        <Form.Control.Feedback
-                          type="invalid"
-                          className="d-block"
-                        >
-                          {props.touched.customer_name &&
-                            props.errors.customer_name}
-                        </Form.Control.Feedback>
-                      </Form.Group>
-
-                      <Form.Group
-                        as={Col}
-                        className="col-12 col-md-6"
-                        controlId="formContact"
-                      >
-                        <Form.Label>Contact Number</Form.Label>
-                        <Form.Control
-                          plaintext={toggleEditForm}
-                          disabled={toggleEditForm}
-                          isInvalid={
-                            props.touched.customer_contact &&
-                            props.errors.customer_contact
-                          }
-                          onChange={props.handleChange("customer_contact")}
-                          value={props.values.customer_contact}
-                          type="text"
-                          placeholder="Contact number"
-                        />
-                        <Form.Control.Feedback
-                          type="invalid"
-                          className="d-block"
-                        >
-                          {props.touched.customer_contact &&
-                            props.errors.customer_contact}
-                        </Form.Control.Feedback>
-                      </Form.Group>
-
-                      <Form.Group
-                        as={Col}
-                        className="col-12 col-md-6"
-                        controlId="formMail"
-                      >
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control
-                          plaintext={toggleEditForm}
-                          disabled={toggleEditForm}
-                          onChange={props.handleChange("email")}
-                          value={props.values.email}
-                          isInvalid={props.touched.email && props.errors.email}
-                          type="text"
-                          placeholder="Contact email"
-                        />
-                        <Form.Control.Feedback
-                          type="invalid"
-                          className="d-block"
-                        >
-                          {props.touched.email && props.errors.email}
-                        </Form.Control.Feedback>
-                      </Form.Group>
-
-                      <Form.Group
-                        as={Col}
-                        className="col-12 col-md-6"
-                        controlId="formStatus"
-                      >
-                        <Form.Label>Status:</Form.Label>
-                        <Form.Control
-                          as="select"
-                          plaintext={toggleEditForm}
-                          disabled={toggleEditForm}
-                          onChange={props.handleChange("status")}
-                        >
-                          <option
-                            value="active"
-                            defaultValue={"active" == props.values.status}
+                            disabled={props.isSubmitting}
+                            onClick={() => {
+                              if (toggleEditForm) {
+                                setToggleEditForm(false);
+                              } else {
+                                if (props.dirty) {
+                                  props.submitForm();
+                                } else {
+                                  setToggleEditForm(true);
+                                }
+                              }
+                            }}
                           >
-                            Active
-                          </option>
-                          <option
-                            value="on_hold"
-                            defaultValue={"on_hold" == props.values.status}
+                            {toggleEditForm
+                              ? "Edit"
+                              : !props.dirty
+                              ? "Cancel"
+                              : "Save"}
+                          </Button>
+                        </Col>
+                      </Row>
+                      <hr></hr>
+                      <Row className="mx-1 g-3">
+                        <Form.Group
+                          as={Col}
+                          className="col-12 col-md-6"
+                          controlId="formName"
+                        >
+                          <Form.Label>Customer Name</Form.Label>
+                          <Form.Control
+                            plaintext={toggleEditForm}
+                            disabled={toggleEditForm}
+                            type="text"
+                            isInvalid={
+                              props.touched.customer_name &&
+                              props.errors.customer_name
+                            }
+                            placeholder="Enter customer name"
+                            onChange={props.handleChange("customer_name")}
+                            value={props.values.customer_name}
+                          />
+                          <Form.Control.Feedback
+                            type="invalid"
+                            className="d-block"
                           >
-                            On Hold
-                          </option>
-                        </Form.Control>
-                      </Form.Group>
-                    </Row>
-                    <hr></hr>
-                    <Accordion>
-                      <Container className="my-3 text-muted">
-                        <CustomToggle eventKey="0">More</CustomToggle>
-                        <Accordion.Collapse eventKey="0">
-                          <Container className="ms-3">
-                            <Col>
-                              <small className="font-monospace">
-                                Creadted by: {props.values.created_by_name}
-                              </small>
-                            </Col>
-                            <Col>
-                              <small className="font-monospace">
-                                Created at:{" "}
-                                {moment(
-                                  new Date(props.values.created_at)
-                                ).format("DD-MMM-YYYY HH:mm")}
-                              </small>
-                            </Col>
+                            {props.touched.customer_name &&
+                              props.errors.customer_name}
+                          </Form.Control.Feedback>
+                        </Form.Group>
 
-                            <Col>
-                              <small className="font-monospace">
-                                Last update:{" "}
-                                {moment(
-                                  new Date(props.values.updated_at)
-                                ).format("DD-MMM-YYYY HH:mm")}
-                              </small>
-                            </Col>
-                            <Col>
-                              <small className="font-monospace">
-                                Unique customer id: {props.values.uuid}
-                              </small>
-                            </Col>
-                            <Col>
-                              <small className="font-monospace">
-                                Status: {props.values.status}
-                              </small>
-                            </Col>
-                          </Container>
-                        </Accordion.Collapse>
-                      </Container>
-                    </Accordion>
-                  </>
-                )}
-              </Formik>
-            </Container>
+                        <Form.Group
+                          as={Col}
+                          className="col-12 col-md-6"
+                          controlId="formContact"
+                        >
+                          <Form.Label>Contact Number</Form.Label>
+                          <Form.Control
+                            plaintext={toggleEditForm}
+                            disabled={toggleEditForm}
+                            isInvalid={
+                              props.touched.customer_contact &&
+                              props.errors.customer_contact
+                            }
+                            onChange={props.handleChange("customer_contact")}
+                            value={props.values.customer_contact}
+                            type="text"
+                            placeholder="Contact number"
+                          />
+                          <Form.Control.Feedback
+                            type="invalid"
+                            className="d-block"
+                          >
+                            {props.touched.customer_contact &&
+                              props.errors.customer_contact}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+
+                        <Form.Group
+                          as={Col}
+                          className="col-12 col-md-6"
+                          controlId="formMail"
+                        >
+                          <Form.Label>Email</Form.Label>
+                          <Form.Control
+                            plaintext={toggleEditForm}
+                            disabled={toggleEditForm}
+                            onChange={props.handleChange("email")}
+                            value={props.values.email}
+                            isInvalid={
+                              props.touched.email && props.errors.email
+                            }
+                            type="text"
+                            placeholder="Contact email"
+                          />
+                          <Form.Control.Feedback
+                            type="invalid"
+                            className="d-block"
+                          >
+                            {props.touched.email && props.errors.email}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+
+                        <Form.Group
+                          as={Col}
+                          className="col-12 col-md-6"
+                          controlId="formStatus"
+                        >
+                          <Form.Label>Status:</Form.Label>
+                          <Form.Control
+                            as="select"
+                            plaintext={toggleEditForm}
+                            disabled={toggleEditForm}
+                            onChange={props.handleChange("status")}
+                          >
+                            <option
+                              value="active"
+                              defaultValue={"active" == props.values.status}
+                            >
+                              Active
+                            </option>
+                            <option
+                              value="on_hold"
+                              defaultValue={"on_hold" == props.values.status}
+                            >
+                              On Hold
+                            </option>
+                          </Form.Control>
+                        </Form.Group>
+                      </Row>
+                      <hr></hr>
+                      <Accordion>
+                        <Container className="my-3 text-muted">
+                          <CustomToggle eventKey="0">More</CustomToggle>
+                          <Accordion.Collapse eventKey="0">
+                            <Container className="ms-3">
+                              <Col>
+                                <small className="font-monospace">
+                                  Creadted by: {props.values.created_by_name}
+                                </small>
+                              </Col>
+                              <Col>
+                                <small className="font-monospace">
+                                  Created at:{" "}
+                                  {moment(
+                                    new Date(props.values.created_at)
+                                  ).format("DD-MMM-YYYY HH:mm")}
+                                </small>
+                              </Col>
+
+                              <Col>
+                                <small className="font-monospace">
+                                  Last update:{" "}
+                                  {moment(
+                                    new Date(props.values.updated_at)
+                                  ).format("DD-MMM-YYYY HH:mm")}
+                                </small>
+                              </Col>
+                              <Col>
+                                <small className="font-monospace">
+                                  Unique customer id: {props.values.uuid}
+                                </small>
+                              </Col>
+                              <Col>
+                                <small className="font-monospace">
+                                  Status: {props.values.status}
+                                </small>
+                              </Col>
+                            </Container>
+                          </Accordion.Collapse>
+                        </Container>
+                      </Accordion>
+                    </>
+                  )}
+                </Formik>
+              </Container>
+            ) : (
+              <Container className="py-3">No data availabe</Container>
+            )}
           </Tab>
-          <Tab eventKey="assets" title="Assets" className="bg-darker">
-            <p>tab 2</p>
+          <Tab
+            eventKey="assets"
+            title="Assets"
+            className="bg-darker"
+            disabled={!valid}
+          >
+            <Container className="py-3">No data availabe</Container>
           </Tab>
-          <Tab eventKey="others" title="Others" className="bg-darker">
-            <p>tab 3</p>
+          <Tab
+            eventKey="others"
+            title="Others"
+            className="bg-darker"
+            disabled={!valid}
+          >
+            <Container className="py-3">No data availabe</Container>
           </Tab>
         </Tabs>
       </Container>
