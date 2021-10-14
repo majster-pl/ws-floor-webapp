@@ -6,7 +6,7 @@ const depotReducer = (state = 0, action) => {
       return action.payload;
 
     default:
-      return JSON.parse(sessionStorage.getItem("selected_depot"));
+      return state;
   }
 };
 

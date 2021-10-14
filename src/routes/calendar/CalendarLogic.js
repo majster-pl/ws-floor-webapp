@@ -5,10 +5,7 @@ import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 const CalendarLogic = ({
-  toast,
   setIsLoading,
-  // currentDate,
-  // setCurrentDate,
 }) => {
   const history = useHistory();
   const todaysDate = moment().startOf("isoWeek");
@@ -21,12 +18,6 @@ const CalendarLogic = ({
   const [tableData, setTableData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isCalendarLoading, setIsCalendarLoading] = useState(false);
-  // const [dateFormat, setDateFormat] = useState("YYYY-MM-DD");
-  // const depot = useSelector((state) => state.depot);
-
-  // useEffect(() => {
-  //   console.log(moment(currentDate).format("YYYY-MM-DD 00:01"));
-  // }, [currentDate]);
 
   // Loading calendar from api when currentDate changes
   const url =
@@ -40,24 +31,18 @@ const CalendarLogic = ({
       : "");
 
   useEffect(() => {
-    // console.log('RELAODING ??');
-
     setIsLoading(true);
-
     apiClient
       .get(url)
       .then((response) => {
         setIsLoading(false);
-        // console.log("CalendarLogic: currentDate changed useState???");
-        console.log(response);
-
+        // console.log(response);
         setTableData([...response.data.data]);
       })
 
       .catch((error) => {
         setIsLoading(false);
       });
-    // setSilentReload(false);
   }, [currentDate]);
 
   const siletReload = (current_Date) => {

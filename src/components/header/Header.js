@@ -12,7 +12,7 @@ import {
 } from "react-bootstrap";
 import apiClient from "../../service/api/api";
 import { useHistory } from "react-router";
-import { useDispatch, useSelector, useStore } from "react-redux";
+import { RootStateOrAny, useDispatch, useSelector, useStore } from "react-redux";
 import { setDepot, setDepotsList } from "../../actions";
 
 import "./Header.css";
@@ -28,9 +28,9 @@ const Header = ({
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
-  const depotsList = useSelector((state) => state.depots);
-  const selectedDepot = useSelector((state) => state.depot);
-  const user = useSelector((state) => state.user);
+  const depotsList = useSelector((state: RootStateOrAny) => state.depots);
+  const selectedDepot = useSelector((state: RootStateOrAny) => state.depot);
+  const user = useSelector((state: RootStateOrAny) => state.user);
 
   const logout = () => {
     apiClient.post("/logout").then((response) => {
@@ -67,7 +67,6 @@ const Header = ({
           dispatch(setDepotsList(response.data));
         })
         .catch((err) => {
-          // toast.error("Error! " + err);
           return [];
         });
     }

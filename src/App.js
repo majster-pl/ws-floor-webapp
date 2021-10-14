@@ -24,7 +24,6 @@ import "react-toastify/dist/ReactToastify.css";
 import moment from "moment";
 import apiClient from "./service/api/api";
 import { useDispatch, useSelector } from "react-redux";
-// import { , setDepotsList } from "actions";
 import { setUser, setDepot } from "./actions";
 
 const App = () => {
@@ -55,17 +54,19 @@ const App = () => {
     CheckInModal,
   } = MainModalLogic({ setIsLoading, toast, reloadCalendar });
 
-
   useEffect(() => {
-    apiClient
-      .get("/api/v1/logged-in")
-      .then((response) => {
-        dispatch(setUser(response.data));
-        // console.log(response.data);        
-      })
-      .catch(() => {
-        console.log("NOT LOGGED IN!");        
-      });
+    async function isAuth() {
+      const depots = await apiClient
+        .get("/api/v1/logged-in")
+        .then((response) => {
+          dispatch(setUser(response.data));
+          dispatch(setDepot(response.data.default_branch));
+        })
+        .catch((err) => {
+          console.log("NOT LOGGED IN!");
+        });
+    }
+    isAuth();
   }, []);
 
   return (

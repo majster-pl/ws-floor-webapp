@@ -7,6 +7,7 @@ import {
   Button,
   Container,
   Collapse,
+  Spinner,
 } from "react-bootstrap";
 import { Formik } from "formik";
 import apiClient from "../../service/api/api";
@@ -25,6 +26,7 @@ const UpdateStatus = ({
 }) => {
   const [assets, setAssets] = useState([]);
   const [customers, setCustomers] = useState([]);
+  const [waitingResponse, setWaitingResponse] = useState(false);
   const [selectedBookedDate, setSelectedBookedDate] = useState(() => {
     return moment(data.booked_date_time).format("YYYY-MM-DD H:mm");
   });
@@ -66,18 +68,20 @@ const UpdateStatus = ({
   const handleSubmit = (values) => {
     let url = "/api/v1/events/" + data.event_id;
     console.log("VALUES: ", values);
+    setWaitingResponse(true);
 
     apiClient
       .patch(url, values)
-      .then((response) => {
-        console.log(response.data);
+      .then(() => {
         handleCloseMainModal();
+        setWaitingResponse(false);
         reloadCalendar();
-        toast.success("Event saved.");
+        toast.success("Event updated successfully");
       })
       .catch((err) => {
         console.log("error:", err);
-        toast.error(err.statusText + " - Event NOT saved!");
+        setWaitingResponse(false);
+        toast.error(err.statusText + " - Event NOT updated!");
       });
   };
   //get assets
@@ -350,8 +354,7 @@ const UpdateStatus = ({
                   >
                     <option disabled>-- select status --</option>
                     <option value="booked">Booked</option>
-                    <option value="arrived">Arrived</option>
-                    <option value="awaiting_workshop">Awaiting Workshop</option>
+                    <option value="awaiting_labour">Awaiting Labour</option>
                     <option value="work_in_progress">Work in Progress</option>
                     <option value="awaiting_estimates">
                       Awaiting Estimates
@@ -360,6 +363,8 @@ const UpdateStatus = ({
                     <option value="awaiting_authorisation">
                       Awaiting Authorisation
                     </option>
+                    <option value="awaiting_qc">Awaiting QC</option>
+                    <option value="at_3rd_party">At 3rd party</option>
                     <option value="completed">Completed</option>
                   </Form.Control>
                   <Form.Text className="text-danger ms-2">
@@ -450,7 +455,20 @@ const UpdateStatus = ({
                     >
                       Close
                     </Button>
-                    <Button className="mx-1" variant="success" type="submit">
+                    <Button
+                      className="mx-1"
+                      variant="success"
+                      type="submit"
+                      disabled={waitingResponse || !props.dirty}
+                    >
+                      <Spinner
+                        className={`me-2 ${waitingResponse ? "" : "d-none"}`}
+                        as="span"
+                        animation="grow"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                      />
                       Save
                     </Button>
                   </div>

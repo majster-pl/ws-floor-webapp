@@ -1,11 +1,20 @@
 import { useState, useEffect } from "react";
-import { Row, Col, Modal, Form, Button, InputGroup } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Modal,
+  Form,
+  Button,
+  InputGroup,
+  Spinner,
+} from "react-bootstrap";
 import { Formik } from "formik";
 import apiClient from "../../service/api/api";
 import * as yup from "yup";
 import moment from "moment";
 
 const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
+  const [waitingResponse, setWaitingResponse] = useState(false);
   // Form validation
   const reviewShema = yup.object({
     odometer_in: yup
@@ -18,6 +27,7 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
   const handleSubmit = (values) => {
     let url = "/api/v1/events/" + data.event_id;
     // change/override event status
+    setWaitingResponse(true);
     values["status"] = "awaiting_labour";
     values["arrived_date"] = moment().format("YYYY-MM-DD  HH:mm:ss.000");
 
@@ -28,12 +38,14 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
           .patch(url, values)
           .then((response) => {
             // setTableData(response.data.data);
-            console.log(response.data);
+            // console.log(response.data);
+            setWaitingResponse(false);
             handleCloseMainModal();
             reloadCalendar();
             toast.success("Event saved.");
           })
           .catch((err) => {
+            setWaitingResponse(false);
             console.log("error:", err);
             toast.error(err.statusText + " - Event NOT saved!");
           });
@@ -155,14 +167,12 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
 
               {/* WAITING */}
               <Form.Group as={Row} controlId="formWaiting">
-                <Form.Label column sm="3" className="text-md-end">
-                  Appointment:
-                </Form.Label>
+                <Form.Label column sm="3" className="text-md-end"></Form.Label>
                 <Col sm="9">
                   <Form.Check
                     className="disable-select mt-1"
                     type="checkbox"
-                    label="Customer waiting"
+                    label="Waiting appointment"
                     name="waiting"
                     checked={props.values.waiting}
                     onChange={() =>
@@ -174,13 +184,20 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
                   </Form.Text>
                 </Col>
               </Form.Group>
-              
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleCloseMainModal}>
                 Close
               </Button>
-              <Button variant="success" type="submit">
+              <Button variant="success" type="submit" disabled={waitingResponse}>
+                <Spinner
+                  className={`me-2 ${waitingResponse ? "" : "d-none"}`}
+                  as="span"
+                  animation="grow"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
                 Check In
               </Button>
             </Modal.Footer>

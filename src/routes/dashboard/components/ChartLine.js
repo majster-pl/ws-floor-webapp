@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import moment from "moment";
 import apiClient from "../../../service/api/api";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
 
 const ChartLine = () => {
   const todaysDate = moment().startOf("isoWeek").format("YYYY-MM-DD");
@@ -16,7 +16,7 @@ const ChartLine = () => {
   const [eventsCompleted, setEventsCompleted] = useState([]);
   const [numberOfSelectedDays, setNumberOfSelectedDays] = useState(7);
   const [dropdownLabel, setDropdownLabel] = useState("This Week");
-  const depot = useSelector((state) => state.depot);
+  const depot = useSelector((state: RootStateOrAny) => state.depot);
 
   const setLabel = (days, label, startDay) => {
     setDropdownLabel(label);

@@ -5,7 +5,7 @@ import CheckIn from "./modals/CheckIn";
 import EditEvent from "./modals/EditEvent";
 import NewEvent from "./modals/NewEvent";
 import UpdateStatus from "./modals/UpdateStatus";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
 // import { setModal } from "../actions";
 // import { useSelector } from "react-redux";
 
@@ -13,9 +13,9 @@ const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {
   const [showMainModal, setShowMainModal] = useState(false);
   const [mainModalData, setMainModalData] = useState();
   const [status, setStatus] = useState();
-  const modal = useSelector((state) => state.modal);
+  const modal = useSelector((state: RootStateOrAny) => state.modal);
   // const dispatch = useDispatch();
-  const selectedDepot = useSelector((state) => state.depot);
+  const selectedDepot = useSelector((state: RootStateOrAny) => state.depot);
 
   const handleShowMainModal = (id, status, date) => {
     setIsLoading(true);
@@ -33,6 +33,7 @@ const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {
         booked_date_time: date,
         others: "",
         status: "booked",
+        breakdown: 0,
         waiting: 0,
         depot: selectedDepot,
       });
@@ -44,6 +45,8 @@ const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {
       apiClient
         .get(url)
         .then((response) => {
+          console.log("response: " + JSON.stringify(response.data.data));
+          
           setMainModalData(response.data.data);
           setShowMainModal(true);
           setIsLoading(false);

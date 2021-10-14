@@ -6,7 +6,7 @@ import {
   Form,
   Button,
   Container,
-  Collapse,
+  Spinner,
 } from "react-bootstrap";
 import { Formik } from "formik";
 import apiClient from "../../service/api/api";
@@ -15,15 +15,14 @@ import moment from "moment";
 import { Typeahead } from "react-bootstrap-typeahead";
 import DatePicker from "react-datepicker";
 import { getDay, setHours, setMinutes, isDate, parse } from "date-fns";
-import HistoryListItem from "./components/HistoryListItem";
 
 const NewEvent = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
   const [assets, setAssets] = useState([]);
   const [customers, setCustomers] = useState([]);
+  const [waitingResponse, setWaitingResponse] = useState(false);
   const [selectedBookedDate, setSelectedBookedDate] = useState(() => {
     return moment(data.booked_date_time).format("YYYY-MM-DD H:mm");
   });
-  const [open, setOpen] = useState(false);
 
   // Form validation
   const reviewShema = yup.object({
@@ -56,17 +55,20 @@ const NewEvent = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
   const handleSubmit = (values) => {
     let url = "/api/v1/events";
     console.log("VALUES: ", values);
+    setWaitingResponse(true);
 
     apiClient
       .post(url, values)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         handleCloseMainModal();
         reloadCalendar();
-        toast.success("Event saved.");
+        setWaitingResponse(false);
+        toast.success("New event saved successfully");
       })
       .catch((err) => {
         console.log("error:", err);
+        setWaitingResponse(false);
         toast.error(err.statusText + " - Event NOT saved!");
       });
   };
@@ -168,7 +170,10 @@ const NewEvent = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
                           }
                         }}
                         options={assets}
-                        isInvalid={!!props.errors.asset_id}
+                        // isInvalid={!!props.errors.asset_id}
+                        isInvalid={
+                          props.touched.asset_id && props.errors.asset_id
+                        }
                         placeholder="Choose vehicle reg from the list"
                       />
                     </Form.Group>
@@ -202,7 +207,10 @@ const NewEvent = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
                           }
                         }}
                         options={customers}
-                        isInvalid={!!props.errors.customer_id}
+                        // isInvalid={!!props.errors.customer_id}
+                        isInvalid={
+                          props.touched.customer_id && props.errors.customer_id
+                        }
                         placeholder="Select customer from the list"
                       />
                     </Form.Group>
@@ -225,7 +233,10 @@ const NewEvent = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
                     name="description"
                     placeholder="Enter description of the booking. (eg. PMI)"
                     onChange={props.handleChange("description")}
-                    isInvalid={!!props.errors.description}
+                    // isInvalid={!!props.errors.description}
+                    isInvalid={
+                      props.touched.description && props.errors.description
+                    }
                   />
                   <Form.Text className="text-danger ms-2">
                     {props.touched.description && props.errors.description}
@@ -346,7 +357,13 @@ const NewEvent = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
                       props.values.breakdown ? "text-danger" : "text-info"
                     }`}
                     type="checkbox"
-                    label={<span className={props.values.breakdown ? "text-danger" : ""} >Breakdown</span>}
+                    label={
+                      <span
+                        className={props.values.breakdown ? "text-danger" : ""}
+                      >
+                        Breakdown
+                      </span>
+                    }
                     name="waiting"
                     checked={props.values.breakdown}
                     onChange={() =>
@@ -359,13 +376,7 @@ const NewEvent = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
             <Modal.Footer>
               <Container className="px-0" fluid>
                 <div className="row justify-content-between pt-1">
-                  <div className="col-4">
-                    <Button
-                      className="fas fa-history text-decoration-none link-success"
-                      variant="link"
-                      onClick={() => setOpen(!open)}
-                    ></Button>
-                  </div>
+                  <div className="col-4"></div>
                   <div className="col-6 text-end">
                     <Button
                       className="mx-1"
@@ -374,7 +385,20 @@ const NewEvent = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
                     >
                       Close
                     </Button>
-                    <Button className="mx-1" variant="success" type="submit">
+                    <Button
+                      className="mx-1"
+                      variant="success"
+                      type="submit"
+                      disabled={waitingResponse}
+                    >
+                      <Spinner
+                        className={`me-2 ${waitingResponse ? "" : "d-none"}`}
+                        as="span"
+                        animation="grow"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                      />
                       Save
                     </Button>
                   </div>

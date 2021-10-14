@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import { Row, Col, Modal, Form, Button, InputGroup } from "react-bootstrap";
+import { Row, Col, Modal, Form, Button, Spinner } from "react-bootstrap";
 import { Formik } from "formik";
 import apiClient from "../../service/api/api";
 import * as yup from "yup";
-import moment from "moment";
 
 const UpdateStatus = ({
   data,
@@ -11,6 +10,7 @@ const UpdateStatus = ({
   toast,
   reloadCalendar,
 }) => {
+  const [waitingResponse, setWaitingResponse] = useState(false);
   // Form validation
   const reviewShema = yup.object({
     // odometer_in: yup
@@ -24,19 +24,22 @@ const UpdateStatus = ({
   const handleSubmit = (values) => {
     let url = "/api/v1/events/" + data.event_id;
     console.log("RUNNING SUBMIT!");
+    setWaitingResponse(true);
 
     apiClient
       .patch(url, values)
       .then((response) => {
         // setTableData(response.data.data);
-        console.log(response.data);
+        // console.log(response.data);
         handleCloseMainModal();
+        setWaitingResponse(false);
         reloadCalendar();
-        toast.success("Event saved.");
+        toast.success("Event updated successfully");
       })
       .catch((err) => {
         console.log("error:", err);
-        toast.error(err.statusText + " - Event NOT saved!");
+        setWaitingResponse(false);
+        toast.error(err.statusText + " - Event NOT updated!");
       });
   };
 
@@ -172,7 +175,19 @@ const UpdateStatus = ({
               <Button variant="secondary" onClick={handleCloseMainModal}>
                 Close
               </Button>
-              <Button variant="success" type="submit">
+              <Button
+                variant="success"
+                type="submit"
+                disabled={waitingResponse || !props.dirty}
+              >
+                <Spinner
+                  className={`me-2 ${waitingResponse ? "" : "d-none"}`}
+                  as="span"
+                  animation="grow"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
                 Save
               </Button>
             </Modal.Footer>

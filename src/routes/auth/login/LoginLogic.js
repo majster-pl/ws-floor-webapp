@@ -73,12 +73,9 @@ const LoginLogic = ({ setLoggedIn }, setIsLoading, setLoginErrorMsg, toast) => {
           })
           .then((response) => {
             setLoggedIn(true);
-            console.log("response: " + response);
-            // sessionStorage.setItem("isLoggedIn", "true");
+            // console.log("response: " + response);
             sessionStorage.setItem("loginStatus", "true");
-
             history.push(sessionStorage.getItem("redirect_path"));
-            // history.go(-2);
           })
           .catch((err) => {
             // history.push("/dashboard");
