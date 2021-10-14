@@ -19,8 +19,8 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
   } = props;
 
   const dispatch = useDispatch();
-  var today = new Date();
-  var booked_date = new Date(booked_date_time);
+  var today = new Date().setHours(0,0,0,0);
+  var booked_date = new Date(booked_date_time).setHours(0,0,0,0);
 
   function isNoShow() {
     if (booked_date < today && status === "booked") {
