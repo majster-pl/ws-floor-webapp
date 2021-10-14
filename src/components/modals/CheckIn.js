@@ -167,7 +167,13 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
 
               {/* WAITING */}
               <Form.Group as={Row} controlId="formWaiting">
-                <Form.Label column sm="3" className="text-md-end"></Form.Label>
+                <Form.Label column sm="3" className="text-md-end">
+                  <i
+                    className={`fas fa-clock ${
+                      props.values.waiting ? "text-info" : ""
+                    }`}
+                  ></i>
+                </Form.Label>
                 <Col sm="9">
                   <Form.Check
                     className="disable-select mt-1"
@@ -179,9 +185,37 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
                       props.setFieldValue("waiting", !props.values.waiting)
                     }
                   />
-                  <Form.Text className="text-danger ms-2">
-                    {props.touched.status && props.errors.status}
-                  </Form.Text>
+                </Col>
+              </Form.Group>
+
+              {/* NOTIFICATION */}
+              <Form.Group as={Row} controlId="formNotification">
+                <Form.Label column sm="3" className="text-md-end">
+                  <i
+                    className={`fas ${
+                      props.values.notification
+                        ? "fa-bell text-success"
+                        : "fa-bell-slash"
+                    }`}
+                  ></i>
+                </Form.Label>
+                <Col sm="9">
+                  <Form.Check
+                    className="disable-select mt-1"
+                    type="checkbox"
+                    label={<span>Send confirmation email</span>}
+                    title="Check this to send notification email to customer that vehicle arrived."
+                    name="notification"
+                    checked={props.values.notification}
+                    // defaultValue={true}
+                    // value={true}
+                    onChange={() =>
+                      props.setFieldValue(
+                        "notification",
+                        !props.values.notification
+                      )
+                    }
+                  />
                 </Col>
               </Form.Group>
             </Modal.Body>
@@ -189,7 +223,11 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
               <Button variant="secondary" onClick={handleCloseMainModal}>
                 Close
               </Button>
-              <Button variant="success" type="submit" disabled={waitingResponse}>
+              <Button
+                variant="success"
+                type="submit"
+                disabled={waitingResponse}
+              >
                 <Spinner
                   className={`me-2 ${waitingResponse ? "" : "d-none"}`}
                   as="span"

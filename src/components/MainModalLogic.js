@@ -36,6 +36,7 @@ const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {
         breakdown: 0,
         waiting: 0,
         depot: selectedDepot,
+        notification: 1,
       });
       setShowMainModal(true);
       setIsLoading(false);
@@ -45,9 +46,10 @@ const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {
       apiClient
         .get(url)
         .then((response) => {
-          console.log("response: " + JSON.stringify(response.data.data));
-          
-          setMainModalData(response.data.data);
+          let data = response.data.data;
+          // add/set notification to true
+          data.notification = true;
+          setMainModalData(data);
           setShowMainModal(true);
           setIsLoading(false);
           //   window.location.reload();

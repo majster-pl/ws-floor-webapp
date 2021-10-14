@@ -170,6 +170,35 @@ const UpdateStatus = ({
               <Form.Text className="text-danger ms-2">
                 {props.touched.free_text && props.errors.free_text}
               </Form.Text>
+
+              {/* NOTIFICATION */}
+              <Form.Group as={Row} controlId="formNotification">
+                <Form.Label column sm="3" className="text-md-end">
+                  <i
+                    className={`fas ${
+                      props.values.notification
+                        ? "fa-bell text-success"
+                        : "fa-bell-slash"
+                    }`}
+                  ></i>
+                </Form.Label>
+                <Col sm="9">
+                  <Form.Check
+                    className="disable-select mt-1"
+                    type="checkbox"
+                    label={<span>Send confirmation email</span>}
+                    title="Check this to send notification email to customer about status changes."
+                    name="notification"
+                    checked={props.values.notification}
+                    onChange={() =>
+                      props.setFieldValue(
+                        "notification",
+                        !props.values.notification
+                      )
+                    }
+                  />
+                </Col>
+              </Form.Group>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleCloseMainModal}>

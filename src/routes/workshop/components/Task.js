@@ -53,7 +53,7 @@ const Task = ({ task, index, options, searchQuery }) => {
                   <span></span>
                 )}
                 {task.waiting === 1 ? (
-                  <i className="me-2 text-danger far fa-clock"></i>
+                  <i className="me-2 text-info far fa-clock"></i>
                 ) : (
                   <span></span>
                 )}

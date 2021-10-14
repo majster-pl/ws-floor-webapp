@@ -17,6 +17,7 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import DatePicker from "react-datepicker";
 import { getDay, setHours, setMinutes, isDate, parse } from "date-fns";
 import HistoryListItem from "./components/HistoryListItem";
+import { date } from "yup/lib/locale";
 
 const UpdateStatus = ({
   data,
@@ -118,6 +119,7 @@ const UpdateStatus = ({
 
   useEffect(() => {
     // console.log("DATA:", data);
+    // data = [...data, {notification: true}];
     getAssets();
     getCustomers();
   }, []);
@@ -375,14 +377,19 @@ const UpdateStatus = ({
 
               {/* WAITING */}
               <Form.Group as={Row} controlId="formWaiting">
-                <Form.Label column sm="3" className="text-md-end"></Form.Label>
+                <Form.Label column sm="3" className="text-md-end">
+                  <i
+                    className={`fas fa-clock ${
+                      props.values.waiting ? "text-info" : ""
+                    }`}
+                  ></i>
+                </Form.Label>
                 <Col sm="9">
                   <Form.Check
                     className="disable-select mt-1"
                     type="checkbox"
                     label="Waiting appointment"
                     name="waiting"
-                    // disabled={props.values.breakdown}
                     checked={props.values.waiting}
                     onChange={() =>
                       props.setFieldValue("waiting", !props.values.waiting)
@@ -393,25 +400,54 @@ const UpdateStatus = ({
 
               {/* BREAKDOWN */}
               <Form.Group as={Row} controlId="formBreakdown">
-                <Form.Label column sm="3" className="text-md-end"></Form.Label>
+                <Form.Label column sm="3" className="text-md-end">
+                  <i
+                    className={`fas fa-car-crash ${
+                      props.values.breakdown ? "text-danger" : ""
+                    }`}
+                  ></i>
+                </Form.Label>
                 <Col sm="9">
                   <Form.Check
                     className={`disable-select mt-1 ${
                       props.values.breakdown ? "text-danger" : "text-info"
                     }`}
                     type="checkbox"
-                    // disabled={props.values.waiting}
-                    label={
-                      <span
-                        className={props.values.breakdown ? "text-danger" : ""}
-                      >
-                        Breakdown
-                      </span>
-                    }
+                    label={<span>Breakdown</span>}
                     name="waiting"
                     checked={props.values.breakdown}
                     onChange={() =>
                       props.setFieldValue("breakdown", !props.values.breakdown)
+                    }
+                  />
+                </Col>
+              </Form.Group>
+
+              {/* NOTIFICATION */}
+              <Form.Group as={Row} controlId="formNotification">
+                <Form.Label column sm="3" className="text-md-end">
+                  <i
+                    className={`fas ${
+                      props.values.notification
+                        ? "fa-bell text-success"
+                        : "fa-bell-slash"
+                    }`}
+                  ></i>
+                </Form.Label>
+                <Col sm="9">
+                  <Form.Check
+                    className="disable-select mt-1"
+                    type="checkbox"
+                    label={<span>Send confirmation email</span>}
+                    title="Check this to send notification email to customer 
+                    about changes made to this booking"
+                    name="notification"
+                    checked={props.values.notification}
+                    onChange={() =>
+                      props.setFieldValue(
+                        "notification",
+                        !props.values.notification
+                      )
                     }
                   />
                 </Col>

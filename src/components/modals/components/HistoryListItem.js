@@ -9,7 +9,7 @@ const HistoryListItem = ({ date, description, properties }) => {
     old_atr = Object.keys({});
   }
 
-  console.log(properties);
+  // console.log(properties);
   
 
   return (

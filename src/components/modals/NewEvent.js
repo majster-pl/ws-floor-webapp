@@ -333,7 +333,13 @@ const NewEvent = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
 
               {/* WAITING */}
               <Form.Group as={Row} controlId="formWaiting">
-                <Form.Label column sm="3" className="text-md-end"></Form.Label>
+                <Form.Label column sm="3" className="text-md-end">
+                  <i
+                    className={`fas fa-clock ${
+                      props.values.waiting ? "text-info" : ""
+                    }`}
+                  ></i>
+                </Form.Label>
                 <Col sm="9">
                   <Form.Check
                     className="disable-select mt-1"
@@ -350,24 +356,53 @@ const NewEvent = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
 
               {/* BREAKDOWN */}
               <Form.Group as={Row} controlId="formBreakdown">
-                <Form.Label column sm="3" className="text-md-end"></Form.Label>
+                <Form.Label column sm="3" className="text-md-end">
+                  <i
+                    className={`fas fa-car-crash ${
+                      props.values.breakdown ? "text-danger" : ""
+                    }`}
+                  ></i>
+                </Form.Label>
                 <Col sm="9">
                   <Form.Check
                     className={`disable-select mt-1 ${
                       props.values.breakdown ? "text-danger" : "text-info"
                     }`}
                     type="checkbox"
-                    label={
-                      <span
-                        className={props.values.breakdown ? "text-danger" : ""}
-                      >
-                        Breakdown
-                      </span>
-                    }
+                    label={<span>Breakdown</span>}
                     name="waiting"
                     checked={props.values.breakdown}
                     onChange={() =>
                       props.setFieldValue("breakdown", !props.values.breakdown)
+                    }
+                  />
+                </Col>
+              </Form.Group>
+
+              {/* NOTIFICATION */}
+              <Form.Group as={Row} controlId="formNotification">
+                <Form.Label column sm="3" className="text-md-end">
+                  <i
+                    className={`fas ${
+                      props.values.notification
+                        ? "fa-bell text-success"
+                        : "fa-bell-slash"
+                    }`}
+                  ></i>
+                </Form.Label>
+                <Col sm="9">
+                  <Form.Check
+                    className="disable-select mt-1"
+                    type="checkbox"
+                    label={<span>Send confirmation email</span>}
+                    title="Check this to send notification email to customer about new booking"
+                    name="notification"
+                    checked={props.values.notification}
+                    onChange={() =>
+                      props.setFieldValue(
+                        "notification",
+                        !props.values.notification
+                      )
                     }
                   />
                 </Col>
