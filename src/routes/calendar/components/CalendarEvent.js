@@ -16,6 +16,7 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
     others,
     status,
     breakdown,
+    waiting,
   } = props;
 
   const dispatch = useDispatch();
@@ -97,8 +98,14 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
                 {breakdown === 1 ? (
                   <i className="me-2 text-danger fas fa-car-crash text-end"></i>
                 ) : (
-                  <div></div>
+                  <span></span>
                 )}
+                {waiting === 1 ? (
+                  <i className="me-2 text-info far fa-clock"></i>
+                ) : (
+                  <span></span>
+                )}
+
                 {reg}
               </div>
             </Col>

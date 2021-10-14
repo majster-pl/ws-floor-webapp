@@ -50,7 +50,12 @@ const Task = ({ task, index, options, searchQuery }) => {
                 {task.breakdown === 1 ? (
                   <i className="me-2 text-danger fas fa-car-crash text-end"></i>
                 ) : (
-                  <div></div>
+                  <span></span>
+                )}
+                {task.waiting === 1 ? (
+                  <i className="me-2 text-danger far fa-clock"></i>
+                ) : (
+                  <span></span>
                 )}
                 <span className="text-success">{task.reg}</span>
                 <span className="text-white">{" - "}</span>{" "}

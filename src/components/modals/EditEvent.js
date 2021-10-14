@@ -382,7 +382,7 @@ const UpdateStatus = ({
                     type="checkbox"
                     label="Waiting appointment"
                     name="waiting"
-                    disabled={props.values.breakdown}
+                    // disabled={props.values.breakdown}
                     checked={props.values.waiting}
                     onChange={() =>
                       props.setFieldValue("waiting", !props.values.waiting)
@@ -400,7 +400,7 @@ const UpdateStatus = ({
                       props.values.breakdown ? "text-danger" : "text-info"
                     }`}
                     type="checkbox"
-                    disabled={props.values.waiting}
+                    // disabled={props.values.waiting}
                     label={
                       <span
                         className={props.values.breakdown ? "text-danger" : ""}
