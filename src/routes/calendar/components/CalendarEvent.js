@@ -15,6 +15,7 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
     allowed_time,
     others,
     status,
+    breakdown,
   } = props;
 
   const dispatch = useDispatch();
@@ -38,7 +39,11 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
     handleShowMainModal(event_id, status);
   };
 
-  const setStatusColors = (status) => {
+  const setStatusColors = (status, breakdown) => {
+    if (breakdown) {
+      return { bg: "bg-danger", text: "text-white" };
+    }
+
     switch (status) {
       case "booked":
         return { bg: "bg-light", text: "text-darker" };
@@ -143,10 +148,15 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
             </div>
           </div>
         </div>
-        <div className={"card-footer m-0 p-0 " + setStatusColors(status).bg}>
+        <div
+          className={
+            "card-footer m-0 p-0 " + setStatusColors(status, breakdown).bg
+          }
+        >
           <small
             className={
-              "fst-italic fw-bold ps-2 " + setStatusColors(status).text
+              "fst-italic fw-bold ps-2 " +
+              setStatusColors(status, breakdown).text
             }
           >
             {status}

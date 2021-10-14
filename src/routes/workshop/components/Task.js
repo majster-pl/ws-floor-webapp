@@ -27,8 +27,6 @@ const Task = ({ task, index, options, searchQuery }) => {
     }
   }
 
-  // search(3);
-
   return (
     <Draggable
       draggableId={task.id}
@@ -49,9 +47,20 @@ const Task = ({ task, index, options, searchQuery }) => {
           <Card.Body className="m-1 mx-2 p-0">
             <Row>
               <Col className="col-12 text-light h5 fw-bold text-truncate-1 mb-0">
-                <span className="text-success">{task.reg}</span>
-                <span className="text-white">{" - "}</span>{" "}
-                <span className="">{task.customer_name}</span>
+                <Row className="row justify-content-around">
+                  <Col className="col-10">
+                    <span className="text-success">{task.reg}</span>
+                    <span className="text-white">{" - "}</span>{" "}
+                    <span className="">{task.customer_name}</span>
+                  </Col>
+                  <Col className="col-2">
+                    {task.breakdown === 1 ? (
+                      <i class="text-danger fas fa-car-crash text-end"></i>
+                    ) : (
+                      <div></div>
+                    )}
+                  </Col>
+                </Row>
               </Col>
               <Col className="col-12 text-truncate-2 h5 fw-normal mb-1">
                 {task.description}

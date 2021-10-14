@@ -322,23 +322,37 @@ const NewEvent = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
 
               {/* WAITING */}
               <Form.Group as={Row} controlId="formWaiting">
-                <Form.Label column sm="3" className="text-md-end">
-                  Appointment:
-                </Form.Label>
+                <Form.Label column sm="3" className="text-md-end"></Form.Label>
                 <Col sm="9">
                   <Form.Check
                     className="disable-select mt-1"
                     type="checkbox"
-                    label="Customer waiting"
+                    label="Waiting appointment"
                     name="waiting"
                     checked={props.values.waiting}
                     onChange={() =>
                       props.setFieldValue("waiting", !props.values.waiting)
                     }
                   />
-                  <Form.Text className="text-danger ms-2">
-                    {props.touched.status && props.errors.status}
-                  </Form.Text>
+                </Col>
+              </Form.Group>
+
+              {/* BREAKDOWN */}
+              <Form.Group as={Row} controlId="formBreakdown">
+                <Form.Label column sm="3" className="text-md-end"></Form.Label>
+                <Col sm="9">
+                  <Form.Check
+                    className={`disable-select mt-1 ${
+                      props.values.breakdown ? "text-danger" : "text-info"
+                    }`}
+                    type="checkbox"
+                    label={<span className={props.values.breakdown ? "text-danger" : ""} >Breakdown</span>}
+                    name="waiting"
+                    checked={props.values.breakdown}
+                    onChange={() =>
+                      props.setFieldValue("breakdown", !props.values.breakdown)
+                    }
+                  />
                 </Col>
               </Form.Group>
             </Modal.Body>

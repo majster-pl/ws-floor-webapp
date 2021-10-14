@@ -40,6 +40,7 @@ const CalendarBody = ({
               props={cell}
               setIsLoading={setIsLoading}
               eventId={cell.event_id}
+              // breakdown={cell.breakdown}
               isHighlighted={search(cell)}
               isUsed={cell.isUsed}
               vehicleId={cell.reg}

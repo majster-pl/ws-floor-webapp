@@ -49,7 +49,7 @@ const CalendarLogic = ({
       .then((response) => {
         setIsLoading(false);
         // console.log("CalendarLogic: currentDate changed useState???");
-        // console.log(response);
+        console.log(response);
 
         setTableData([...response.data.data]);
       })
