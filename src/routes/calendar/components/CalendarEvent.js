@@ -84,7 +84,7 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
           (isNoShow() ? "bg-sendary-extra" : "")
         }
         onClick={() => handleEventClick()}
-        style={{ minHeight: "150px", maxHeight: "250px" }}
+        style={{ minHeight: "130px", maxHeight: "250px" }}
       >
         <div className="card-header p-0 text-success">
           <Row>
@@ -111,36 +111,36 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
         </div>
         <div className="card-body p-0">
           <div className="row card-body-row">
-            <div className="col-5 card-text">Customer:</div>
+            <div className="col-4 card-text text-truncate">Customer:</div>
             <div
-              className={`col-7 card-text text-truncate ${
+              className={`col-8 card-text text-truncate ${
                 isNoShow() ? "text-light" : "text-white"
               }`}
             >
               {customer_name}
             </div>
-            {/* <div className="col-5 card-text">Reg:</div>
-            <div className="col-7 card-text fw-bold">{vehicleId}</div> */}
-            <div className="col-5 card-text">Desc:</div>
+            {/* <div className="col-4 card-text">Reg:</div>
+            <div className="col-8 card-text fw-bold">{vehicleId}</div> */}
+            <div className="col-4 card-text text-truncate">Desc:</div>
             <div
-              className={`col-7 card-text text-truncate ${
+              className={`col-8 card-text text-truncate ${
                 isNoShow() ? "text-light" : "text-white"
               }`}
             >
               {description}
               {/* <div className="text-truncate-3">{description}</div> */}
             </div>
-            <div className="col-5 card-text">Allowed:</div>
+            <div className="col-4 card-text text-truncate">Allowed:</div>
             <div
-              className={`col-7 card-text text-truncate ${
+              className={`col-8 card-text text-truncate ${
                 isNoShow() ? "text-light" : "text-white"
               }`}
             >
               {allowed_time} h
             </div>
-            <div className="col-5 card-text">Others:</div>
+            <div className="col-4 card-text text-truncate">Others:</div>
             <div
-              className={`col-7 card-text text-truncate ${
+              className={`col-8 card-text text-truncate ${
                 isNoShow() ? "text-light" : "text-white"
               }`}
             >
