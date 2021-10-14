@@ -52,6 +52,9 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
       case "awaiting_labour":
         return { bg: "bg-info", text: "text-secondary" };
 
+      case "planned":
+        return { bg: "bg-lime", text: "text-secondary" };
+
       case "awaiting_estimates":
       case "awaiting_authorisation":
       case "awaiting_qc":
@@ -75,7 +78,7 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
   };
 
   return (
-    <td colSpan="2">
+    <td colSpan={2}>
       <div
         // data-toggle="modal"
         // data-target="#modalEditEvent"

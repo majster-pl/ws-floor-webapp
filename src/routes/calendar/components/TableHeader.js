@@ -106,7 +106,7 @@ const Header = ({
       <tr>
         {_numberOfDays.map((item, index) => {
           return (
-            <th key={index} colSpan="2">
+            <th key={index} colSpan={2}>
               <div className="d-grid">
                 <Button
                   variant="success"

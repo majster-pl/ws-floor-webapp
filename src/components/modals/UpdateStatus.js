@@ -125,6 +125,7 @@ const UpdateStatus = ({
                     <option disabled>-- select status --</option>
                     <option value="booked">Booked</option>
                     <option value="awaiting_labour">Awaiting Labour</option>
+                    <option value="planned">Planned</option>
                     <option value="work_in_progress">Work in Progress</option>
                     <option value="awaiting_estimates">
                       Awaiting Estimates
