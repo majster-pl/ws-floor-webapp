@@ -19,8 +19,8 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
   } = props;
 
   const dispatch = useDispatch();
-  var today = new Date().setHours(0,0,0,0);
-  var booked_date = new Date(booked_date_time).setHours(0,0,0,0);
+  var today = new Date().setHours(0, 0, 0, 0);
+  var booked_date = new Date(booked_date_time).setHours(0, 0, 0, 0);
 
   function isNoShow() {
     if (booked_date < today && status === "booked") {
@@ -94,6 +94,11 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
                   isNoShow() ? "text-light" : ""
                 }`}
               >
+                {breakdown === 1 ? (
+                  <i className="me-2 text-danger fas fa-car-crash text-end"></i>
+                ) : (
+                  <div></div>
+                )}
                 {reg}
               </div>
             </Col>
