@@ -143,6 +143,7 @@ const App = () => {
               toast={toast}
               reloadCalendar={reloadCalendar}
               siletReload={siletReload}
+              handleShowMainModal={handleShowMainModal}
               currentDate={currentDate}
             />
           </Route>

@@ -274,7 +274,7 @@ const UpdateStatus = ({
                     </Col>
                     <Col>
                       <Form.Range
-                        defaultValue={0}
+                        defaultValue={props.values.allowed_time}
                         onChange={props.handleChange("allowed_time")}
                         max={20}
                       />

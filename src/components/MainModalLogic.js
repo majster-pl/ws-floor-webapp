@@ -41,6 +41,8 @@ const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {
       setShowMainModal(true);
       setIsLoading(false);
     } else {
+      console.log("ELOOOOO!");
+      
       let url = "/api/v1/events/" + id;
       // function pullDataFromAPI() {
       apiClient
@@ -56,6 +58,8 @@ const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {
         })
         .catch((err) => {
           console.log("UUU...");
+          console.log(err);
+          
           setShowMainModal(true);
           setIsLoading(false);
         });

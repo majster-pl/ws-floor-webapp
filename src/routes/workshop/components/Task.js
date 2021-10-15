@@ -1,9 +1,14 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
-import { Card, Row, Col } from "react-bootstrap";
+import { Card, Row, Col, Nav } from "react-bootstrap";
 import moment from "moment";
+import { useDispatch } from "react-redux";
+import { setModal } from "../../../actions";
 
-const Task = ({ task, index, options, searchQuery }) => {
+
+const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
+  const dispatch = useDispatch();
+
   var today = moment(Date()).format("YYYY-MM-DD");
   // search function
   function search(event) {
@@ -26,6 +31,11 @@ const Task = ({ task, index, options, searchQuery }) => {
       return valid;
     }
   }
+  const handleEditClick = (e, event_id, status) => {
+    e.stopPropagation();
+    dispatch(setModal("edit"));
+    handleShowMainModal(event_id, status);
+  };
 
   return (
     <Draggable
@@ -46,7 +56,7 @@ const Task = ({ task, index, options, searchQuery }) => {
         >
           <Card.Body className="m-1 mx-2 p-0">
             <Row>
-              <Col className="col-12 text-light h5 fw-bold text-truncate-1 mb-0">
+              <Col className="col text-light h4 fw-bold text-truncate-1 mb-0">
                 {task.breakdown === 1 ? (
                   <i className="me-2 text-danger fas fa-car-crash text-end"></i>
                 ) : (
@@ -58,9 +68,19 @@ const Task = ({ task, index, options, searchQuery }) => {
                   <span></span>
                 )}
                 <span className="text-success">{task.reg}</span>
-                <span className="text-white">{" - "}</span>{" "}
-                <span className="">{task.customer_name}</span>
               </Col>
+              <Col className="col-auto">
+                <Nav.Link
+                  className="text-end p-0 m-0 text-info h5 "
+                  onClick={(e) => handleEditClick(e, task.event_id, task.status)}
+                >
+                  Edit
+                </Nav.Link>
+              </Col>
+              <Col className="col-12 text-lime mt-1 text-truncate-2 h5 fw-normal mb-1">
+                {task.customer_name}
+              </Col>
+
               <Col className="col-12 text-truncate-2 h5 fw-normal mb-1">
                 {task.description}
               </Col>

@@ -3,7 +3,7 @@ import { Droppable } from "react-beautiful-dnd";
 import { Card, Row, Col } from "react-bootstrap";
 import Task from "./Task";
 
-const Column = ({ column, tasks, searchQuery }) => {
+const Column = ({ column, tasks, searchQuery, handleShowMainModal }) => {
   function TaskTitle({ title }) {
     return (
       <Card.Header className="bg-secondary workshop-col-header">
@@ -38,6 +38,7 @@ const Column = ({ column, tasks, searchQuery }) => {
                 index={index}
                 options={column.options}
                 searchQuery={searchQuery}
+                handleShowMainModal={handleShowMainModal}
               />
             ))}
             {provided.placeholder}

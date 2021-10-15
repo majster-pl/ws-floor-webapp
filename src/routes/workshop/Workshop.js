@@ -27,6 +27,7 @@ const Workshop = ({
   reloadCalendar,
   siletReload,
   currentDate,
+  handleShowMainModal,
 }) => {
   // when page oppened check if user logged in, if not redirect to login page
   const { isLoading, SpinnerComponent } = IsLoggedInLogic(
@@ -225,6 +226,7 @@ const Workshop = ({
                     column={column}
                     tasks={tasks}
                     searchQuery={searchQuery}
+                    handleShowMainModal={handleShowMainModal}
                   />
                 </Col>
               );

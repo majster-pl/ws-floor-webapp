@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import { Row, Col, Nav } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { setModal } from "../../../actions";
-import moment from "moment";
 
 const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
   const {
