@@ -68,15 +68,21 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
                   <span></span>
                 )}
                 {task.waiting === 1 ? (
-                  <i className="me-2 text-info far fa-clock"></i>
+                  <i
+                    className="me-2 text-info far fa-clock"
+                    title="Customer waiting"
+                  ></i>
                 ) : (
                   <span></span>
                 )}
-                <span className="text-success">{task.reg}</span>
+                <label className="text-success" title="Vehicle reg">
+                  {task.reg}
+                </label>
               </Col>
-              <Col className="col-auto px-1">
+              <Col className="col-auto px-0">
                 <Nav.Link
-                  className="text-end p-0 m-0 text-light h5 "
+                  className="p-0 m-0 h5"
+                  title="Get more info about the job"
                   onClick={(e) =>
                     handleInfoClick(e, task.event_id, task.status)
                   }
@@ -87,7 +93,8 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
 
               <Col className="col-auto">
                 <Nav.Link
-                  className="text-end p-0 m-0 text-info h5 "
+                  className="text-end p-0 m-0 text-info h5"
+                  title="Edit booking"
                   onClick={(e) =>
                     handleEditClick(e, task.event_id, task.status)
                   }
@@ -96,23 +103,33 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
                 </Nav.Link>
               </Col>
 
-              <Col className="col-12 text-lime mt-1 text-truncate-2 h5 fw-normal mb-1">
-                {task.customer_name}
+              <Col className="col-12 mt-1" title="Customer name">
+                <label className="text-white text-truncate-2 fw-normal m-0 h4">
+                  {task.customer_name}
+                </label>
               </Col>
 
-              <Col className="col-12 text-truncate-2 h5 fw-normal mb-1">
-                {task.description}
-              </Col>
-              <Col className="col-12 text-truncate-2 h6 fw-normal fst-italic text-lime m-0">
-                {task.special_instructions &&
-                  "Extra: " + task.special_instructions}
+              <Col className="col-12 mt-1" title="Description of the booking">
+                <label className="text-truncate-2 h4 fw-normal mb-1">
+                  {task.description}
+                </label>
               </Col>
               <Col
-                className={`col-12 text-truncate-2 h6 mb-1 fw-normal ${
+                className="col-12 my-1"
+                title="Extra instrucion given by driver"
+              >
+                <label className="text-truncate-2 h6 fw-normal fst-italic m-0 text-lime">
+                  {task.special_instructions &&
+                    "Extra: " + task.special_instructions}
+                </label>
+              </Col>
+              <Col
+                className={`col-12 text-truncate-2 h6 mb-0 fw-normal ${
                   task.status === "booked" ? "d-none" : ""
                 }  `}
+                title="Number of days from arrival date"
               >
-                Age:{" "}
+                <label className="text-white">Age:</label>{" "}
                 <label
                   className={`${task.age > 2 ? "text-danger fw-bold" : ""}`}
                 >
@@ -120,9 +137,10 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
                 </label>
               </Col>
               <Col
-                className={`col-12 text-truncate-2 h6 fw-normal mb-1 ${
+                className={`col-12 text-truncate-2 h6 fw-normal mb-0 ${
                   task.status !== "booked" ? "d-none" : ""
                 }  `}
+                title="Booked date"
               >
                 Booked:{" "}
                 <label
@@ -136,16 +154,20 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
               <Col className="col-12">
                 <Row className="row-justify-end">
                   <Col className="col-5">
-                    <h6 className="mb-0">
-                      <span className="fw-bold text-info">Allowed:</span>{" "}
-                      {task.allowed_time}h{" "}
-                    </h6>
+                    <label className="text-white" title="Allowed time for this job">
+                      <h6 className="mb-0">
+                        <span className="fw-bold text-info">Allowed:</span>{" "}
+                        {task.allowed_time}h{" "}
+                      </h6>
+                    </label>
                   </Col>
                   <Col className="col-7">
-                    <h6 className="mb-0">
-                      <span className="fw-bold text-info">Others:</span>{" "}
-                      {!task.others ? "n/a" : task.others}
-                    </h6>
+                    <label className="text-white fw-bold" title="Otehr extra information about the job">
+                      <h6 className="mb-0">
+                        <span className="fw-bold text-info">Others:</span>{" "}
+                        {!task.others ? "n/a" : task.others}
+                      </h6>
+                    </label>
                   </Col>
                 </Row>
               </Col>

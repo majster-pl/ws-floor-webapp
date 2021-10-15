@@ -212,33 +212,6 @@ const App = () => {
           toast={toast}
         />
       </Router>
-      <Modal
-        show={isLoading}
-        centered
-        className="modal-dialog-loading text-center disable-select"
-        animation={false}
-        onHide={() => setIsLoading(false)}
-        // backdrop="static"
-        // keyboard={false}
-      >
-        <div>
-          <div className="div-center">
-            <Spinner
-              className="mx-1"
-              animation="grow"
-              variant="primary"
-              size="sm"
-            />
-            <Spinner className="mx-1" animation="grow" variant="success" />
-            <Spinner
-              className="mx-1"
-              animation="grow"
-              variant="danger"
-              size="sm"
-            />
-          </div>
-        </div>
-      </Modal>
     </>
   );
 };

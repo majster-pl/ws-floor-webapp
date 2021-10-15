@@ -155,7 +155,7 @@ const UpdateStatus = ({
                 </Form.Label>
                 <Col sm="9">
                   <Form.Control
-                    maxLength={100}
+                    maxLength={2000}
                     as="textarea"
                     rows={3}
                     onFocus={(e) =>

@@ -75,7 +75,6 @@ const UpdateStatus = ({
                   />
                 </Col>
               </Form.Group>
-
               {/* Customer */}
               <Form.Group as={Row} controlId="formCustomer" className="mb-2">
                 <Form.Label column sm="3" className="text-md-end">
@@ -89,7 +88,6 @@ const UpdateStatus = ({
                   />
                 </Col>
               </Form.Group>
-
               {/* Description */}
               <Form.Group as={Row} className="my-2">
                 <Form.Label column sm="3" className="text-md-end">
@@ -188,6 +186,20 @@ const UpdateStatus = ({
                 </Col>
               </Form.Group>
 
+              {/* Special Inst. */}
+              <Form.Group as={Row} className="">
+                <Form.Label column sm="3" className="text-md-end">
+                  Special Inst.
+                </Form.Label>
+                <Col sm="9">
+                  <Form.Control
+                    disabled
+                    plaintext
+                    value={props.values.special_instructions || "n/a"}
+                  />
+                </Col>
+              </Form.Group>
+
               {/* Event ID */}
               <Form.Group as={Row} className="">
                 <Form.Label column sm="3" className="text-md-end">
@@ -201,7 +213,6 @@ const UpdateStatus = ({
                   />
                 </Col>
               </Form.Group>
-
               {/* Job icons */}
               <Form.Group as={Row} className="">
                 <Form.Label column sm="3" className="text-md-end">
@@ -228,7 +239,6 @@ const UpdateStatus = ({
                   </Row>
                 </Col>
               </Form.Group>
-
               {/* Milage in */}
               <Form.Group as={Row} className="">
                 <Form.Label column sm="3" className="text-md-end">
@@ -242,7 +252,6 @@ const UpdateStatus = ({
                   />
                 </Col>
               </Form.Group>
-
               {/* Special Inst */}
               <Form.Group as={Row} className="my-2">
                 <Form.Label column sm="3" className="text-md-end">
@@ -261,7 +270,6 @@ const UpdateStatus = ({
                   </Form.Text>
                 </Col>
               </Form.Group>
-
               {/* History */}
               <Form.Group as={Row} className="my-2">
                 <Form.Label column sm="3" className="text-md-end">
