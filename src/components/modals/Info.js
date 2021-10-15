@@ -33,9 +33,9 @@ const UpdateStatus = ({
     handleCloseMainModal();
   };
 
-  // useEffect(() => {
-  //   console.log("DATA:", data);
-  // }, []);
+  useEffect(() => {
+    console.log("DATA:", data);
+  }, []);
 
   return (
     <>

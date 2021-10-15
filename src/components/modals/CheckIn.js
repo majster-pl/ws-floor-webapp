@@ -21,6 +21,11 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
       .number()
       .typeError("You must specify mileage")
       .required("Vehicle current mileage is required"),
+
+    key_location: yup
+      .number()
+      .required()
+      .typeError("You must enter key location!"),
   });
 
   // Submit function
@@ -163,6 +168,32 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
                   <Form.Text className="text-danger ms-2">
                     {props.errors.special_inst}
                   </Form.Text>
+                </Col>
+              </Form.Group>
+
+              {/* Key location */}
+              <Form.Group as={Row}>
+                <Form.Label column sm="3" className="text-md-end">
+                  Key location
+                </Form.Label>
+                <Col sm="9">
+                  <Row>
+                    <Col sm="4">
+                      <Form.Control
+                        name="key_location"
+                        placeholder="Peg nr."
+                        value={props.values.key_location || ""}
+                        onChange={props.handleChange("key_location")}
+                        isInvalid={!!props.errors.key_location}
+                      />
+                    </Col>
+                    <Col sm="12">
+                      <Form.Text className="text-danger ms-2">
+                        {props.touched.key_location &&
+                          props.errors.key_location}
+                      </Form.Text>
+                    </Col>
+                  </Row>
                 </Col>
               </Form.Group>
 
