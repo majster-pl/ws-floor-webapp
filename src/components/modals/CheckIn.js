@@ -55,9 +55,10 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
       });
   };
 
-  useEffect(() => {
-    console.log("DATA:", data);
-  }, []);
+  // useEffect(() => {
+  //   console.log("DATA:", data);
+  // }, []);
+
   return (
     <>
       <Formik

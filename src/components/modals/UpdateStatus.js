@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Row, Col, Modal, Form, Button, Spinner } from "react-bootstrap";
 import { Formik } from "formik";
 import apiClient from "../../service/api/api";
 import * as yup from "yup";
+import moment from "moment";
 
 const UpdateStatus = ({
   data,
@@ -19,6 +20,11 @@ const UpdateStatus = ({
     //   .required("Vehicle current mileage is required"),
     status: yup.string().required(),
   });
+  const focusDiv = useRef();
+
+  useEffect(() => {
+    if (focusDiv.current) focusDiv.current.focus();
+  }, [focusDiv]);
 
   // Submit function
   const handleSubmit = (values) => {
@@ -43,9 +49,15 @@ const UpdateStatus = ({
       });
   };
 
-  useEffect(() => {
-    console.log("DATA:", data);
-  }, []);
+  const getCurrentDateTime = (init) => {
+    let dateTime = moment(new Date()).format("DD-MM-yy H:mm");
+    return init ? `[ ${dateTime} ] - ` : `\n[ ${dateTime} ] - `;
+  };
+
+  // useEffect(() => {
+  //   console.log("DATA:", data);
+  // }, []);
+
   return (
     <>
       <Formik
@@ -159,9 +171,20 @@ const UpdateStatus = ({
                     as="textarea"
                     rows={3}
                     name="free_text"
+                    onFocus={(e) =>
+                      e.currentTarget.setSelectionRange(
+                        e.currentTarget.value.length,
+                        e.currentTarget.value.length
+                      )
+                    }
                     placeholder="Notes for a job (internal use)"
                     onChange={props.handleChange("free_text")}
-                    value={props.values.free_text || ""}
+                    ref={focusDiv}
+                    defaultValue={
+                      props.values.free_text
+                        ? props.values.free_text + getCurrentDateTime(0)
+                        : getCurrentDateTime(1)
+                    }
                   />
                   <Form.Text className="text-danger ms-2">
                     {props.errors.free_text}

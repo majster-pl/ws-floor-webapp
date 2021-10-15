@@ -34,6 +34,12 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
     handleShowMainModal(event_id, status);
   };
 
+  const handleInfoClick = (e) => {
+    e.stopPropagation();
+    dispatch(setModal("info"));
+    handleShowMainModal(event_id, status);
+  };
+
   const handleEventClick = () => {
     dispatch(setModal("other"));
     handleShowMainModal(event_id, status);
@@ -107,13 +113,20 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
                 ) : (
                   <span></span>
                 )}
-
-                {reg}
+                <span className="h4 fw-bold">{reg}</span>
               </div>
             </Col>
-            <Col className="col-auto">
+            <Col className="col-auto p-0 px-1">
               <Nav.Link
-                className={`text-end p-0 me-2   ${
+                className="p-0 m-0"
+                onClick={(e) => handleInfoClick(e)}
+              >
+                Info
+              </Nav.Link>
+            </Col>
+            <Col className="col-auto p-0 px-2 pe-3">
+              <Nav.Link
+                className={`text-end p-0 me-2 ${
                   isNoShow() ? "text-light" : "text-info"
                 }`}
                 onClick={handleEditClick}

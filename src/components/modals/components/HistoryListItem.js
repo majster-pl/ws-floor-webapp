@@ -15,7 +15,7 @@ const HistoryListItem = ({ date, description, properties }) => {
   return (
     <>
       <div
-        className="font-monospace fs-5 cursor-pointer text-info"
+        className="font-monospace fs-5 text-info"
         onClick={() => setOpen(!open)}
       >
         {"[" + date + "] " + description}

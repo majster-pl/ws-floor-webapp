@@ -5,7 +5,6 @@ import moment from "moment";
 import { useDispatch } from "react-redux";
 import { setModal } from "../../../actions";
 
-
 const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
   const dispatch = useDispatch();
 
@@ -34,6 +33,12 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
   const handleEditClick = (e, event_id, status) => {
     e.stopPropagation();
     dispatch(setModal("edit"));
+    handleShowMainModal(event_id, status);
+  };
+
+  const handleInfoClick = (e, event_id, status) => {
+    e.stopPropagation();
+    dispatch(setModal("info"));
     handleShowMainModal(event_id, status);
   };
 
@@ -69,14 +74,28 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
                 )}
                 <span className="text-success">{task.reg}</span>
               </Col>
+              <Col className="col-auto px-1">
+                <Nav.Link
+                  className="text-end p-0 m-0 text-light h5 "
+                  onClick={(e) =>
+                    handleInfoClick(e, task.event_id, task.status)
+                  }
+                >
+                  Info
+                </Nav.Link>
+              </Col>
+
               <Col className="col-auto">
                 <Nav.Link
                   className="text-end p-0 m-0 text-info h5 "
-                  onClick={(e) => handleEditClick(e, task.event_id, task.status)}
+                  onClick={(e) =>
+                    handleEditClick(e, task.event_id, task.status)
+                  }
                 >
                   Edit
                 </Nav.Link>
               </Col>
+
               <Col className="col-12 text-lime mt-1 text-truncate-2 h5 fw-normal mb-1">
                 {task.customer_name}
               </Col>

@@ -45,6 +45,7 @@ const Workshop = ({
   // vaible to trigger silent calendar reload when changed
   const [triggerUpdate, setTriggerUpdate] = useState(0);
   const selectedDepot = useSelector((state: RootStateOrAny) => state.depot);
+  const reloadWorkshop = useSelector((state) => state.workshop);
 
   let url = "/api/v1/workshop?depot=" + selectedDepot;
 
@@ -198,7 +199,7 @@ const Workshop = ({
   useEffect(() => {
     // siletReload(currentDate);
     loadWorkshopData();
-  }, [triggerUpdate, selectedDepot]);
+  }, [triggerUpdate, selectedDepot, reloadWorkshop]);
 
   return data.length !== 0 && !loadingError ? (
     <DragDropContext onDragEnd={ondragend}>

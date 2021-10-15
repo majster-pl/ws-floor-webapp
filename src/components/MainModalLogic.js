@@ -6,24 +6,22 @@ import EditEvent from "./modals/EditEvent";
 import NewEvent from "./modals/NewEvent";
 import UpdateStatus from "./modals/UpdateStatus";
 import UpdateNotes from "./modals/UpdateNotes";
+import Info from "./modals/Info";
 import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
-// import { setModal } from "../actions";
+import { reloadWorkshop } from "../actions";
 // import { useSelector } from "react-redux";
 
 const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {
   const [showMainModal, setShowMainModal] = useState(false);
   const [mainModalData, setMainModalData] = useState();
   const [status, setStatus] = useState();
-  const modal = useSelector((state: RootStateOrAny) => state.modal);
-  // const dispatch = useDispatch();
-  const selectedDepot = useSelector((state: RootStateOrAny) => state.depot);
+  const modal = useSelector((state) => state.modal);
+  const dispatch = useDispatch();
+  const selectedDepot = useSelector((state) => state.depot);
 
   const handleShowMainModal = (id, status, date) => {
     setIsLoading(true);
     setStatus(status);
-    console.log("OOOO");
-    console.log(status);
-    
     // setTimeout(pullDataFromAPI, 0);
 
     // check if new event, if so set defaut data values
@@ -44,8 +42,6 @@ const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {
       setShowMainModal(true);
       setIsLoading(false);
     } else {
-      console.log("ELOOOOO!");
-
       let url = "/api/v1/events/" + id;
       // function pullDataFromAPI() {
       apiClient
@@ -75,27 +71,6 @@ const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {
   };
 
   const CheckInModal = () => {
-    // console.log(modal);
-    if (modal === "edit") {
-      return (
-        <EditEvent
-          data={mainModalData}
-          handleCloseMainModal={handleCloseMainModal}
-          toast={toast}
-          reloadCalendar={reloadCalendar}
-        />
-      );
-    } else if (modal === "new") {
-      return (
-        <NewEvent
-          data={mainModalData}
-          handleCloseMainModal={handleCloseMainModal}
-          toast={toast}
-          reloadCalendar={reloadCalendar}
-        />
-      );
-    }
-
     switch (modal) {
       case "edit":
         return (
@@ -120,6 +95,16 @@ const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {
       case "update":
         return (
           <UpdateNotes
+            data={mainModalData}
+            handleCloseMainModal={handleCloseMainModal}
+            toast={toast}
+            reloadCalendar={reloadCalendar}
+          />
+        );
+
+      case "info":
+        return (
+          <Info
             data={mainModalData}
             handleCloseMainModal={handleCloseMainModal}
             toast={toast}

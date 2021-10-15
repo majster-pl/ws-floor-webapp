@@ -34,3 +34,11 @@ export const setDepotsList = (depots) => {
     payload: depots,
   };
 };
+
+
+export const reloadWorkshop = (id) => {
+  return {
+    type: actions.WORKSHOP_RELOAD,
+    payload: id,
+  };
+};

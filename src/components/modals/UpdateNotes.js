@@ -1,8 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Row, Col, Modal, Form, Button, Spinner } from "react-bootstrap";
 import { Formik } from "formik";
 import apiClient from "../../service/api/api";
 import * as yup from "yup";
+import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
+import { reloadWorkshop } from "../../actions";
+import moment from "moment";
 
 const UpdateStatus = ({
   data,
@@ -13,12 +16,14 @@ const UpdateStatus = ({
   const [waitingResponse, setWaitingResponse] = useState(false);
   // Form validation
   const reviewShema = yup.object({
-    // odometer_in: yup
-    //   .number()
-    //   .typeError("You must specify mileage")
-    //   .required("Vehicle current mileage is required"),
-    status: yup.string().required(),
+    // status: yup.string().required(),
   });
+  const focusDiv = useRef();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (focusDiv.current) focusDiv.current.focus();
+  }, [focusDiv]);
 
   // Submit function
   const handleSubmit = (values) => {
@@ -33,7 +38,7 @@ const UpdateStatus = ({
         // console.log(response.data);
         handleCloseMainModal();
         setWaitingResponse(false);
-        reloadCalendar();
+        // reloadCalendar();
         // toast.success("Event updated successfully");
         toast.success("Changes saved", {
           autoClose: 1500,
@@ -48,9 +53,21 @@ const UpdateStatus = ({
       });
   };
 
-  useEffect(() => {
-    console.log("DATA:", data);
-  }, []);
+  // handle Close
+  const handleClose = () => {
+    dispatch(reloadWorkshop(Math.random()));
+    handleCloseMainModal();
+  };
+
+  const getCurrentDateTime = (init) => {
+    let dateTime = moment(new Date()).format("DD-MM-yy H:mm");
+    return init ? `[ ${dateTime} ] - ` : `\n[ ${dateTime} ] - `;
+  };
+
+  // useEffect(() => {
+  //   console.log("DATA:", data);
+  // }, []);
+
   return (
     <>
       <Formik
@@ -70,9 +87,9 @@ const UpdateStatus = ({
               </Modal.Title>
               <button
                 type="button"
-                className="btn-close"
+                className="btn-close test-class"
                 aria-label="Close"
-                onClick={handleCloseMainModal}
+                onClick={() => handleClose()}
               ></button>
             </Modal.Header>
             <Modal.Body>
@@ -118,36 +135,13 @@ const UpdateStatus = ({
                 </Form.Label>
                 <Col sm="9">
                   <Form.Control
-                    required
+                    className="text-pink"
                     disabled
-                    as="select"
-                    type="select"
-                    name="status"
-                    defaultValue={props.values.status}
-                    onChange={props.handleChange("status")}
-                    // onChange={setFormValue}
-                    // value={form.payment_method}
-                  >
-                    <option disabled>-- select status --</option>
-                    <option value="booked">Booked</option>
-                    <option value="awaiting_labour">Awaiting Labour</option>
-                    <option value="planned">Planned</option>
-                    <option value="work_in_progress">Work in Progress</option>
-                    <option value="awaiting_estimates">
-                      Awaiting Estimates
-                    </option>
-                    <option value="awaiting_part">Awaiting Parts</option>
-                    <option value="awaiting_authorisation">
-                      Awaiting Authorisation
-                    </option>
-                    <option value="awaiting_qc">Awaiting QC</option>
-                    <option value="at_3rd_party">At 3rd party</option>
-                    <option value="completed">Completed</option>
-                  </Form.Control>
-
-                  <Form.Text className="text-danger ms-2">
-                    {props.touched.odometer_in && props.errors.status}
-                  </Form.Text>
+                    plaintext
+                    name="others"
+                    placeholder="Customer Name"
+                    value={props.values.status || ""}
+                  />
                 </Col>
               </Form.Group>
               <Form.Text className="text-danger ms-2">
@@ -164,10 +158,21 @@ const UpdateStatus = ({
                     maxLength={100}
                     as="textarea"
                     rows={3}
+                    onFocus={(e) =>
+                      e.currentTarget.setSelectionRange(
+                        e.currentTarget.value.length,
+                        e.currentTarget.value.length
+                      )
+                    }
+                    ref={focusDiv}
                     name="free_text"
                     placeholder="Notes for a job (internal use)"
                     onChange={props.handleChange("free_text")}
-                    value={props.values.free_text || ""}
+                    defaultValue={
+                      props.values.free_text
+                        ? props.values.free_text + getCurrentDateTime(0)
+                        : getCurrentDateTime(1)
+                    }
                   />
                   <Form.Text className="text-danger ms-2">
                     {props.errors.free_text}
@@ -185,7 +190,7 @@ const UpdateStatus = ({
                     className={`fas ${
                       props.values.notification
                         ? "fa-bell text-success"
-                        : "fa-bell-slash"
+                        : "fa-bell-slash text-danger"
                     }`}
                   ></i>
                 </Form.Label>
@@ -208,7 +213,7 @@ const UpdateStatus = ({
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleCloseMainModal}>
+              <Button variant="secondary" onClick={() => handleClose()}>
                 Close
               </Button>
               <Button
