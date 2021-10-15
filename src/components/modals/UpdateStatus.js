@@ -174,7 +174,7 @@ const UpdateStatus = ({
 
               {/* NOTIFICATION */}
               <Form.Group as={Row} controlId="formNotification">
-                <Form.Label column sm="3" className="text-md-end">
+                <Form.Label column className="text-md-end col-1 col-sm-3">
                   <i
                     className={`fas ${
                       props.values.notification
@@ -183,12 +183,12 @@ const UpdateStatus = ({
                     }`}
                   ></i>
                 </Form.Label>
-                <Col sm="9">
+                <Col className="col-11 col-sm-9">
                   <Form.Check
                     className="disable-select mt-1"
                     type="checkbox"
                     label={<span>Send confirmation email</span>}
-                    title="Check this to send notification email to customer about status changes."
+                    title="Check this to send notification email to customer about new booking"
                     name="notification"
                     checked={props.values.notification}
                     onChange={() =>

@@ -167,14 +167,14 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
 
               {/* WAITING */}
               <Form.Group as={Row} controlId="formWaiting">
-                <Form.Label column sm="3" className="text-md-end">
+                <Form.Label column className="text-md-end col-1 col-sm-3">
                   <i
                     className={`fas fa-clock ${
                       props.values.waiting ? "text-info" : ""
                     }`}
                   ></i>
                 </Form.Label>
-                <Col sm="9">
+                <Col className="col-11 col-sm-9">
                   <Form.Check
                     className="disable-select mt-1"
                     type="checkbox"
@@ -190,7 +190,7 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
 
               {/* NOTIFICATION */}
               <Form.Group as={Row} controlId="formNotification">
-                <Form.Label column sm="3" className="text-md-end">
+                <Form.Label column className="text-md-end col-1 col-sm-3">
                   <i
                     className={`fas ${
                       props.values.notification
@@ -199,16 +199,14 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
                     }`}
                   ></i>
                 </Form.Label>
-                <Col sm="9">
+                <Col className="col-11 col-sm-9">
                   <Form.Check
                     className="disable-select mt-1"
                     type="checkbox"
                     label={<span>Send confirmation email</span>}
-                    title="Check this to send notification email to customer that vehicle arrived."
+                    title="Check this to send notification email to customer about new booking"
                     name="notification"
                     checked={props.values.notification}
-                    // defaultValue={true}
-                    // value={true}
                     onChange={() =>
                       props.setFieldValue(
                         "notification",

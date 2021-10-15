@@ -261,18 +261,20 @@ const UpdateStatus = ({
                 </Form.Label>
                 <Col sm="9">
                   <Row>
-                    <Col className="col-md-2">
+                    <Col className="text-md-end col-2 col-sm-2">
                       <Form.Label
                         className={`text-${
                           props.values.allowed_time > 0 ? "success" : "danger"
                         }`}
                       >
-                        {props.values.allowed_time + " h"}
+                        {props.values.allowed_time > 0
+                          ? props.values.allowed_time + " h"
+                          : 0 + " h"}
                       </Form.Label>
                     </Col>
                     <Col>
                       <Form.Range
-                        defaultValue={props.values.allowed_time || 1}
+                        defaultValue={0}
                         onChange={props.handleChange("allowed_time")}
                         max={20}
                       />
@@ -378,14 +380,14 @@ const UpdateStatus = ({
 
               {/* WAITING */}
               <Form.Group as={Row} controlId="formWaiting">
-                <Form.Label column sm="3" className="text-md-end">
+                <Form.Label column className="text-md-end col-1 col-sm-3">
                   <i
                     className={`fas fa-clock ${
                       props.values.waiting ? "text-info" : ""
                     }`}
                   ></i>
                 </Form.Label>
-                <Col sm="9">
+                <Col className="col-11 col-sm-9">
                   <Form.Check
                     className="disable-select mt-1"
                     type="checkbox"
@@ -401,14 +403,14 @@ const UpdateStatus = ({
 
               {/* BREAKDOWN */}
               <Form.Group as={Row} controlId="formBreakdown">
-                <Form.Label column sm="3" className="text-md-end">
+                <Form.Label column className="text-md-end col-1 col-sm-3">
                   <i
                     className={`fas fa-car-crash ${
                       props.values.breakdown ? "text-danger" : ""
                     }`}
                   ></i>
                 </Form.Label>
-                <Col sm="9">
+                <Col className="col-11 col-sm-9">
                   <Form.Check
                     className={`disable-select mt-1 ${
                       props.values.breakdown ? "text-danger" : "text-info"
@@ -426,7 +428,7 @@ const UpdateStatus = ({
 
               {/* NOTIFICATION */}
               <Form.Group as={Row} controlId="formNotification">
-                <Form.Label column sm="3" className="text-md-end">
+                <Form.Label column className="text-md-end col-1 col-sm-3">
                   <i
                     className={`fas ${
                       props.values.notification
@@ -435,13 +437,12 @@ const UpdateStatus = ({
                     }`}
                   ></i>
                 </Form.Label>
-                <Col sm="9">
+                <Col className="col-11 col-sm-9">
                   <Form.Check
                     className="disable-select mt-1"
                     type="checkbox"
                     label={<span>Send confirmation email</span>}
-                    title="Check this to send notification email to customer 
-                    about changes made to this booking"
+                    title="Check this to send notification email to customer about new booking"
                     name="notification"
                     checked={props.values.notification}
                     onChange={() =>

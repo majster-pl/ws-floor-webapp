@@ -251,14 +251,14 @@ const NewEvent = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
                 </Form.Label>
                 <Col sm="9">
                   <Row>
-                    <Col className="col-md-2">
+                    <Col className="text-md-end col-2 col-sm-2">
                       <Form.Label
                         className={`text-${
                           props.values.allowed_time > 0 ? "success" : "danger"
                         }`}
                       >
                         {props.values.allowed_time > 0
-                          ? props.values.allowed_time
+                          ? props.values.allowed_time + " h"
                           : 0 + " h"}
                       </Form.Label>
                     </Col>
@@ -333,14 +333,14 @@ const NewEvent = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
 
               {/* WAITING */}
               <Form.Group as={Row} controlId="formWaiting">
-                <Form.Label column sm="3" className="text-md-end">
+                <Form.Label column className="text-md-end col-1 col-sm-3">
                   <i
                     className={`fas fa-clock ${
                       props.values.waiting ? "text-info" : ""
                     }`}
                   ></i>
                 </Form.Label>
-                <Col sm="9">
+                <Col className="col-11 col-sm-9">
                   <Form.Check
                     className="disable-select mt-1"
                     type="checkbox"
@@ -356,14 +356,14 @@ const NewEvent = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
 
               {/* BREAKDOWN */}
               <Form.Group as={Row} controlId="formBreakdown">
-                <Form.Label column sm="3" className="text-md-end">
+                <Form.Label column className="text-md-end col-1 col-sm-3">
                   <i
                     className={`fas fa-car-crash ${
                       props.values.breakdown ? "text-danger" : ""
                     }`}
                   ></i>
                 </Form.Label>
-                <Col sm="9">
+                <Col className="col-11 col-sm-9">
                   <Form.Check
                     className={`disable-select mt-1 ${
                       props.values.breakdown ? "text-danger" : "text-info"
@@ -381,7 +381,7 @@ const NewEvent = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
 
               {/* NOTIFICATION */}
               <Form.Group as={Row} controlId="formNotification">
-                <Form.Label column sm="3" className="text-md-end">
+                <Form.Label column className="text-md-end col-1 col-sm-3">
                   <i
                     className={`fas ${
                       props.values.notification
@@ -390,7 +390,7 @@ const NewEvent = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
                     }`}
                   ></i>
                 </Form.Label>
-                <Col sm="9">
+                <Col className="col-11 col-sm-9">
                   <Form.Check
                     className="disable-select mt-1"
                     type="checkbox"
