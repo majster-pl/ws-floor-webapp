@@ -16,7 +16,9 @@ import apiClient from "../../service/api/api";
 import "./Workshop.css";
 import Pusher from "pusher-js";
 import Echo from "laravel-echo";
-import { useSelector } from "react-redux";
+import { RootStateOrAny, useSelector } from "react-redux";
+import { setModal } from "../../actions";
+import { useDispatch } from "react-redux";
 
 const Workshop = ({
   // isLoading,
@@ -35,16 +37,21 @@ const Workshop = ({
     setIsLoading,
     setLoggedIn
   );
-
+  const dispatch = useDispatch();
   const [data, setData] = useState([]);
   const [loadingError, setLoadingError] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const history = useHistory();
   // vaible to trigger silent calendar reload when changed
   const [triggerUpdate, setTriggerUpdate] = useState(0);
-  const selectedDepot = useSelector((state) => state.depot);
+  const selectedDepot = useSelector((state: RootStateOrAny) => state.depot);
 
   let url = "/api/v1/workshop?depot=" + selectedDepot;
+
+  const handleStatusChange = (event_id, status) => {
+    dispatch(setModal("update"));
+    handleShowMainModal(event_id, status);
+  };
 
   ondragend = (result) => {
     const { destination, source, draggableId } = result;
@@ -96,34 +103,35 @@ const Workshop = ({
 
     // for better user expirience update data before sending request to API
     updateState();
+    handleStatusChange(draggableId.slice(6), destination.droppableId);
 
-    apiClient
-      .patch(url, values)
-      .then((response) => {
-        console.log("order changed to: " + response.data.order);
-        toast.success("Changes saved", {
-          autoClose: 1500,
-          hideProgressBar: true,
-          position: "bottom-right",
-        });
-        reloadCalendar();
-        // updateOrder(destination.droppableId);
-        // loadWorkshopData();
-        // console.log(response.data);
-      })
-      .catch((err) => {
-        console.log("error:", err);
-        if (err.status !== 401) {
-          toast.error(
-            <div>
-              <p>Error! Changes not saved</p>
-              <p>{err.statusText}</p>
-            </div>,
-            { autoClose: 1500 }
-          );
-        }
-        loadWorkshopData();
-      });
+    // apiClient
+    //   .patch(url, values)
+    //   .then((response) => {
+    //     console.log("order changed to: " + response.data.order);
+    //     toast.success("Changes saved", {
+    //       autoClose: 1500,
+    //       hideProgressBar: true,
+    //       position: "bottom-right",
+    //     });
+    //     reloadCalendar();
+    //     // updateOrder(destination.droppableId);
+    //     // loadWorkshopData();
+    //     // console.log(response.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log("error:", err);
+    //     if (err.status !== 401) {
+    //       toast.error(
+    //         <div>
+    //           <p>Error! Changes not saved</p>
+    //           <p>{err.statusText}</p>
+    //         </div>,
+    //         { autoClose: 1500 }
+    //       );
+    //     }
+    //     loadWorkshopData();
+    //   });
   };
 
   const loadWorkshopData = (feedback) => {

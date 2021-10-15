@@ -5,6 +5,7 @@ import CheckIn from "./modals/CheckIn";
 import EditEvent from "./modals/EditEvent";
 import NewEvent from "./modals/NewEvent";
 import UpdateStatus from "./modals/UpdateStatus";
+import UpdateNotes from "./modals/UpdateNotes";
 import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
 // import { setModal } from "../actions";
 // import { useSelector } from "react-redux";
@@ -20,7 +21,9 @@ const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {
   const handleShowMainModal = (id, status, date) => {
     setIsLoading(true);
     setStatus(status);
-
+    console.log("OOOO");
+    console.log(status);
+    
     // setTimeout(pullDataFromAPI, 0);
 
     // check if new event, if so set defaut data values
@@ -42,7 +45,7 @@ const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {
       setIsLoading(false);
     } else {
       console.log("ELOOOOO!");
-      
+
       let url = "/api/v1/events/" + id;
       // function pullDataFromAPI() {
       apiClient
@@ -51,15 +54,15 @@ const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {
           let data = response.data.data;
           // add/set notification to true
           data.notification = true;
+          data.status = status;
           setMainModalData(data);
           setShowMainModal(true);
           setIsLoading(false);
-          //   window.location.reload();
         })
         .catch((err) => {
           console.log("UUU...");
           console.log(err);
-          
+
           setShowMainModal(true);
           setIsLoading(false);
         });
@@ -92,10 +95,11 @@ const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {
         />
       );
     }
-    switch (status) {
-      case "booked":
+
+    switch (modal) {
+      case "edit":
         return (
-          <CheckIn
+          <EditEvent
             data={mainModalData}
             handleCloseMainModal={handleCloseMainModal}
             toast={toast}
@@ -103,28 +107,48 @@ const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {
           />
         );
 
-      // case "awaiting_labour":
-      //   return (
-      //     <UpdateStatus
-      //       data={mainModalData}
-      //       handleCloseMainModal={handleCloseMainModal}
-      //       toast={toast}
-      //       reloadCalendar={reloadCalendar}
-      //     />
-      //   );
-      //   break;
+      case "new":
+        return (
+          <NewEvent
+            data={mainModalData}
+            handleCloseMainModal={handleCloseMainModal}
+            toast={toast}
+            reloadCalendar={reloadCalendar}
+          />
+        );
+
+      case "update":
+        return (
+          <UpdateNotes
+            data={mainModalData}
+            handleCloseMainModal={handleCloseMainModal}
+            toast={toast}
+            reloadCalendar={reloadCalendar}
+          />
+        );
 
       default:
-        return (
-          <UpdateStatus
-            data={mainModalData}
-            handleCloseMainModal={handleCloseMainModal}
-            toast={toast}
-            reloadCalendar={reloadCalendar}
-          />
-        );
+        switch (status) {
+          case "booked":
+            return (
+              <CheckIn
+                data={mainModalData}
+                handleCloseMainModal={handleCloseMainModal}
+                toast={toast}
+                reloadCalendar={reloadCalendar}
+              />
+            );
 
-        break;
+          default:
+            return (
+              <UpdateStatus
+                data={mainModalData}
+                handleCloseMainModal={handleCloseMainModal}
+                toast={toast}
+                reloadCalendar={reloadCalendar}
+              />
+            );
+        }
     }
   };
 
