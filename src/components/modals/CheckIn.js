@@ -25,7 +25,7 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
     key_location: yup
       .number()
       .required()
-      .typeError("You must enter key location!"),
+      .typeError("You must enter valid key location! (only numbers allowed)"),
   });
 
   // Submit function

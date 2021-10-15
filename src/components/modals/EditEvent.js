@@ -63,6 +63,11 @@ const UpdateStatus = ({
       ),
     others: yup.string().nullable().max(30, "Max 30 characters"),
     status: yup.string().required(),
+
+    key_location: yup
+      .number()
+      .required()
+      .typeError("You must enter valid key location! (only numbers allowed)"),
   });
 
   // Submit function
