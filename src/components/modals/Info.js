@@ -33,9 +33,9 @@ const UpdateStatus = ({
     handleCloseMainModal();
   };
 
-  useEffect(() => {
-    console.log("DATA:", data);
-  }, []);
+  // useEffect(() => {
+  //   console.log("DATA:", data);
+  // }, []);
 
   return (
     <>
@@ -237,6 +237,19 @@ const UpdateStatus = ({
                       ></i>
                     </Col>
                   </Row>
+                </Col>
+              </Form.Group>
+              {/* Key location */}
+              <Form.Group as={Row} className="">
+                <Form.Label column sm="3" className="text-md-end">
+                  Key location
+                </Form.Label>
+                <Col sm="9">
+                  <Form.Control
+                    disabled
+                    plaintext
+                    value={props.values.key_location || "n/a"}
+                  />
                 </Col>
               </Form.Group>
               {/* Milage in */}

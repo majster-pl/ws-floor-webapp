@@ -16,6 +16,7 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
     status,
     breakdown,
     waiting,
+    key_location,
   } = props;
 
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
   };
 
   const setStatusColors = (status, breakdown) => {
-    if (breakdown) {
+    if (breakdown && status !== "completed") {
       return { bg: "bg-danger", text: "text-white" };
     }
 
@@ -93,7 +94,7 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
           (isNoShow() ? "bg-sendary-extra" : "")
         }
         onClick={() => handleEventClick()}
-        style={{ minHeight: "130px", maxHeight: "250px" }}
+        style={{ minHeight: "8.5rem", maxHeight: "15rem" }}
       >
         <div className="card-header p-0 text-success">
           <Row>
@@ -117,10 +118,7 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
               </div>
             </Col>
             <Col className="col-auto p-0 px-1">
-              <Nav.Link
-                className="p-0 m-0"
-                onClick={(e) => handleInfoClick(e)}
-              >
+              <Nav.Link className="p-0 m-0" onClick={(e) => handleInfoClick(e)}>
                 Info
               </Nav.Link>
             </Col>
@@ -137,58 +135,70 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
           </Row>
         </div>
         <div className="card-body p-0">
-          <div className="row card-body-row">
-            <div className="col-4 card-text text-truncate">Customer:</div>
-            <div
+          <Row className="card-body-row">
+            {/* Customer */}
+            <Col className="col-4 card-text text-truncate">Customer:</Col>
+            <Col
               className={`col-8 card-text text-truncate ${
                 isNoShow() ? "text-light" : "text-white"
               }`}
             >
               {customer_name}
-            </div>
-            {/* <div className="col-4 card-text">Reg:</div>
-            <div className="col-8 card-text fw-bold">{vehicleId}</div> */}
-            <div className="col-4 card-text text-truncate">Desc:</div>
-            <div
-              className={`col-8 card-text text-truncate ${
+            </Col>
+
+            {/* Description */}
+            <Col className="col-4 card-text text-truncate">Desc:</Col>
+            <Col
+              className={`col-8 card-text text-truncate-2 ${
                 isNoShow() ? "text-light" : "text-white"
               }`}
             >
-              {description}
-              {/* <div className="text-truncate-3">{description}</div> */}
-            </div>
-            <div className="col-4 card-text text-truncate">Allowed:</div>
-            <div
+              {description || "n/a"}
+            </Col>
+
+            {/* Allowed Time */}
+            <Col className="col-4 card-text text-truncate">Allowed:</Col>
+            <Col
               className={`col-8 card-text text-truncate ${
                 isNoShow() ? "text-light" : "text-white"
               }`}
             >
               {allowed_time} h
-            </div>
-            <div className="col-4 card-text text-truncate">Others:</div>
-            <div
+            </Col>
+
+            {/* Others */}
+            <Col className="col-4 card-text text-truncate">Others:</Col>
+            <Col
               className={`col-8 card-text text-truncate ${
                 isNoShow() ? "text-light" : "text-white"
               }`}
             >
-              {others}
-            </div>
-          </div>
+              {others || "n/a"}
+            </Col>
+          </Row>
         </div>
-        <div
+        <Row
           className={
-            "card-footer m-0 p-0 " + setStatusColors(status, breakdown).bg
+            "card-footer justify-content-between m-0 p-0 " +
+            setStatusColors(status, breakdown).bg
           }
         >
-          <small
-            className={
-              "fst-italic fw-bold ps-2 " +
+          <Col
+            className={`col-auto fst-italic fw-bold ${
               setStatusColors(status, breakdown).text
-            }
+            }`}
           >
-            {status}
-          </small>
-        </div>
+            <span>{status}</span>
+          </Col>
+          <Col
+            className={`col-auto fst-italic fw-bold ${
+              setStatusColors(status, breakdown).text
+            } ${key_location ? "" : "d-none"}`}
+          >
+            <i className="fas fa-key"></i>
+            <span className="ms-1">{key_location || "n/a"}</span>
+          </Col>
+        </Row>
       </div>
     </td>
   );

@@ -41,6 +41,7 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
     dispatch(setModal("info"));
     handleShowMainModal(event_id, status);
   };
+  
 
   return (
     <Draggable
@@ -123,18 +124,33 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
                     "Extra: " + task.special_instructions}
                 </label>
               </Col>
-              <Col
-                className={`col-12 text-truncate-2 h6 mb-0 fw-normal ${
-                  task.status === "booked" ? "d-none" : ""
-                }  `}
-                title="Number of days from arrival date"
-              >
-                <label className="text-white">Age:</label>{" "}
-                <label
-                  className={`${task.age > 2 ? "text-danger fw-bold" : ""}`}
-                >
-                  {task.age} day{`${task.age <= 1 ? "" : "s"}`}
-                </label>
+              <Col className={`col-12 ${task.key_location ? "" : "d-noned"}`}>
+                <Row className="justify-content-between">
+                  <Col
+                    className={`col-auto text-truncate-2 h6 mb-0 fw-normal ${
+                      task.status === "booked" ? "d-none" : ""
+                    }  `}
+                    title="Number of days from arrival date"
+                  >
+                    <label className="text-white">Age:</label>{" "}
+                    <label
+                      className={`${task.age > 2 ? "text-danger fw-bold" : ""}`}
+                    >
+                      {task.age} day{`${task.age <= 1 ? "" : "s"}`}
+                    </label>
+                  </Col>
+                  <Col
+                    className={`col-auto text-truncate-2 h5 mb-0 fw-normal ${
+                      task.status === "booked" ? "d-none" : ""
+                    }  `}
+                    title="Number of days from arrival date"
+                  >
+                    <i className="fas fa-key fa-sm"></i>
+                    <span className="ms-1 h5 fw-bold">
+                      {task.key_location || "n/a"}
+                    </span>
+                  </Col>
+                </Row>
               </Col>
               <Col
                 className={`col-12 text-truncate-2 h6 fw-normal mb-0 ${
@@ -154,7 +170,10 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
               <Col className="col-12">
                 <Row className="row-justify-end">
                   <Col className="col-5">
-                    <label className="text-white" title="Allowed time for this job">
+                    <label
+                      className="text-white"
+                      title="Allowed time for this job"
+                    >
                       <h6 className="mb-0">
                         <span className="fw-bold text-info">Allowed:</span>{" "}
                         {task.allowed_time}h{" "}
@@ -162,7 +181,10 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
                     </label>
                   </Col>
                   <Col className="col-7">
-                    <label className="text-white fw-bold" title="Otehr extra information about the job">
+                    <label
+                      className="text-white fw-bold"
+                      title="Otehr extra information about the job"
+                    >
                       <h6 className="mb-0">
                         <span className="fw-bold text-info">Others:</span>{" "}
                         {!task.others ? "n/a" : task.others}
