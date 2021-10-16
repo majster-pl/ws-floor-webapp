@@ -41,7 +41,6 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
     dispatch(setModal("info"));
     handleShowMainModal(event_id, status);
   };
-  
 
   return (
     <Draggable
@@ -143,12 +142,14 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
                     className={`col-auto text-truncate-2 h5 mb-0 fw-normal ${
                       task.status === "booked" ? "d-none" : ""
                     }  `}
-                    title="Number of days from arrival date"
+                    title="Key location"
                   >
-                    <i className="fas fa-key fa-sm"></i>
-                    <span className="ms-1 h5 fw-bold">
-                      {task.key_location || "n/a"}
-                    </span>
+                    <label className="text-info">
+                      <i className="fas fa-key fa-sm"></i>
+                      <span className="ms-1 h4 fw-bold">
+                        {task.key_location || "n/a"}
+                      </span>
+                    </label>
                   </Col>
                 </Row>
               </Col>

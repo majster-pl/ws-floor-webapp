@@ -45,12 +45,12 @@ const Column = ({ column, tasks, searchQuery, handleShowMainModal }) => {
           </div>
         )}
       </Droppable>
-      <Card.Footer className="bg-secondary text-pink workshop-col-footer h4 m-0 py-0">
+      <Card.Footer className="bg-secondary text-white workshop-col-footer h4 m-0 py-0">
         <Row>
           <Col className="col-12 h5 m-0 mt-1 ps-1">
-            Jobsd: {Object.keys(tasks).length}
+            Total jobs: {Object.keys(tasks).length}
           </Col>
-          <Col className="col-12 m-0 text-lime h5 ps-1">Hours: {sum}h</Col>
+          <Col className="col-12 m-0 text-lime h5 ps-1">Total hours: {sum}h</Col>
         </Row>
       </Card.Footer>
     </div>
