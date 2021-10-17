@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Modal, Spinner } from "react-bootstrap";
 import "./scss/main.scss";
-
+import { Modal, Spinner } from "react-bootstrap";
 import Header from "./components/header/Header";
 import Home from "./routes/home/Home";
 import Login from "./routes/auth/login/Login";
@@ -21,9 +20,8 @@ import MainModal from "./components/MainModal";
 import MainModalLogic from "./components/MainModalLogic";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import moment from "moment";
 import apiClient from "./service/api/api";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setUser, setDepot } from "./actions";
 
 const App = () => {
@@ -218,6 +216,33 @@ const App = () => {
           toast={toast}
         />
       </Router>
+      <Modal
+        show={isLoading}
+        centered
+        className="modal-dialog-loading text-center disable-select"
+        animation={false}
+        onHide={() => setIsLoading(false)}
+        // backdrop="static"
+        // keyboard={false}
+      >
+        <div>
+          <div className="div-center">
+            <Spinner
+              className="mx-1"
+              animation="grow"
+              variant="primary"
+              size="sm"
+            />
+            <Spinner className="mx-1" animation="grow" variant="success" />
+            <Spinner
+              className="mx-1"
+              animation="grow"
+              variant="danger"
+              size="sm"
+            />
+          </div>
+        </div>
+      </Modal>
     </>
   );
 };

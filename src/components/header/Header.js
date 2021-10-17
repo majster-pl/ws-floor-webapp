@@ -30,7 +30,7 @@ const Header = ({
   const dispatch = useDispatch();
   const depotsList = useSelector((state) => state.depots);
   const selectedDepot = useSelector((state) => state.depot);
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state: RootStateOrAny) => state.user);
 
   const logout = () => {
     apiClient.post("/logout").then((response) => {
@@ -48,7 +48,7 @@ const Header = ({
   };
 
   useEffect(() => {
-    reloadCalendar();
+    // reloadCalendar();
   }, [selectedDepot]);
 
   // function to set Dropdown active

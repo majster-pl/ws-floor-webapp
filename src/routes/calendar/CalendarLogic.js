@@ -4,9 +4,7 @@ import apiClient from "../../service/api/api";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-const CalendarLogic = ({
-  setIsLoading,
-}) => {
+const CalendarLogic = ({ setIsLoading }) => {
   const history = useHistory();
   const todaysDate = moment().startOf("isoWeek");
   const [currentDate, setCurrentDate] = useState(() => {
@@ -18,17 +16,18 @@ const CalendarLogic = ({
   const [tableData, setTableData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isCalendarLoading, setIsCalendarLoading] = useState(false);
+  const selectedDepot = useSelector((state) => state.depot);
 
   // Loading calendar from api when currentDate changes
   const url =
-    "/api/v1/events?days=" +
+    "/api/v1/calendar?days=" +
     numberOfDays +
     "&from=" +
     moment(currentDate).format("YYYY-MM-DD 00:01") +
-    "&format=grid" +
-    (sessionStorage.getItem("selected_depot")
-      ? "&depot=" + sessionStorage.getItem("selected_depot")
-      : "");
+    "&format=grid" + "&depot=" + selectedDepot;
+    // (sessionStorage.getItem("selected_depot")
+    //   ? "&depot=" + sessionStorage.getItem("selected_depot")
+    //   : "");
 
   useEffect(() => {
     setIsLoading(true);
@@ -43,7 +42,7 @@ const CalendarLogic = ({
       .catch((error) => {
         setIsLoading(false);
       });
-  }, [currentDate]);
+  }, [currentDate, selectedDepot]);
 
   const siletReload = (current_Date) => {
     apiClient

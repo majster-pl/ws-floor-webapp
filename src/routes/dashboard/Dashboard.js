@@ -17,9 +17,10 @@ const Dashboard = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
   );
   const selectedDepot = useSelector((state) => state.depot);
 
-  const [totalCustomers, setTotalCustomers] = useState();
-  const [totalEventsToday, setTotalEventsToday] = useState();
-  const [totalAssets, setTotalAssets] = useState();
+  const [totalCustomers, setTotalCustomers] = useState(0);
+  const [totalEventsToday, setTotalEventsToday] = useState(0);
+  const [totalAssets, setTotalAssets] = useState(0);
+  const [totalBreakdowns, setTotalBreakdowns] = useState(0);
 
   useEffect(() => {
     const getNumberOfCustomer = () => {
@@ -36,7 +37,7 @@ const Dashboard = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
     const getNumberOfEvents = () => {
       apiClient
         .get(
-          "/api/v1/calendar?date=" +
+          "/api/v1/events?date=" +
             moment(new Date()).format("YYYY-MM-DD") +
             "&depot=" +
             selectedDepot
@@ -59,9 +60,23 @@ const Dashboard = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
         });
     };
 
+    const getNumberOfBrakedowns = () => {
+      apiClient
+        .get("/api/v1/breakdown?" + "&depot=" + selectedDepot)
+        .then((response) => {
+          console.log(response);
+          setTotalBreakdowns(response.data)
+          // setTotalAssets(Object.keys(response.data.data).length);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
     getNumberOfCustomer();
     getNumberOfAssets();
     getNumberOfEvents();
+    getNumberOfBrakedowns();
   }, [selectedDepot]);
 
   //if still waiting response from server then display spinner
@@ -86,7 +101,7 @@ const Dashboard = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
                   <Col className="col-auto me-auto">
                     <Col>
                       <div className="fw-bold fs-3">{totalEventsToday}</div>
-                      <div className="fw-light fs-5">Vehicles Due Today</div>
+                      <div className="fw-light fs-4">Vehicles Due Today</div>
                     </Col>
                   </Col>
                   <Col className="col-auto my-auto">
@@ -108,7 +123,7 @@ const Dashboard = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
                   <Col className="col-auto me-auto">
                     <Col>
                       <div className="fw-bold fs-3">{totalCustomers}</div>
-                      <div className="fw-light fs-5">Customers</div>
+                      <div className="fw-light fs-4">Customers</div>
                     </Col>
                   </Col>
                   <Col className="col-auto my-auto">
@@ -130,7 +145,7 @@ const Dashboard = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
                   <Col className="col-auto me-auto">
                     <Col>
                       <div className="fw-bold fs-3">{totalAssets}</div>
-                      <div className="fw-light fs-5">Assets</div>
+                      <div className="fw-light fs-4">Assets</div>
                     </Col>
                   </Col>
                   <Col className="col-auto my-auto">
@@ -146,12 +161,12 @@ const Dashboard = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
                 <Row className="px-2">
                   <Col className="col-auto me-auto">
                     <Col>
-                      <div className="fw-bold fs-3">4</div>
-                      <div className="fw-light fs-5">PMIs Today</div>
+                      <div className="fw-bold fs-3">{totalBreakdowns}</div>
+                      <div className="fw-light fs-4">Breakdowns Today</div>
                     </Col>
                   </Col>
                   <Col className="col-auto my-auto">
-                    <i className="fas fa-notes-medical fa-2x text-lime"></i>
+                    <i className="fas fa-car-crash fa-2x text-lime"></i>
                   </Col>
                 </Row>
               </Card.Body>
