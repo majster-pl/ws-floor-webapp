@@ -60,49 +60,53 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
           }`}
         >
           <Card.Body className="m-1 mx-2 p-0">
-            <Row>
-              <Col className="col text-light h4 fw-bold text-truncate-1 mb-0">
-                {task.breakdown === 1 ? (
-                  <i className="me-2 text-danger fas fa-car-crash text-end"></i>
-                ) : (
-                  <span></span>
-                )}
-                {task.waiting === 1 ? (
-                  <i
-                    className="me-2 text-info far fa-clock"
-                    title="Customer waiting"
-                  ></i>
-                ) : (
-                  <span></span>
-                )}
-                <label className="text-success" title="Vehicle reg">
+            <Row className="justify-content-between">
+              <Col className="col-md-6 col-xs-12 text-light h4 fw-bold mb-0">
+                <div className="text-success" title="Vehicle reg">
+                  {task.breakdown === 1 ? (
+                    <i className="text-danger fas fa-car-crash "></i>
+                  ) : (
+                    <span></span>
+                  )}
+                  {task.waiting === 1 ? (
+                    <i
+                      className="me-2 text-info far fa-clock"
+                      title="Customer waiting"
+                    ></i>
+                  ) : (
+                    <span></span>
+                  )}
                   {task.reg}
-                </label>
+                </div>
               </Col>
-              <Col className="col-auto px-0">
-                <Nav.Link
-                  className="p-0 m-0 h5"
-                  title="Get more info about the job"
-                  onClick={(e) =>
-                    handleInfoClick(e, task.event_id, task.status)
-                  }
-                >
-                  Info
-                </Nav.Link>
+              <Col className="col-md-6 col-xs-6 pe-1">
+                <Row className="justify-content-end p-0 m-0">
+                  <Col className="col-md-3 col-xs-6 px-0">
+                    <Nav.Link
+                      className="p-0 m-0 h4"
+                      title="Get more info about the job"
+                      onClick={(e) =>
+                        handleInfoClick(e, task.event_id, task.status)
+                      }
+                    >
+                      Info
+                    </Nav.Link>
+                  </Col>
+                  <Col className="col-md-6 col-xs-6 mx-0">
+                    <Nav.Link
+                      className="text-end p-0 m-0 text-info h4"
+                      title="Edit booking"
+                      onClick={(e) =>
+                        handleEditClick(e, task.event_id, task.status)
+                      }
+                    >
+                      Edit
+                    </Nav.Link>
+                  </Col>
+                </Row>
               </Col>
-
-              <Col className="col-auto">
-                <Nav.Link
-                  className="text-end p-0 m-0 text-info h5"
-                  title="Edit booking"
-                  onClick={(e) =>
-                    handleEditClick(e, task.event_id, task.status)
-                  }
-                >
-                  Edit
-                </Nav.Link>
-              </Col>
-
+            </Row>
+            <Row>
               <Col className="col-12 mt-1" title="Customer name">
                 <label className="text-white text-truncate-2 fw-normal m-0 h4">
                   {task.customer_name}
