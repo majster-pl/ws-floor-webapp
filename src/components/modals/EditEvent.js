@@ -51,7 +51,7 @@ const UpdateStatus = ({
         0,
         "You must select customer from the list, if not present please create one first"
       ),
-    description: yup.string().min(3, "You must enter at least 3 characters"),
+    description: yup.string().min(3, "You must enter at least 3 characters").required(),
     allowed_time: yup
       .number()
       .moreThan(0, "Allocated time need to be more then 0"),
@@ -63,11 +63,6 @@ const UpdateStatus = ({
       ),
     others: yup.string().nullable().max(30, "Max 30 characters"),
     status: yup.string().required(),
-
-    key_location: yup
-      .number()
-      .required()
-      .typeError("You must enter valid key location! (only numbers allowed)"),
   });
 
   // Submit function

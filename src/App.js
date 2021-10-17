@@ -60,7 +60,13 @@ const App = () => {
         .get("/api/v1/logged-in")
         .then((response) => {
           dispatch(setUser(response.data));
-          dispatch(setDepot(response.data.default_branch));
+          // if (sessionStorage.getItem("selected_depot")) {
+          //   dispatch(setDepot(sessionStorage.getItem("selected_depot")));
+          // } else {
+          //   dispatch(setDepot(response.data.default_branch));
+          // }
+            dispatch(setDepot(response.data.default_branch));
+
         })
         .catch((err) => {
           console.log("NOT LOGGED IN!");

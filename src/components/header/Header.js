@@ -28,9 +28,9 @@ const Header = ({
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
-  const depotsList = useSelector((state: RootStateOrAny) => state.depots);
-  const selectedDepot = useSelector((state: RootStateOrAny) => state.depot);
-  const user = useSelector((state: RootStateOrAny) => state.user);
+  const depotsList = useSelector((state) => state.depots);
+  const selectedDepot = useSelector((state) => state.depot);
+  const user = useSelector((state) => state.user);
 
   const logout = () => {
     apiClient.post("/logout").then((response) => {

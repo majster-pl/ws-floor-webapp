@@ -64,13 +64,13 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
               <Col className="col-md-6 col-xs-12 text-light h4 fw-bold mb-0">
                 <div className="text-success" title="Vehicle reg">
                   {task.breakdown === 1 ? (
-                    <i className="text-danger fas fa-car-crash "></i>
+                    <i className="text-danger fas fa-car-crash pe-2"></i>
                   ) : (
                     <span></span>
                   )}
                   {task.waiting === 1 ? (
                     <i
-                      className="me-2 text-info far fa-clock"
+                      className="me-2 text-info far fa-clock pe-2"
                       title="Customer waiting"
                     ></i>
                   ) : (

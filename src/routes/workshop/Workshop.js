@@ -45,7 +45,7 @@ const Workshop = ({
   // vaible to trigger silent calendar reload when changed
   const [triggerUpdate, setTriggerUpdate] = useState(0);
   const selectedDepot = useSelector((state: RootStateOrAny) => state.depot);
-  const reloadWorkshop = useSelector((state) => state.workshop);
+  const reloadWorkshop = useSelector((state: RootStateOrAny) => state.workshop);
 
   let url = "/api/v1/workshop?depot=" + selectedDepot;
 

@@ -5,6 +5,8 @@ import "./Dashboard.css";
 import ChartLine from "./components/ChartLine";
 import apiClient from "../../service/api/api";
 import { useState, useEffect } from "react";
+import moment from "moment";
+import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
 
 const Dashboard = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
   // when page oppened check if user logged in, if not redirect to login page
@@ -13,8 +15,10 @@ const Dashboard = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
     setIsLoading,
     setLoggedIn
   );
+  const selectedDepot = useSelector((state) => state.depot);
 
   const [totalCustomers, setTotalCustomers] = useState();
+  const [totalEventsToday, setTotalEventsToday] = useState();
   const [totalAssets, setTotalAssets] = useState();
 
   useEffect(() => {
@@ -26,6 +30,21 @@ const Dashboard = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
         })
         .catch((err) => {
           setTotalCustomers("n/a");
+        });
+    };
+
+    const getNumberOfEvents = () => {
+      apiClient
+        .get(
+          "/api/v1/calendar?date=" +
+            moment(new Date()).format("YYYY-MM-DD") +
+            "&depot=" +
+            selectedDepot
+        )
+        .then((response) => {
+          // console.log("response");
+          // console.log(response);
+          setTotalEventsToday(Object.keys(response.data).length);
         });
     };
 
@@ -42,7 +61,8 @@ const Dashboard = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
 
     getNumberOfCustomer();
     getNumberOfAssets();
-  }, []);
+    getNumberOfEvents();
+  }, [selectedDepot]);
 
   //if still waiting response from server then display spinner
   if (isLoading) {
@@ -55,15 +75,17 @@ const Dashboard = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
         <Row className="g-3">
           <Col sm={4}>
             <Card
-              className="dashboard-card h-100"
+              className="dashboard-card h-100 text-white text-decoration-none"
               bg="secondary"
-              onClick={() => toast.info("ELO!")}
+              // onClick={() => toast.info("ELO!")}
+              // as={NavLink}
+              // to="/calendar"
             >
               <Card.Body>
                 <Row className="px-2">
                   <Col className="col-auto me-auto">
                     <Col>
-                      <div className="fw-bold fs-3">12</div>
+                      <div className="fw-bold fs-3">{totalEventsToday}</div>
                       <div className="fw-light fs-5">Vehicles Due Today</div>
                     </Col>
                   </Col>
