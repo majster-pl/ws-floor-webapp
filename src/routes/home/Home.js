@@ -46,7 +46,7 @@ const Home = () => {
                 <h6 className="text-light fst-italic">
                   If you want to try it out fill free to use login button and
                   login to demo session using username:{" "}
-                  <i className="text-decoration-underline">demo</i> and
+                  <i className="text-decoration-underline">demo@demo.com</i> and
                   password: <i className="text-decoration-underline">demo123</i>
                 </h6>
               </Col>
