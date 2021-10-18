@@ -105,16 +105,16 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
                 }`}
               >
                 {breakdown === 1 ? (
-                  <i className="me-2 text-danger fas fa-car-crash text-end"></i>
+                  <i className="me-1 text-danger fas fa-xs fa-car-crash text-end"></i>
                 ) : (
                   <span></span>
                 )}
                 {waiting === 1 ? (
-                  <i className="me-2 text-info far fa-clock"></i>
+                  <i className="me-1 text-info fa-xs far fa-clock"></i>
                 ) : (
                   <span></span>
                 )}
-                <span className="h4 fw-bold">{reg}</span>
+                <span className="h5 fw-bold">{reg}</span>
               </div>
             </Col>
             <Col className="col-auto p-0 px-1">

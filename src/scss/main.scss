@@ -21,7 +21,9 @@ $theme-colors: (
   "dark-green": #137265,
 );
 
-$h3-font-size: 1.3rem;
+$h1-font-size: 3rem;
+$h2-font-size: 1.8rem;
+$h3-font-size: 1.1rem;
 $h4-font-size: 0.9rem;
 $h5-font-size: 0.8rem;
 $h6-font-size: 0.7rem;
@@ -81,6 +83,16 @@ $font-family-base: $font-family-sans-serif;
   align-items: center;
   height: 87vh;
 }
+
+.div-center-vert {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  height: 87vh;
+  // width: 50%;
+}
+
+
 body,
 html {
   height: 100%;

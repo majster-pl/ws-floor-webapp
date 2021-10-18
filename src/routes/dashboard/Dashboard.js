@@ -162,7 +162,7 @@ const Dashboard = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
                   <Col className="col-auto me-auto">
                     <Col>
                       <div className="fw-bold fs-3">{totalBreakdowns}</div>
-                      <div className="fw-light fs-4">Breakdowns Today</div>
+                      <div className="fw-light fs-4">Breakdowns</div>
                     </Col>
                   </Col>
                   <Col className="col-auto my-auto">

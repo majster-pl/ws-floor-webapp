@@ -81,9 +81,9 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
               </Col>
               <Col className="col-md-6 col-xs-6 pe-1">
                 <Row className="justify-content-end p-0 m-0">
-                  <Col className="col-md-3 col-xs-6 px-0">
+                  <Col className="col-md-4 col-xs-6 px-0">
                     <Nav.Link
-                      className="p-0 m-0 h4"
+                      className="p-0 m-0 h5"
                       title="Get more info about the job"
                       onClick={(e) =>
                         handleInfoClick(e, task.event_id, task.status)
@@ -92,9 +92,9 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
                       Info
                     </Nav.Link>
                   </Col>
-                  <Col className="col-md-6 col-xs-6 mx-0">
+                  <Col className="col-md-8 col-xs-6 mx-0">
                     <Nav.Link
-                      className="text-end p-0 m-0 text-info h4"
+                      className="text-end p-0 m-0 text-info h5"
                       title="Edit booking"
                       onClick={(e) =>
                         handleEditClick(e, task.event_id, task.status)
