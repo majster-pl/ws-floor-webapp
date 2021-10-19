@@ -14,7 +14,8 @@ import apiClient from "../../service/api/api";
 import { useHistory } from "react-router";
 import { RootStateOrAny, useDispatch, useSelector, useStore } from "react-redux";
 import { setDepot, setDepotsList } from "../../actions";
-
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import "./Header.css";
 
 const Header = ({
@@ -87,12 +88,12 @@ const Header = ({
       aria-expanded="false"
     >
       <img
-        src="/img/avatar.png"
         width="32"
         height="32"
         className="rounded-circle shadow-sm"
-        alt="User avatar"
-      ></img>
+        src="/img/avatar-green.png"
+        alt="Avatar"
+      />
     </Button>
   ));
 
@@ -106,12 +107,12 @@ const Header = ({
     >
       <Navbar.Brand eventkey="1" href="/">
         <div className="position-relative font-orbitron">
-          <img
-            alt=""
-            src="/img/logo-full-new.png"
-            width="230"
-            // height="60"
+          <LazyLoadImage
+            effect="blur"
             className="d-inline-block align-top sticky-top"
+            width="230"
+            src="/img/logo-full-new.png"
+            alt="WS Floor Logo"
           />
           {isLoggedIn && (
             <div className="position-absolute bottom-right">
@@ -177,7 +178,6 @@ const Header = ({
                           <NavDropdown.Item
                             className="nav-dropdown-depot-item disable-select"
                             key={"d1-" + depot.id}
-                            as={Link}
                             active={selectedDepot === depot.id}
                             onClick={(e) => {
                               e.preventDefault();
@@ -227,8 +227,7 @@ const Header = ({
                             return (
                               <NavDropdown.Item
                                 className="nav-dropdown-depot-item disable-select"
-                                key={"d2-"+ depot.id}
-                                as={Link}
+                                key={"d2-" + depot.id}
                                 active={selectedDepot === depot.id}
                                 onClick={(e) => {
                                   e.preventDefault();
@@ -237,7 +236,6 @@ const Header = ({
                                     "selected_depot",
                                     depot.id
                                   );
-                                  // reloadCalendar();
                                 }}
                               >
                                 {depot.name}

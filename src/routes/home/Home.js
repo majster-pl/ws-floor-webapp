@@ -2,7 +2,6 @@ import { Nav, Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./Home.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-// import background from "/img/hexagons-twist.jpg";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 const Home = () => {
