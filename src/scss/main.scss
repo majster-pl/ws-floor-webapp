@@ -196,8 +196,7 @@ $modal-content-bg: $color-gray-dark;
 $modal-content-border-color: $color-gray;
 $modal-header-padding-y: 0.6rem;
 .modal {
-  top: 3.2rem !important;
-  max-height: calc(100vh - 4.4rem);
+  z-index: 3000 !important;
 }
 
 //input
