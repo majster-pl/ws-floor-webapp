@@ -224,8 +224,6 @@ const Header = ({
                           menuvariant="light"
                         >
                           {depotsList.map((depot, e) => {
-                            console.log(e);
-                            
                             return (
                               <NavDropdown.Item
                                 className="nav-dropdown-depot-item disable-select"
