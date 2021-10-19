@@ -23,7 +23,7 @@ const FormInput = ({
         placeholder={_placeholder}
         // onChange={props.handleChange("reg")}
         onChange={_onChange}
-        value={_value === null ? "" : _value}
+        defaultValue={_value === null ? "" : _value}
       />
       <Form.Control.Feedback type="invalid" className="d-block">
         {_touched && _errors}

@@ -21,7 +21,7 @@ const HistoryListItem = ({ date, description, properties }) => {
         {"[" + date + "] " + description}
         <div className="container text-white">
           {Object.keys(properties.attributes).map((keyName, i) => (
-            <div>
+            <div key={"hist-"+i}>
               <span className="text-success">{keyName}</span>
               {": "}
               <span className="text-light">{old_atr[keyName]}</span>

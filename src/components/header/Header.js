@@ -21,8 +21,6 @@ const Header = ({
   isLoggedIn,
   setLoggedIn,
   setLoginErrorMsg,
-  reloadCalendar,
-  toast,
   setTableData,
 }) => {
   const history = useHistory();
@@ -30,7 +28,7 @@ const Header = ({
   const dispatch = useDispatch();
   const depotsList = useSelector((state) => state.depots);
   const selectedDepot = useSelector((state) => state.depot);
-  const user = useSelector((state: RootStateOrAny) => state.user);
+  const user = useSelector((state) => state.user);
 
   const logout = () => {
     apiClient.post("/logout").then((response) => {
@@ -107,7 +105,7 @@ const Header = ({
       className="navbar-fixed-top bg-sendary-extra navbar-main"
     >
       <Navbar.Brand eventkey="1" href="/">
-        <div class="position-relative font-orbitron">
+        <div className="position-relative font-orbitron">
           <img
             alt=""
             src="/img/logo-full-new.png"
@@ -147,7 +145,7 @@ const Header = ({
                     <NavDropdown
                       active={setDropdown1Active()}
                       title="More"
-                      menuVariant="dark"
+                      menuvariant="dark"
                       id="nav-dropdown"
                     >
                       <NavDropdown.Item
@@ -172,13 +170,13 @@ const Header = ({
                       // title={depotsList.filter(depot => depot.id === selectedDepot).map(dep => (dep.name))}
                       title="Branch"
                       drop="down"
-                      menuVariant="dark"
+                      menuvariant="dark"
                     >
                       {depotsList.map((depot) => {
                         return (
                           <NavDropdown.Item
                             className="nav-dropdown-depot-item disable-select"
-                            eventKey={"d-" + depot.id}
+                            key={"d1-" + depot.id}
                             as={Link}
                             active={selectedDepot === depot.id}
                             onClick={(e) => {
@@ -214,7 +212,7 @@ const Header = ({
 
                 <Col className="col-auto my-auto">
                   <Nav className="d-none d-lg-block justify-content-end ">
-                    <Dropdown align="end" menuVariant="dark">
+                    <Dropdown align="end" menuvariant="dark">
                       <Dropdown.Toggle as={CustomToggle}></Dropdown.Toggle>
 
                       <Dropdown.Menu className="navbar-user-dropdown">
@@ -223,13 +221,15 @@ const Header = ({
                           // title={depotsList.filter(depot => depot.id === selectedDepot).map(dep => (dep.name))}
                           title="Branch"
                           drop="start"
-                          menuVariant="light"
+                          menuvariant="light"
                         >
-                          {depotsList.map((depot) => {
+                          {depotsList.map((depot, e) => {
+                            console.log(e);
+                            
                             return (
                               <NavDropdown.Item
                                 className="nav-dropdown-depot-item disable-select"
-                                eventKey={"d-" + depot.id}
+                                key={"d2-"+ depot.id}
                                 as={Link}
                                 active={selectedDepot === depot.id}
                                 onClick={(e) => {

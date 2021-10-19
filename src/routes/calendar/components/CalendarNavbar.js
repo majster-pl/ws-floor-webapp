@@ -126,7 +126,7 @@ const CalendarNavbar = ({
           </Row>
         </Col>
         <Col md="auto" className="my-auto">
-          <div className="text-left fst-italic h4 date-range m-0">
+          <div className="text-left fst-italic h3 date-range m-0">
             <Moment format="ddd DD MMMM YYYY" add={{ days: 0 }}>
               {currentDate}
             </Moment>{" "}

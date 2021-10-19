@@ -99,7 +99,7 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
           return (
             <Row className="my-2">
               <Col sm="auto" className="ms-4 text-end d-none d-md-block">
-                <div className="numberCircle fs-5 text-pink text-uppercase">
+                <div className="numberCircle fs-3 text-pink text-uppercase">
                   {value
                     .match(/\b(\w)/g)
                     .join("")
@@ -346,32 +346,37 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
               ))}
             </thead>
             {!isLoading && data.length == 0 ? (
-              <tr>
-                <td colSpan={5} className="p-0">
-                  <div className="div-center">
-                    <Container>
-                      <Col className="p-2">
-                        {errorMsg !== "" ? errorMsg : "No data to display..."}
-                      </Col>
-                      <Col>
-                        {errorMsg !== "" ? (
-                          <Button variant="info" onClick={() => reloadTable()}>
-                            Reload
-                          </Button>
-                        ) : (
-                          <Button
-                            variant="success"
-                            as={Link}
-                            to={"/customers/new"}
-                          >
-                            Add new Customer
-                          </Button>
-                        )}
-                      </Col>
-                    </Container>
-                  </div>
-                </td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td colSpan={5} className="p-0">
+                    <div className="div-center">
+                      <Container>
+                        <Col className="p-2">
+                          {errorMsg !== "" ? errorMsg : "No data to display..."}
+                        </Col>
+                        <Col>
+                          {errorMsg !== "" ? (
+                            <Button
+                              variant="info"
+                              onClick={() => reloadTable()}
+                            >
+                              Reload
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="success"
+                              as={Link}
+                              to={"/customers/new"}
+                            >
+                              Add new Customer
+                            </Button>
+                          )}
+                        </Col>
+                      </Container>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
             ) : (
               <tbody {...getTableBodyProps()}>
                 {page.map((row) => {

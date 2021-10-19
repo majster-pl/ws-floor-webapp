@@ -176,11 +176,11 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                     </div>
                   </div>
                   <div className="col text-start">
-                    <div className="fs-4">{formGeneral.customer_name}</div>
+                    <div className="fs-2">{formGeneral.customer_name}</div>
                     <div className="row ">
                       <div className="col-auto">
                         <div>
-                          <span className="fs-5 me-2 text-success">
+                          <span className="fs-3 me-2 text-success">
                             {formGeneral.assets_total}
                           </span>
                           Assets
@@ -189,7 +189,7 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                       <div className="col-auto">
                         <div>
                           Since
-                          <span className="fs-5 mx-2 text-success">
+                          <span className="fs-3 mx-2 text-success">
                             {moment(formGeneral.created_at).format("MMM-YYYY")}
                           </span>
                         </div>
@@ -197,7 +197,7 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                       <div className="col-auto">
                         <span
                           className={
-                            "fs-5 text-capitalize " +
+                            "fs-3 text-capitalize " +
                             (formGeneral.status == "on_hold"
                               ? "text-info"
                               : "text-success")

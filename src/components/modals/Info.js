@@ -98,11 +98,7 @@ const UpdateStatus = ({
                     as="textarea"
                     // plaintext
                     readOnly
-                    rows={
-                      props.values.description.split(/\r\n|\r|\n/).length > 4
-                        ? 4
-                        : props.values.description.split(/\r\n|\r|\n/).length
-                    }
+                    rows={3}
                     value={props.values.description || ""}
                   />
                 </Col>

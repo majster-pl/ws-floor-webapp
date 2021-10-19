@@ -154,35 +154,37 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                 Back
               </Button>
             </div>
-            {valid ? 
-            <div className="col-12 col-md-6">
-              <div className="row mx-auto my-2">
-                <div className="col-5 mx-auto bg-info rounded text-center">
-                  <div className="fs-2 my-auto fw-bold text-uppercase disable-select text-sendary-extra ">
-                    &nbsp;{formGeneral.reg}&nbsp;
+            {valid ? (
+              <div className="col-12 col-md-6">
+                <div className="row mx-auto my-2">
+                  <div className="col-5 mx-auto bg-info rounded text-center">
+                    <div className="fs-2 my-auto fw-bold text-uppercase disable-select text-sendary-extra ">
+                      &nbsp;{formGeneral.reg}&nbsp;
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="col text-center mt-3">
-                <div className="row ">
-                  <div className="col-auto mx-auto">
-                    <div>
-                      Added
-                      <span className="fs-5 mx-2 text-success">
-                        {moment(formGeneral.created_at).format("DD/MM/YYYY")}
+                <div className="col text-center mt-3">
+                  <div className="row ">
+                    <div className="col-auto mx-auto">
+                      <div>
+                        Added
+                        <span className="fs-3 mx-2 text-success">
+                          {moment(formGeneral.created_at).format("DD/MM/YYYY")}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="col-auto mx-auto">
+                      Status
+                      <span className="fs-3 mx-2 text-capitalize text-success">
+                        {formGeneral.status.replace("_", " ")}
                       </span>
                     </div>
                   </div>
-                  <div className="col-auto mx-auto">
-                    Status
-                    <span className="fs-5 mx-2 text-capitalize text-success">
-                      {formGeneral.status.replace("_", " ")}
-                    </span>
-                  </div>
                 </div>
               </div>
-            </div> : <div></div>
-            }
+            ) : (
+              <div></div>
+            )}
           </div>
         </Container>
 
@@ -324,19 +326,10 @@ function AssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
                             plaintext={toggleEditForm}
                             disabled={toggleEditForm}
                             onChange={props.handleChange("status")}
+                            defaultValue={"active" === props.values.status}
                           >
-                            <option
-                              value="active"
-                              selected={"active" == props.values.status}
-                            >
-                              Active
-                            </option>
-                            <option
-                              value="on_hold"
-                              selected={"on_hold" == props.values.status}
-                            >
-                              On Hold
-                            </option>
+                            <option value="active">Active</option>
+                            <option value="on_hold">On Hold</option>
                           </Form.Control>
                         </Form.Group>
                       </Row>

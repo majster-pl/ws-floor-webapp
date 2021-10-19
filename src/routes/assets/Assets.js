@@ -332,32 +332,37 @@ const Assets = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
               ))}
             </thead>
             {data.length < 1 && !isLoading ? (
-              <tr>
-                <td colSpan={5} className="p-0">
-                  <div className="div-center">
-                    <Container>
-                      <Col className="p-2">
-                        {errorMsg !== "" ? errorMsg : "No data to display..."}
-                      </Col>
-                      <Col>
-                        {errorMsg !== "" ? (
-                          <Button variant="info" onClick={() => reloadTable()}>
-                            Reload
-                          </Button>
-                        ) : (
-                          <Button
-                            variant="success"
-                            as={Link}
-                            to={"/assets/new"}
-                          >
-                            Add new Asset
-                          </Button>
-                        )}
-                      </Col>
-                    </Container>
-                  </div>
-                </td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td colSpan={5} className="p-0">
+                    <div className="div-center">
+                      <Container>
+                        <Col className="p-2">
+                          {errorMsg !== "" ? errorMsg : "No data to display..."}
+                        </Col>
+                        <Col>
+                          {errorMsg !== "" ? (
+                            <Button
+                              variant="info"
+                              onClick={() => reloadTable()}
+                            >
+                              Reload
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="success"
+                              as={Link}
+                              to={"/assets/new"}
+                            >
+                              Add new Asset
+                            </Button>
+                          )}
+                        </Col>
+                      </Container>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
             ) : (
               <tbody {...getTableBodyProps()}>
                 {page.map((row) => {

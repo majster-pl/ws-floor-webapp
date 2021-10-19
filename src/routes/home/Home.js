@@ -27,9 +27,9 @@ const Home = () => {
                   WS Floor is a web application to help you organise/plan work
                   in your garage while automaticly updating your customers about
                   progress on reapir. It's been created with{" "}
-                  <i class="fas fa-heart text-pink"></i> by Szymon Waliczek and
+                  <i className="fas fa-heart text-pink"></i> by Szymon Waliczek and
                   is completely open source! Code can be found on{" "}
-                  <i class="fab fa-github"> Github</i>
+                  <i className="fab fa-github"> Github</i>
                 </h3>
                 <Nav.Link
                   className="px-0 mt-4"

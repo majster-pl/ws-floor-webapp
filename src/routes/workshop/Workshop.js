@@ -44,8 +44,8 @@ const Workshop = ({
   const history = useHistory();
   // vaible to trigger silent calendar reload when changed
   const [triggerUpdate, setTriggerUpdate] = useState(0);
-  const selectedDepot = useSelector((state: RootStateOrAny) => state.depot);
-  const reloadWorkshop = useSelector((state: RootStateOrAny) => state.workshop);
+  const selectedDepot = useSelector((state) => state.depot);
+  const reloadWorkshop = useSelector((state) => state.workshop);
 
   let url = "/api/v1/workshop?depot=" + selectedDepot;
 
@@ -229,9 +229,8 @@ const Workshop = ({
 
               // return <Column key={column.id} column={column} tasks={tasks} />;
               return (
-                <Col className="p-1 h-50 workshop-col-main">
+                <Col className="p-1 h-50 workshop-col-main" key={column.id}>
                   <Column
-                    key={column.id}
                     column={column}
                     tasks={tasks}
                     searchQuery={searchQuery}

@@ -492,7 +492,7 @@ const UpdateStatus = ({
                     {data.activities.map((element, i) => {
                       return (
                         <HistoryListItem
-                          key={i}
+                          key={"history-"+i}
                           date={moment(element.updated_at).format(
                             "HH:mm:ss DD-MM-Y"
                           )}

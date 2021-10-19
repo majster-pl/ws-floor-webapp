@@ -47,6 +47,7 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
       draggableId={task.id}
       index={index}
       isDragDisabled={options === "read-only"}
+      key={task.id}
     >
       {(provided) => (
         <Card
