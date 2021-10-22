@@ -10,7 +10,8 @@ const Home = () => {
       <LazyLoadImage
         effect="blur"
         className="img-home-background"
-        src="/img/hexagons-twist.jpg"
+        // src="/img/hexagons-twist.jpg"
+        src="/img/homepage-bg1.jpg"
         alt=""
       />
       <div className="container-fluid homepage-main">
@@ -21,13 +22,15 @@ const Home = () => {
                 <h3 className="text-uppercase font-orbitron">
                   Manage your workshop
                 </h3>
-                <h1 className="mt-4 font-orbitron">Workshop Software</h1>
+                <h1 className="mt-4 font-orbitron text-pink">
+                  WorkShop Floor
+                </h1>
                 <h3 className="mt-4 lh-base">
                   WS Floor is a web application to help you organise/plan work
                   in your garage while automaticly updating your customers about
                   progress on reapir. It's been created with{" "}
-                  <i className="fas fa-heart text-pink"></i> by Szymon Waliczek and
-                  is completely open source! Code can be found on{" "}
+                  <i className="fas fa-heart text-pink"></i> by Szymon Waliczek
+                  and is completely open source! Code can be found on{" "}
                   <i className="fab fa-github"> Github</i>
                 </h3>
                 <Nav.Link
@@ -37,7 +40,7 @@ const Home = () => {
                   to="/login"
                 >
                   <div className="d-grid gap-2">
-                    <Button className="btn-info" to="/login">
+                    <Button className="btn-yellow" to="/login">
                       Login
                     </Button>
                   </div>

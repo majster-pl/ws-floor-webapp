@@ -5,6 +5,7 @@ import modalReducer from "./modal";
 import depotsListReducer from "./depotsList";
 import userReducer from "./user";
 import workshopReducer from "./workshop";
+import bookingCountReducer from "./bookingsCount";
 
 const rootReducers = combineReducers({
   isLogged: loggedReducer,
@@ -13,6 +14,7 @@ const rootReducers = combineReducers({
   depot: depotReducer,
   depots: depotsListReducer,
   workshop: workshopReducer,
+  bookings_count: bookingCountReducer
 });
 
 export default rootReducers;

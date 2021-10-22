@@ -90,8 +90,8 @@ const Header = ({
       <img
         width="32"
         height="32"
-        className="rounded-circle shadow-sm"
-        src="/img/avatar-green.png"
+        className="rounded-circle shadow-sm avatar-image"
+        src="/img/avatar-new.png"
         alt="Avatar"
       />
     </Button>

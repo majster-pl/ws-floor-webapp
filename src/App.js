@@ -17,6 +17,7 @@ import NewAssetPage from "./routes/assets/NewAssetPage";
 import AssetPage from "./routes/assets/AssetPage";
 import Page404 from "./routes/page404/Page404";
 import MainModal from "./components/MainModal";
+import BookingPage from "./routes/booking/BookingPage";
 import MainModalLogic from "./components/MainModalLogic";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -201,6 +202,15 @@ const App = () => {
               setLoggedIn={setAuthenticated}
               setLoginErrorMsg={setLoginErrorMsg}
               toast={toast}
+            />
+          </Route>
+
+          <Route path="/booking/:id">
+            <BookingPage
+              // setIsLoading={setIsLoading}
+              // setLoggedIn={setAuthenticated}
+              // setLoginErrorMsg={setLoginErrorMsg}
+              // toast={toast}
             />
           </Route>
 

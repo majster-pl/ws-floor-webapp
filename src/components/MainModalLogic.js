@@ -7,8 +7,8 @@ import NewEvent from "./modals/NewEvent";
 import UpdateStatus from "./modals/UpdateStatus";
 import UpdateNotes from "./modals/UpdateNotes";
 import Info from "./modals/Info";
-import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
-import { reloadWorkshop } from "../actions";
+import { useSelector, useDispatch } from "react-redux";
+// import { reloadWorkshop } from "../actions";
 // import { useSelector } from "react-redux";
 
 const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {

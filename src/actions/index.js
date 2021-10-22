@@ -42,3 +42,10 @@ export const reloadWorkshop = (id) => {
     payload: id,
   };
 };
+
+export const setBookingsCount = (id) => {
+  return {
+    type: actions.BOOKINGS_COUNT_SET,
+    payload: id,
+  };
+};

@@ -14,7 +14,9 @@ $theme-colors: (
   "light": #888888,
   "success": #39a883,
   "danger": #f73c33,
+  "orange": #ffa349,
   "info": #ffbb00,
+  "yellow": #fffe00,
   "lime": #dfea87,
   "pink": #f00fa6,
   "light-blue": #32beff,
@@ -68,7 +70,6 @@ $btn-close-color: $color-gray-light;
   src: local("Orbitron"), url(../fonts/Orbitron/static/Orbitron-Medium.ttf);
 }
 
-
 // $font-family-sans-serif: "Comfortaa";
 
 $font-family-sans-serif: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -91,7 +92,6 @@ $font-family-base: $font-family-sans-serif;
   height: 87vh;
   // width: 50%;
 }
-
 
 body,
 html {
