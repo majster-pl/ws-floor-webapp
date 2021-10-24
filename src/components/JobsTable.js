@@ -30,15 +30,7 @@ const JobsTable = ({ data }) => {
           return (
             <Row className="my-2">
               <Col className="my-auto text-center text-uppercase">
-                <Button
-                  variant="link"
-                  className="p-0 text-white text-decoration-none"
-                  as={Link}
-                  to={"/booking/" + id}
-                  // onClick={() => setIsLoading(true)}
-                >
-                  {value}
-                </Button>
+                  <span className="text-white fw-light text-capitalize">{value}</span>
               </Col>
             </Row>
           );
