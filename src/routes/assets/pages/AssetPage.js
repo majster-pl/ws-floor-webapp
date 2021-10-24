@@ -127,6 +127,7 @@ function AssetPage({
             <Tab
               eventKey="general"
               title="General"
+              style={{ minHeight: "30rem" }}
               className="bg-darker border-start border-end border-bottom shadow"
               disabled={!valid}
             >
@@ -157,6 +158,7 @@ function AssetPage({
                   </Badge>
                 </Fragment>
               }
+              style={{ minHeight: "30rem" }}
               className="bg-darker border-start border-end border-bottom shadow"
               disabled={!valid}
             >
@@ -176,6 +178,7 @@ function AssetPage({
                   </Badge>
                 </Fragment>
               }
+              style={{ minHeight: "30rem" }}
               className="bg-darker border-start border-end border-bottom shadow"
               disabled={!valid}
             >

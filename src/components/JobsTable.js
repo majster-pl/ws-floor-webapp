@@ -9,8 +9,7 @@ import {
   usePagination,
 } from "react-table";
 
-const JobsTable = ({data}) => {
-
+const JobsTable = ({ data }) => {
   const columns = useMemo(
     () => [
       {
@@ -142,7 +141,7 @@ const JobsTable = ({data}) => {
     useTable({ columns, data }, useGlobalFilter, useSortBy, usePagination);
 
   return (
-    <Container className="py-3">
+    <>
       <Table
         className="cutomers-table text-center"
         responsive="sm"
@@ -203,7 +202,7 @@ const JobsTable = ({data}) => {
           })}
         </tbody>
       </Table>
-    </Container>
+    </>
   );
 };
 
