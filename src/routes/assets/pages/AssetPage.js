@@ -87,12 +87,12 @@ function AssetPage({
                       </div>
                     </div>
                   </div>
-                  <div className="col text-center mt-3">
+                  <div className="col text-center mt-3 h4">
                     <div className="row ">
                       <div className="col-auto mx-auto">
                         <div>
                           Added
-                          <span className="fs-3 mx-2 text-success">
+                          <span className="fs-3 mx-2 text-success fw-bold">
                             {moment(formGeneral.created_at).format(
                               "DD/MM/YYYY"
                             )}
@@ -101,9 +101,13 @@ function AssetPage({
                       </div>
                       <div className="col-auto mx-auto">
                         Status
-                        <span className="fs-3 mx-2 text-capitalize text-success">
+                        <label
+                          className={`fs-3 mx-2 text-capitalize fw-bold text-${
+                            formGeneral.status === "active" ? "success" : "info"
+                          } `}
+                        >
                           {formGeneral.status.replace("_", " ")}
-                        </span>
+                        </label>
                       </div>
                     </div>
                   </div>
