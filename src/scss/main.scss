@@ -263,6 +263,25 @@ $btn-close-opacity: 1;
   -ms-user-select: none; /* Internet Explorer/Edge */
 }
 
+// responsive Table
+.tdBefore {
+  color: $color-gray-light;
+}
+
+.trCustom:hover {
+  background-color: #323539;
+  // border-bottom: #39a883 !important;
+  // color: $color-gray-light;
+}
+
+.tr-light {
+  background-color: #2c3034;
+}
+
+.tr-dark {
+  background-color: #212529;
+}
+
 // Import Bootstrap and its default variables
 @import "~bootstrap/scss/bootstrap.scss";
 // @import "~bootstrap/scss/functions";

@@ -20,7 +20,7 @@ const AssetsTab = ({ setIsLoading, id, toast }) => {
         accessor: "reg", // accessor is the "key" in the data
         Cell: ({ value, id, make }) => {
           return (
-            <Row className="my-2">
+            <Row className="my-1">
               <Col className="my-auto text-center text-uppercase">
                 <Button
                   variant="link"

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { useState, useMemo } from "react";
-import { Row, Col, Button, Dropdown, Container, Table } from "react-bootstrap";
+import { useMemo } from "react";
+import { Row, Col, Dropdown } from "react-bootstrap";
 import moment from "moment";
 import {
   useTable,
@@ -8,6 +8,8 @@ import {
   useGlobalFilter,
   usePagination,
 } from "react-table";
+import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
+import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
 const JobsTable = ({ data }) => {
   const columns = useMemo(
@@ -28,9 +30,11 @@ const JobsTable = ({ data }) => {
         accessor: "reg", // accessor is the "key" in the data
         Cell: ({ value, id }) => {
           return (
-            <Row className="my-2">
-              <Col className="my-auto text-center text-uppercase">
-                  <span className="text-white fw-light text-capitalize">{value}</span>
+            <Row className="my-1">
+              <Col className="my-auto text-uppercase">
+                <span className="text-white fw-light text-capitalize">
+                  {value}
+                </span>
               </Col>
             </Row>
           );
@@ -78,7 +82,7 @@ const JobsTable = ({ data }) => {
         accessor: "status",
         Cell: ({ value }) => {
           return (
-            <div className="fw-light text-capitalize">
+            <div className="fw-light text-capitalize text-white">
               {value.replaceAll("_", " ")}
             </div>
           );
@@ -89,13 +93,13 @@ const JobsTable = ({ data }) => {
         accessor: "id",
         Cell: ({ value, reg, index, id }) => {
           return (
-            <Dropdown>
+            <Dropdown className="">
               <Dropdown.Toggle
-                className="dropdown-nodeco"
+                className="dropdown-nodeco p-0 "
                 variant="none"
                 id="dropdown-basic"
               >
-                <i className="fa fa-ellipsis-v fa-1 text-white"></i>
+                <i className="fa fa-ellipsis-v fa-1 text-info px-3 stretched-link"></i>
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
@@ -103,20 +107,16 @@ const JobsTable = ({ data }) => {
                   Edit
                 </Dropdown.Item>
                 <Dropdown.Item
-                  // onClick={() => alert("Do you really want to remove it??")}
-                  onClick={() => {
-                    console.log(reg);
-                    console.log(id);
-
-                    //   setRemoveAll(false);
-                    let data = {
-                      reg: reg,
-                      id: value,
-                      index: index,
-                    };
-                    //   setModaldata(data);
-                    //   setShowModal(true);
-                  }}
+                  onClick={() => alert("Not implemented yet!")}
+                  //   onClick={() => {
+                  //     console.log(reg);
+                  //     console.log(id);
+                  //     let data = {
+                  //       reg: reg,
+                  //       id: value,
+                  //       index: index,
+                  //     };
+                  //   }}
                   className="text-danger"
                 >
                   Remove
@@ -135,18 +135,18 @@ const JobsTable = ({ data }) => {
   return (
     <>
       <Table
-        className="cutomers-table text-center"
+        className="cutomers-table text-center table"
         responsive="sm"
         striped
         hover
         variant="dark"
         {...getTableProps()}
       >
-        <thead className="ms-4">
+        <thead className="ms-4 text-white">
           {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
+            <Tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                <Th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {column.render("Header")}
                   <span>
                     {column.isSorted ? (
@@ -165,34 +165,50 @@ const JobsTable = ({ data }) => {
                       ""
                     )}
                   </span>
-                </th>
+                </Th>
               ))}
-            </tr>
+            </Tr>
           ))}
         </thead>
-
-        <tbody {...getTableBodyProps()}>
-          {page.map((row) => {
+        <Thead className="d-block d-sm-none">
+          <Tr>
+            <Th>Booked Date</Th>
+            <Th>Reg</Th>
+            <Th>Description</Th>
+            <Th>Branch</Th>
+            <Th>Last update</Th>
+            <Th>Status</Th>
+            <Th>Actions</Th>
+          </Tr>
+        </Thead>
+        <Tbody {...getTableBodyProps()}>
+          {page.map((row, index) => {
             prepareRow(row);
             return (
-              <tr key={"asset-row-" + row.id} {...row.getRowProps()}>
+              <Tr
+                className={`border trCustom ${
+                  index % 2 === 0 ? "tr-dark" : "tr-light"
+                }`}
+                key={"asset-row-" + row.id}
+                {...row.getRowProps()}
+              >
                 {row.cells.map((cell) => {
                   // console.log(row.original.uuid);
                   return (
-                    <td {...cell.getCellProps()}>
+                    <Td {...cell.getCellProps()}>
                       {cell.render("Cell", {
                         id: row.original.id,
                         index: row.id,
                         value: cell.value,
                         reg: row.original.reg,
                       })}
-                    </td>
+                    </Td>
                   );
                 })}
-              </tr>
+              </Tr>
             );
           })}
-        </tbody>
+        </Tbody>
       </Table>
     </>
   );
