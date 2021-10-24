@@ -13,8 +13,8 @@ import Customers from "./routes/customers/Customers";
 import CustomerPage from "./routes/customers/pages/CustomerPage";
 import NewCustomerPage from "./routes/customers/pages/NewCustomerPage";
 import Assets from "./routes/assets/Assets";
-import NewAssetPage from "./routes/assets/NewAssetPage";
-import AssetPage from "./routes/assets/AssetPage";
+import NewAssetPage from "./routes/assets/pages/NewAssetPage";
+import AssetPage from "./routes/assets/pages/AssetPage";
 import Page404 from "./routes/page404/Page404";
 import MainModal from "./components/MainModal";
 import BookingPage from "./routes/booking/BookingPage";
@@ -92,8 +92,6 @@ const App = () => {
           isLoggedIn={authenticated}
           setLoggedIn={setAuthenticated}
           setLoginErrorMsg={setLoginErrorMsg}
-          reloadCalendar={reloadCalendar}
-          toast={toast}
           setTableData={setTableData}
         />
         <Switch>
@@ -198,6 +196,7 @@ const App = () => {
 
           <Route path="/assets/:id">
             <AssetPage
+              isLoading={isLoading}
               setIsLoading={setIsLoading}
               setLoggedIn={setAuthenticated}
               setLoginErrorMsg={setLoginErrorMsg}
@@ -207,10 +206,10 @@ const App = () => {
 
           <Route path="/booking/:id">
             <BookingPage
-              // setIsLoading={setIsLoading}
-              // setLoggedIn={setAuthenticated}
-              // setLoginErrorMsg={setLoginErrorMsg}
-              // toast={toast}
+            // setIsLoading={setIsLoading}
+            // setLoggedIn={setAuthenticated}
+            // setLoginErrorMsg={setLoginErrorMsg}
+            // toast={toast}
             />
           </Route>
 

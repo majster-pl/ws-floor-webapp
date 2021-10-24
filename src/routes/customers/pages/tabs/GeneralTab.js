@@ -194,10 +194,7 @@ const GeneralTab = ({
                   <Form.Control
                     plaintext={toggleEditForm}
                     disabled={toggleEditForm}
-                    isInvalid={
-                      props.touched.customer_contact &&
-                      props.errors.customer_contact
-                    }
+                    isInvalid={props.errors.customer_contact}
                     onChange={props.handleChange("customer_contact")}
                     value={props.values.customer_contact}
                     type="text"

@@ -46,10 +46,6 @@ const Header = ({
     });
   };
 
-  useEffect(() => {
-    // reloadCalendar();
-  }, [selectedDepot]);
-
   // function to set Dropdown active
   const setDropdown1Active = () => {
     if (location.pathname === "/customers" || location.pathname === "/assets") {
@@ -186,7 +182,6 @@ const Header = ({
                                 "selected_depot",
                                 depot.id
                               );
-                              // reloadCalendar();
                             }}
                           >
                             {depot.name}

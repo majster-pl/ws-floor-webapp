@@ -21,6 +21,17 @@ export const BookingsTab = ({ id, toast }) => {
   const columns = useMemo(
     () => [
       {
+        Header: "Booked Date",
+        accessor: "booked_date_time",
+        Cell: ({ value }) => {
+          return (
+            <span className="text-white fw-light text-capitalize">
+              {moment(value).format("DD-MM-YYYY")}
+            </span>
+          );
+        },
+      },
+      {
         Header: "Reg",
         accessor: "reg", // accessor is the "key" in the data
         Cell: ({ value, id }) => {
@@ -41,17 +52,7 @@ export const BookingsTab = ({ id, toast }) => {
           );
         },
       },
-      {
-        Header: "Booked Date",
-        accessor: "booked_date_time",
-        Cell: ({ value }) => {
-          return (
-            <span className="text-white fw-light text-capitalize">
-              {moment(value).format("DD-MM-YYYY")}
-            </span>
-          );
-        },
-      },
+
       {
         Header: "Description",
         accessor: "description",
@@ -73,7 +74,7 @@ export const BookingsTab = ({ id, toast }) => {
         },
       },
       {
-        Header: "Last Update",
+        Header: "Last Update in Days",
         accessor: "updated_at",
         Cell: ({ value }) => {
           let current = moment().startOf("day");
@@ -83,8 +84,7 @@ export const BookingsTab = ({ id, toast }) => {
               className="text-white fw-light text-capitalize"
               title={moment(value).format("DD-MM-YYYY HH:mm:ss")}
             >
-              {Math.abs(moment.duration(given.diff(current)).asDays())} days ago
-              {/* {moment(value).format("DD-MM-YYYY HH:mm:ss")} */}
+              {Math.abs(moment.duration(given.diff(current)).asDays())} days
             </span>
           );
         },

@@ -8,13 +8,13 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-import IsLoggedInLogic from "../../components/IsLoggedInLogic";
+import IsLoggedInLogic from "../../../components/IsLoggedInLogic";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import apiClient from "../../service/api/api";
+import apiClient from "../../../service/api/api";
 import { Formik, yupToFormErrors } from "formik";
 import * as yup from "yup";
-import FormInput from "./components/FormInput";
+import FormInput from "../components/FormInput";
 import { Typeahead } from "react-bootstrap-typeahead";
 
 function NewAssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {

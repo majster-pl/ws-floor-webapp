@@ -4,7 +4,7 @@ import apiClient from "../../service/api/api";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-const CalendarLogic = ({ setIsLoading }) => {
+const CalendarLogic = ({ setIsLoading, toast }) => {
   const history = useHistory();
   const todaysDate = moment().startOf("isoWeek");
   const [currentDate, setCurrentDate] = useState(() => {

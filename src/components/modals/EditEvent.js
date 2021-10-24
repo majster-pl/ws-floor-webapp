@@ -221,7 +221,7 @@ const UpdateStatus = ({
                         }}
                         options={customers}
                         isInvalid={!!props.errors.customer_id}
-                        value={props.values.customer_name || ""}
+                        // value={props.values.customer_name || ""}
                         placeholder="Select customer from the list"
                         defaultSelected={[props.values.customer_name]}
                       />
