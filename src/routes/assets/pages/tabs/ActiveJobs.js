@@ -1,33 +1,33 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import apiClient from "../../../../service/api/api";
 import { useDispatch } from "react-redux";
-import { setHistoryEventsCount } from "../../../../actions";
+// add relevent action
+import { setActiveEventsCount } from "../../../../actions";
 import JobsTable from "../../../../components/JobsTable";
 
-export const HistoryTab = ({ id, toast }) => {
-  const [data, setData] = useState([]);
+const ActiveJobs = ({ toast, id }) => {
   const dispatch = useDispatch();
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    dispatch(setHistoryEventsCount(0));
+    dispatch(setActiveEventsCount(0));
     const fetchEvents = async () => {
       try {
-        const result = await apiClient.get("/api/v1/asset_event_history/" + id);
+        const result = await apiClient.get("/api/v1/asset_event_active/" + id);
         console.log("result");
         console.log(result);
         setData(result.data.data);
-        dispatch(setHistoryEventsCount(Object.keys(result.data.data).length));
+        dispatch(setActiveEventsCount(Object.keys(result.data.data).length));
       } catch (error) {
         toast.error(error);
       }
     };
     fetchEvents();
   }, []);
-  return (
-    <div>
+
+  return <div>
       <JobsTable data={data}></JobsTable>
-    </div>
-  );
+  </div>;
 };
 
-export default HistoryTab;
+export default ActiveJobs;

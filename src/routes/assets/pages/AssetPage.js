@@ -1,13 +1,14 @@
 import { useParams } from "react-router-dom";
-import { Container, Button, Tabs, Tab } from "react-bootstrap";
+import { Container, Button, Tabs, Tab, Badge } from "react-bootstrap";
 import IsLoggedInLogic from "../../../components/IsLoggedInLogic";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import apiClient from "../../../service/api/api";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
 import GeneralTab from "./tabs/GeneralTab";
 import HistoryTab from "./tabs/HistoryTab";
-import OpenJobs from "./tabs/OpenJobs";
+import OpenJobs from "./tabs/ActiveJobs";
+import { useSelector } from "react-redux";
 
 function AssetPage({
   isLoading,
@@ -19,6 +20,8 @@ function AssetPage({
   // when page oppened check if user logged in, if not redirect to login page
   const {} = IsLoggedInLogic(setLoginErrorMsg, setIsLoading, setLoggedIn);
   const history = useHistory();
+  const eventsHistoryCount = useSelector((state) => state.events_history_count);
+  const eventsActiveCount = useSelector((state) => state.events_active_count);
 
   const [valid, setValid] = useState(true);
 
@@ -41,15 +44,13 @@ function AssetPage({
   const [toggleEditForm, setToggleEditForm] = useState(true); // state of edit/save button
   const [key, setKey] = useState("general"); // current tab state
 
-  
-
   // fech data on component mount
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await apiClient.get("/api/v1/assets/" + id);
         console.log(result.data.data);
-        setFormGeneral({...result.data.data});
+        setFormGeneral({ ...result.data.data });
         // setIsLoading(false);
       } catch (error) {
         toast.error(error.data.message);
@@ -118,6 +119,7 @@ function AssetPage({
             activeKey={key}
             onSelect={(k) => setKey(k)}
           >
+            {/* General */}
             <Tab
               eventKey="general"
               title="General"
@@ -139,26 +141,42 @@ function AssetPage({
                 <Container className="py-3">No data availabe</Container>
               )}
             </Tab>
+
+            {/* Active Jobs */}
             <Tab
-              eventKey="history"
-              title="History"
+              eventKey="bookings"
+              title={
+                <Fragment>
+                  Active Jobs
+                  <Badge className="ms-1" bg="secondary" text="white">
+                    {eventsActiveCount}
+                  </Badge>
+                </Fragment>
+              }
               className="bg-darker border-start border-end border-bottom shadow"
               disabled={!valid}
             >
               {valid ? (
-                <HistoryTab />
+                <OpenJobs id={id} toast={toast} />
               ) : (
                 <Container className="py-3">No data availabe</Container>
               )}
             </Tab>
             <Tab
-              eventKey="bookings"
-              title="Open Jobs"
+              eventKey="history"
+              title={
+                <Fragment>
+                  History
+                  <Badge className="ms-1" bg="secondary" text="white">
+                    {eventsHistoryCount}
+                  </Badge>
+                </Fragment>
+              }
               className="bg-darker border-start border-end border-bottom shadow"
               disabled={!valid}
             >
               {valid ? (
-                <OpenJobs />
+                <HistoryTab id={id} toast={toast} />
               ) : (
                 <Container className="py-3">No data availabe</Container>
               )}

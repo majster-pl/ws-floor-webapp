@@ -49,3 +49,17 @@ export const setBookingsCount = (id) => {
     payload: id,
   };
 };
+
+export const setActiveEventsCount = (id) => {
+  return {
+    type: actions.EVENTS_ACTIVE_COUNT_SET,
+    payload: id,
+  };
+};
+
+export const setHistoryEventsCount = (id) => {
+  return {
+    type: actions.EVENTS_HISTORY_COUNT_SET,
+    payload: id,
+  };
+};
