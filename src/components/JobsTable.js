@@ -136,10 +136,6 @@ const JobsTable = ({ data }) => {
     <>
       <Table
         className="cutomers-table text-center table"
-        responsive="sm"
-        striped
-        hover
-        variant="dark"
         {...getTableProps()}
       >
         <thead className="ms-4 text-white">

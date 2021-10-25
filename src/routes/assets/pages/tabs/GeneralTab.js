@@ -44,8 +44,8 @@ const GeneralTab = ({
       .string()
       .required("Vehicle reg is required")
       .min(4, "Must be at least 4 characters"),
-    make: yup.string().min(3),
-    model: yup.string().min(3),
+    make: yup.string().min(2),
+    model: yup.string().min(2),
     status: yup.string().required("You must sellect status"),
     customer_id: yup
       .number()
