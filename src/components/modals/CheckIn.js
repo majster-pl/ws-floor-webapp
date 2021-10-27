@@ -184,7 +184,10 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
                         placeholder="Peg nr."
                         value={props.values.key_location || ""}
                         onChange={props.handleChange("key_location")}
-                        isInvalid={!!props.errors.key_location}
+                        isInvalid={
+                          props.touched.key_location &&
+                          !!props.errors.key_location
+                        }
                       />
                     </Col>
                     <Col sm="12">
