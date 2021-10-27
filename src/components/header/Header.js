@@ -242,8 +242,11 @@ const Header = ({
                         <Dropdown.Item eventKey="11" as={Link} to="/settings">
                           Settings
                         </Dropdown.Item>
+                        <Dropdown.Item eventKey="12" as={Link} to="/profile">
+                          Profile
+                        </Dropdown.Item>
                         <Dropdown.Divider />
-                        <Dropdown.Item eventKey="12" onClick={logout}>
+                        <Dropdown.Item eventKey="13" onClick={logout}>
                           Logout
                         </Dropdown.Item>
                       </Dropdown.Menu>

@@ -16,6 +16,7 @@ import Assets from "./routes/assets/Assets";
 import NewAssetPage from "./routes/assets/pages/NewAssetPage";
 import AssetPage from "./routes/assets/pages/AssetPage";
 import Page404 from "./routes/page404/Page404";
+import Profile from "./routes/profile/Profile";
 import MainModal from "./components/MainModal";
 import BookingPage from "./routes/booking/BookingPage";
 import MainModalLogic from "./components/MainModalLogic";
@@ -64,8 +65,7 @@ const App = () => {
           // } else {
           //   dispatch(setDepot(response.data.default_branch));
           // }
-            dispatch(setDepot(response.data.default_branch));
-
+          dispatch(setDepot(response.data.default_branch));
         })
         .catch((err) => {
           console.log("NOT LOGGED IN!");
@@ -211,6 +211,10 @@ const App = () => {
             // setLoginErrorMsg={setLoginErrorMsg}
             // toast={toast}
             />
+          </Route>
+
+          <Route path="/profile">
+            <Profile />
           </Route>
 
           <Route path="/*">
