@@ -214,7 +214,11 @@ const App = () => {
           </Route>
 
           <Route path="/profile">
-            <Profile />
+            <Profile
+              setIsLoading={setIsLoading}
+              setLoggedIn={setAuthenticated}
+              setLoginErrorMsg={setLoginErrorMsg}
+            />
           </Route>
 
           <Route path="/*">
