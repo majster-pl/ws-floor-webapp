@@ -260,7 +260,7 @@ const GeneralTab = ({
                       <Typeahead
                         id="customer-typeahead"
                         labelKey="customer_name"
-                        key={"typehead-1"}
+                        key={props.values.customer_name ? "loading.." : "typehead-1"}
                         isInvalid={
                           props.touched.customer_id && props.errors.customer_id
                         }

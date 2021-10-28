@@ -33,9 +33,13 @@ const Profile = ({ setLoginErrorMsg, setIsLoading, setLoggedIn }) => {
             <h4 className="text-muted">
               You can update your name, email & password using the form below.
             </h4>
-            <Row className="mb-3">
+            <Row className="mt-2">
               {/* Name */}
-              <Form.Group as={Col} controlId="formGridName">
+              <Form.Group
+                as={Col}
+                className="col-12 col-md-6 mt-3"
+                controlId="formGridName"
+              >
                 <Form.Label>Name</Form.Label>
                 <Form.Control
                   type="text"
@@ -46,7 +50,11 @@ const Profile = ({ setLoginErrorMsg, setIsLoading, setLoggedIn }) => {
               </Form.Group>
 
               {/* E-mail */}
-              <Form.Group as={Col} controlId="formGridEmail">
+              <Form.Group
+                as={Col}
+                className="col-12 col-md-6 mt-3"
+                controlId="formGridEmail"
+              >
                 <Form.Label>Email</Form.Label>
                 <Fragment>
                   <Form.Group>
@@ -62,39 +70,52 @@ const Profile = ({ setLoginErrorMsg, setIsLoading, setLoggedIn }) => {
               </Form.Group>
             </Row>
 
-            <Row className="mb-3">
+            <Row className="">
               {/* New password */}
-              <Form.Group as={Col} controlId="formGridPasswordNew">
+              <Form.Group
+                as={Col}
+                className="col-12 col-md-6 mt-3"
+                controlId="formGridPasswordNew"
+              >
                 <Form.Label>New Password</Form.Label>
                 <Form.Control type="password" placeholder="New Password" />
               </Form.Group>
 
               {/* Confirm password */}
-              <Form.Group as={Col} controlId="formGridPasswordConfirm">
+              <Form.Group
+                as={Col}
+                className="col-12 col-md-6 mt-3"
+                controlId="formGridPasswordConfirm"
+              >
                 <Form.Label>Confirm Password</Form.Label>
                 <Form.Control type="password" placeholder="Confirm Password" />
               </Form.Group>
             </Row>
-
-            <Form.Group className="mb-3" controlId="formGridBranch">
-              <Form.Label>Default Branch</Form.Label>
-              <Form.Control
-                required
-                as="select"
-                type="select"
-                key={userData.default_branch ? "notLoadedYet" : "loaded"}
-                defaultValue={userData.default_branch}
-                onChange={props.handleChange("default_branch")}
-                isInvalid={!!props.errors.status}
+            <Row>
+              <Form.Group
+                as={Col}
+                className="col-12 col-md-6 mt-3"
+                controlId="formGridBranch"
               >
-                {userDepots.map((depot) => {
-                  return <option value={depot.id}>{depot.name}</option>;
-                })}
-              </Form.Control>
-              <Form.Text className="text-danger ms-2">
-                {props.touched.status && props.errors.status}
-              </Form.Text>
-            </Form.Group>
+                <Form.Label>Default Branch</Form.Label>
+                <Form.Control
+                  required
+                  as="select"
+                  type="select"
+                  key={userData.default_branch ? "notLoadedYet" : "loaded"}
+                  defaultValue={userData.default_branch}
+                  onChange={props.handleChange("default_branch")}
+                  isInvalid={!!props.errors.status}
+                >
+                  {userDepots.map((depot) => {
+                    return <option value={depot.id}>{depot.name}</option>;
+                  })}
+                </Form.Control>
+                <Form.Text className="text-danger ms-2">
+                  {props.touched.status && props.errors.status}
+                </Form.Text>
+              </Form.Group>
+            </Row>
 
             <Button variant="success" type="submit">
               Save
