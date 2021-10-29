@@ -218,6 +218,7 @@ const App = () => {
               setIsLoading={setIsLoading}
               setLoggedIn={setAuthenticated}
               setLoginErrorMsg={setLoginErrorMsg}
+              toast={toast}
             />
           </Route>
 
