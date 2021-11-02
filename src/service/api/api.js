@@ -2,8 +2,8 @@ import axios from "axios";
 // import Cookies from "js-cookie";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:8000",
-  // baseURL: "https://api-ws-floor.waliczek.org/",
+  // baseURL: "http://localhost:8000",
+  baseURL: "https://api-ws-floor.waliczek.org/",
   headers: {
     "Access-Control-Allow-Origin": "*",
     "Content-type": "application/json",

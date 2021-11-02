@@ -204,7 +204,7 @@ const App = () => {
             />
           </Route>
 
-          <Route path="/booking/:id">
+          <Route path="/booking/:uuid">
             <BookingPage
             // setIsLoading={setIsLoading}
             // setLoggedIn={setAuthenticated}

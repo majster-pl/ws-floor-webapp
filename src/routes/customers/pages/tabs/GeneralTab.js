@@ -67,7 +67,7 @@ const GeneralTab = ({
 
   // function to remove customer
   const removeCustomer = () => {
-    let url = "/api/v1/customers/" + modalData.id;
+    let url = "/api/v1/customers/" + modalData.uuid;
     setIsLoading(true);
 
     apiClient
