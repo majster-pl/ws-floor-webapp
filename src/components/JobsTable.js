@@ -72,7 +72,10 @@ const JobsTable = ({ data }) => {
               className="text-white fw-light text-capitalize"
               title={moment(value).format("DD-MM-YYYY HH:mm:ss")}
             >
-              {Math.abs(moment.duration(given.diff(current)).asDays())} days
+              {Math.abs(
+                Math.round(moment.duration(given.diff(current)).asDays())
+              )}{" "}
+              days
             </span>
           );
         },
@@ -90,8 +93,8 @@ const JobsTable = ({ data }) => {
       },
       {
         Header: "",
-        accessor: "id",
-        Cell: ({ value, reg, index, id }) => {
+        accessor: "uuid",
+        Cell: ({ value }) => {
           return (
             <Dropdown className="">
               <Dropdown.Toggle
