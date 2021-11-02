@@ -197,8 +197,7 @@ const Workshop = ({
   }, []);
 
   useEffect(() => {
-    // siletReload(currentDate);
-    loadWorkshopData();
+    loadWorkshopData(true);
   }, [triggerUpdate, selectedDepot, reloadWorkshop]);
 
   return data.length !== 0 && !loadingError ? (
@@ -252,7 +251,7 @@ const Workshop = ({
           <div className="my-4">
             An unknown error occured while loading the data... :-(
           </div>
-          <Button variant="info" onClick={() => loadWorkshopData()}>
+          <Button variant="info" onClick={() => loadWorkshopData(true)}>
             Reload
           </Button>
         </Col>
