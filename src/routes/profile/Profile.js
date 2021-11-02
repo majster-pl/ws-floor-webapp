@@ -84,7 +84,7 @@ const Profile = ({ setLoginErrorMsg, setIsLoading, setLoggedIn, toast }) => {
   }
 
   return (
-    <Container className="mt-4">
+    <Container className="py-3 scroll">
       <Formik
         initialValues={{ ...userData, passwordConfirmation: "" }}
         validationSchema={reviewShema}
