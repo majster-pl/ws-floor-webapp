@@ -51,14 +51,6 @@ const Header = ({
     });
   };
 
-  // function to set Dropdown active
-  const setDropdown1Active = () => {
-    if (location.pathname === "/customers" || location.pathname === "/assets") {
-      return true;
-    } else {
-      return false;
-    }
-  };
   useEffect(() => {
     async function fetchDepots() {
       const depots = await apiClient
@@ -144,32 +136,16 @@ const Header = ({
                     <Nav.Link eventKey="4" as={NavLink} to="/workshop">
                       Workshop
                     </Nav.Link>
-                    <NavDropdown
-                      active={setDropdown1Active()}
-                      title="More"
-                      menuvariant="dark"
-                      id="nav-dropdown"
-                    >
-                      <NavDropdown.Item
-                        eventKey="5.1"
-                        as={NavLink}
-                        to="/customers"
-                      >
-                        Customers
-                      </NavDropdown.Item>
-                      <NavDropdown.Item
-                        eventKey="5.2"
-                        as={NavLink}
-                        to="/assets"
-                      >
-                        Assets
-                      </NavDropdown.Item>
-                    </NavDropdown>
+                    <Nav.Link eventKey="5" as={NavLink} to="/customers">
+                      Customers
+                    </Nav.Link>
+                    <Nav.Link eventKey="6" as={NavLink} to="/assets">
+                      Assets
+                    </Nav.Link>
                   </Nav>
                   <Nav className="d-block d-lg-none me-auto">
                     <NavDropdown
                       className="nav-dropdown-depot2 disable-select"
-                      // title={depotsList.filter(depot => depot.id === selectedDepot).map(dep => (dep.name))}
                       title="Branch"
                       drop="down"
                       menuvariant="dark"
@@ -195,6 +171,7 @@ const Header = ({
                       })}
                     </NavDropdown>
                   </Nav>
+                  <Dropdown.Divider className="d-block d-lg-none me-auto" />
 
                   <Nav className="d-block d-lg-none me-auto">
                     <Nav.Link eventKey="11a" as={Link} to="/settings">
