@@ -10,7 +10,7 @@ import {
 } from "react-table";
 import moment from "moment";
 
-const AssetsTab = ({ setIsLoading, id, toast }) => {
+const AssetsTab = ({ setIsLoading, uuid, toast }) => {
   const [assets, setAssets] = useState([]);
 
   const columns = useMemo(
@@ -18,7 +18,7 @@ const AssetsTab = ({ setIsLoading, id, toast }) => {
       {
         Header: "Reg",
         accessor: "reg", // accessor is the "key" in the data
-        Cell: ({ value, id, uuid }) => {
+        Cell: ({ value, uuid }) => {
           return (
             <Row className="my-1">
               <Col className="my-auto text-center text-uppercase">
@@ -78,7 +78,7 @@ const AssetsTab = ({ setIsLoading, id, toast }) => {
       },
       {
         Header: "",
-        accessor: "id",
+        accessor: "uuid",
         Cell: ({ value, reg, index }) => {
           return (
             <Dropdown>
@@ -129,12 +129,11 @@ const AssetsTab = ({ setIsLoading, id, toast }) => {
   useEffect(() => {
     const fetchAssets = async () => {
       try {
-        const result = await apiClient.get("/api/v1/customer_assets/" + id);
+        const result = await apiClient.get("/api/v1/customer_assets/" + uuid);
         setAssets(result.data);
         console.log("HELLO!");
-        
+
         console.log(result.data);
-        
       } catch (error) {
         toast.error(error.data.message);
       }

@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { setBookingsCount } from "../../../../actions";
 import JobsTable from "../../../../components/JobsTable";
 
-export const BookingsTab = ({ id, toast }) => {
+export const BookingsTab = ({ uuid, toast }) => {
   const [data, setData] = useState([]);
   const dispatch = useDispatch();
 
@@ -12,7 +12,7 @@ export const BookingsTab = ({ id, toast }) => {
     dispatch(setBookingsCount(0));
     const fetchEvents = async () => {
       try {
-        const result = await apiClient.get("/api/v1/customer_bookings/" + id);
+        const result = await apiClient.get("/api/v1/customer_bookings/" + uuid);
         console.log("result");
         console.log(result);
         setData(result.data.data);

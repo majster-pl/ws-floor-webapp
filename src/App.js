@@ -159,7 +159,7 @@ const App = () => {
               toast={toast}
             />
           </Route>
-          <Route path="/customers/:id">
+          <Route path="/customers/:uuid">
             <CustomerPage
               setIsLoading={setIsLoading}
               setLoggedIn={setAuthenticated}

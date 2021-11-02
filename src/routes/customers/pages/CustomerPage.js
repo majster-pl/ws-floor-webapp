@@ -23,7 +23,7 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   const [valid, setValid] = useState(true);
   const bookingsCount = useSelector((state) => state.bookings_count);
 
-  const { id } = useParams(); // parameter from url
+  const { uuid } = useParams(); // parameter from url
 
   const [formGeneral, setFormGeneral] = useState({
     id: "",
@@ -46,7 +46,7 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await apiClient.get("/api/v1/customers/" + id);
+        const result = await apiClient.get("/api/v1/customers/" + uuid);
         console.log(result.data.data);
         setFormGeneral(result.data.data);
         setIsLoading(false);
@@ -143,7 +143,7 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
           >
             {valid ? (
               <GeneralTab
-                id={id}
+                id={uuid}
                 toast={toast}
                 formGeneral={formGeneral}
                 setIsLoading={setIsLoading}
@@ -171,7 +171,7 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
             disabled={!valid}
           >
             {valid ? (
-              <AssetsTab setIsLoading={setIsLoading} id={id} toast={toast} />
+              <AssetsTab setIsLoading={setIsLoading} uuid={uuid} toast={toast} />
             ) : (
               <Container className="py-3">No data availabe</Container>
             )}
@@ -193,7 +193,7 @@ function CustomerPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
             disabled={!valid}
           >
             {valid ? (
-              <BookingsTab id={id} toast={toast} />
+              <BookingsTab uuid={uuid} toast={toast} />
             ) : (
               <Container className="py-3">No data availabe</Container>
             )}
