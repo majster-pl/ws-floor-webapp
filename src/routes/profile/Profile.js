@@ -1,10 +1,11 @@
-import { Container, Form, Row, Col, Button } from "react-bootstrap";
+import { Container, Form, Row, Col, Button, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { Fragment } from "react";
 import IsLoggedInLogic from "../../components/IsLoggedInLogic";
 import apiClient from "../../service/api/api";
+import { useHistory } from "react-router-dom";
 
 const Profile = ({ setLoginErrorMsg, setIsLoading, setLoggedIn, toast }) => {
   // when page oppened check if user logged in, if not redirect to login page
@@ -13,14 +14,16 @@ const Profile = ({ setLoginErrorMsg, setIsLoading, setLoggedIn, toast }) => {
     setIsLoading,
     setLoggedIn
   );
+  const history = useHistory();
 
   const userData = useSelector((state) => state.user);
   const userDepots = useSelector((state) => state.depots);
 
   // Form validation
-  const reviewShema = yup.object({
+  const reviewShema = yup.object().shape({
     name: yup.string().min(3, "You must enter at least 3 characters"),
     email: yup.string().email("Enter valid email address"),
+    default_branch: yup.number(),
     newPassword: yup
       .string()
       .matches(
@@ -29,44 +32,65 @@ const Profile = ({ setLoginErrorMsg, setIsLoading, setLoggedIn, toast }) => {
       ),
     passwordConfirmation: yup
       .string()
-      .oneOf([yup.ref("newPassword"), null], "Passwords doesn't match!"),
-    default_branch: yup.number(),
+      .required()
+      .oneOf([yup.ref("newPassword"), null], "Passwords doesn't match!")
+      .when("newPassword", (newPassword) => {
+        if (typeof newPassword !== "undefined") {
+          return yup
+            .string()
+            .required("You need to confirm new password")
+            .oneOf([yup.ref("newPassword"), null], "Passwords doesn't match!");
+        } else {
+          return yup
+            .string()
+            .oneOf([yup.ref("newPassword"), null], "Passwords doesn't match!");
+        }
+      }),
   });
 
-  async function handleSubmit(values) {
+  async function handleSubmit(values, actions) {
     let url = "/api/v1/user/" + userData.id;
-    console.log(values);
-
+    // console.log(values);
     const user = await apiClient
       .patch(url, values)
       .then((response) => {
-        console.log(response);
-
+        // console.log(response);
         toast.success("Profile data updated successfully!");
+        actions.setSubmitting(false);
+        actions.resetForm();
       })
       .catch((err) => {
+        if (err.status === 419) {
+          setLoggedIn(false);
+          setLoginErrorMsg("You are no longer logged in, please log in again.");
+          sessionStorage.setItem("loginStatus", "false");
+          history.push("/login");
+        }
         console.log(err);
-          toast.error(JSON.stringify(err.data.errors));
+        if (err.data.hasOwnProperty("errors")) {
+          const keys = Object.keys(err.data.errors);
+          for (const key of keys) {
+            toast.error(err.data.errors[key][0]);
+          }
+        } else {
+          if (err.data.hasOwnProperty("message")) {
+            toast.error(err.data.message);
+          } else {
+            toast.error(JSON.stringify(err.data));
+          }
+        }
+        actions.setSubmitting(false);
       });
   }
-
-  const isDemo = () => {
-    if (userData.email === "demo@demo.com") {
-      return true;
-    } else {
-      return false;
-    }
-  };
 
   return (
     <Container className="mt-4">
       <Formik
-        initialValues={{ ...userData }}
+        initialValues={{ ...userData, passwordConfirmation: "" }}
         validationSchema={reviewShema}
         onSubmit={(values, actions) => {
-          console.log("RUNNING SUBMIT!");
-          handleSubmit(values);
-          actions.setSubmitting(false);
+          actions.setSubmitting(true);
+          handleSubmit(values, actions);
         }}
       >
         {(props) => (
@@ -85,6 +109,7 @@ const Profile = ({ setLoginErrorMsg, setIsLoading, setLoggedIn, toast }) => {
                 <Form.Label>Name</Form.Label>
                 <Form.Control
                   type="text"
+                  disabled={props.isSubmitting}
                   placeholder="Name"
                   defaultValue={userData.name}
                   onChange={props.handleChange("name")}
@@ -108,6 +133,7 @@ const Profile = ({ setLoginErrorMsg, setIsLoading, setLoggedIn, toast }) => {
                       type="email"
                       key={userData.email ? "notLoadedYet" : "loaded"}
                       placeholder="Enter email"
+                      disabled={props.isSubmitting}
                       defaultValue={userData.email}
                       onChange={props.handleChange("email")}
                       isInvalid={!!props.errors.email && props.touched.email}
@@ -131,6 +157,7 @@ const Profile = ({ setLoginErrorMsg, setIsLoading, setLoggedIn, toast }) => {
                 <Form.Control
                   type="password"
                   onChange={props.handleChange("newPassword")}
+                  disabled={props.isSubmitting}
                   autoComplete="new-password"
                   placeholder="New Password"
                   isInvalid={
@@ -153,6 +180,7 @@ const Profile = ({ setLoginErrorMsg, setIsLoading, setLoggedIn, toast }) => {
                   type="password"
                   defaultValue={props.values.passwordConfirmation}
                   onChange={props.handleChange("passwordConfirmation")}
+                  disabled={props.isSubmitting}
                   autoComplete="new-password-repete"
                   placeholder="Confirm Password"
                   isInvalid={
@@ -177,6 +205,7 @@ const Profile = ({ setLoginErrorMsg, setIsLoading, setLoggedIn, toast }) => {
                   required
                   as="select"
                   type="number"
+                  disabled={props.isSubmitting}
                   key={userData.default_branch ? "notLoadedYet" : "loaded"}
                   defaultValue={userData.default_branch}
                   // onChange={(e) => {
@@ -203,29 +232,24 @@ const Profile = ({ setLoginErrorMsg, setIsLoading, setLoggedIn, toast }) => {
               </Form.Group>
             </Row>
             <Container className="text-end px-0">
-              {!isDemo() ? (
-                <Button
-                  className={props.dirty ? "disable" : ""}
-                  variant="secondary"
-                  type="button"
-                  onClick={() =>
-                    alert(
-                      "You are using Demo session!\nYou can't change settings on this page!"
-                    )
-                  }
-                >
-                  Save
-                </Button>
-              ) : (
-                <Button
-                  disabled={!props.dirty}
-                  className={props.dirty ? "disable" : ""}
-                  variant="success"
-                  type="submit"
-                >
-                  Save
-                </Button>
-              )}
+              <Button
+                disabled={!props.dirty}
+                className={props.dirty ? "disable" : ""}
+                variant="success"
+                type="submit"
+              >
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  className={`me-2 ${props.isSubmitting ? "" : "d-none"}`}
+                  role="status"
+                  aria-hidden="true"
+                />
+                <span className="">
+                  {props.isSubmitting ? "Saving..." : "Save"}
+                </span>
+              </Button>
             </Container>
           </Form>
         )}

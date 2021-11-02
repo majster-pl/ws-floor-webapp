@@ -27,6 +27,9 @@ apiClient.interceptors.response.use(
       if (!exempt.includes(window.location.pathname)) {
         console.log("running code from API!!...");
         sessionStorage.setItem("redirect_path", window.location.pathname);
+        // if (error.response.status === 419) {
+        //   window.location.replace("/login");
+        // }
       }
       return Promise.reject(error.response);
     } else {
