@@ -131,6 +131,8 @@ const AssetsTab = ({ setIsLoading, id, toast }) => {
       try {
         const result = await apiClient.get("/api/v1/customer_assets/" + id);
         setAssets(result.data);
+        console.log("HELLO!");
+        
         console.log(result.data);
         
       } catch (error) {
