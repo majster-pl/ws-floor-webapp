@@ -62,7 +62,7 @@ function NewCustomerPage({
         console.log(resp.data);
         toast.success("New customer added.");
         setSubmitting(false);
-        history.push("/customers/" + resp.data.id);
+        history.push("/customers/" + resp.data.uuid);
       } catch (err) {
         // Handle Error Here
         console.log(err.data);

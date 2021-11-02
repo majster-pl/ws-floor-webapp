@@ -84,7 +84,7 @@ function NewAssetPage({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) {
         console.log(resp.data);
         toast.success("New asset added.");
         setSubmitting(false);
-        history.push("/assets/" + resp.data.id);
+        history.push("/assets/" + resp.data.uuid);
       } catch (err) {
         // Handle Error Here
         toast.error("New Asset not saved! " + JSON.stringify(err.data.message));
