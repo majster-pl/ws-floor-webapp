@@ -18,7 +18,7 @@ const AssetsTab = ({ setIsLoading, id, toast }) => {
       {
         Header: "Reg",
         accessor: "reg", // accessor is the "key" in the data
-        Cell: ({ value, id, make }) => {
+        Cell: ({ value, id, uuid }) => {
           return (
             <Row className="my-1">
               <Col className="my-auto text-center text-uppercase">
@@ -26,7 +26,7 @@ const AssetsTab = ({ setIsLoading, id, toast }) => {
                   variant="link"
                   className="p-0 text-white text-decoration-none"
                   as={Link}
-                  to={"/assets/" + id}
+                  to={"/assets/" + uuid}
                   onClick={() => setIsLoading(true)}
                 >
                   {value}
@@ -190,6 +190,7 @@ const AssetsTab = ({ setIsLoading, id, toast }) => {
                       index: row.id,
                       value: cell.value,
                       reg: row.original.reg,
+                      uuid: row.original.uuid,
                     })}
                   </td>
                 );

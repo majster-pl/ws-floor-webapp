@@ -95,7 +95,7 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
       {
         Header: "Customer",
         accessor: "customer_name", // accessor is the "key" in the data
-        Cell: ({ value, id }) => {
+        Cell: ({ value, uuid }) => {
           return (
             <Row className="my-2">
               <Col sm="auto" className="ms-4 text-end d-none d-md-block">
@@ -111,7 +111,7 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
                   variant="link"
                   className="p-0 text-white text-decoration-none"
                   as={Link}
-                  to={"/customers/" + id}
+                  to={"/customers/" + uuid}
                   onClick={() => setIsLoading(true)}
                 >
                   {value}
@@ -392,6 +392,7 @@ const Customers = ({ setIsLoading, setLoggedIn, setLoginErrorMsg, toast }) => {
                               id: row.original.id,
                               value: cell.value,
                               cust_name: row.original.customer_name,
+                              uuid: row.original.uuid,
                             })}
                           </td>
                         );
