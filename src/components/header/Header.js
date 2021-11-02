@@ -12,7 +12,12 @@ import {
 } from "react-bootstrap";
 import apiClient from "../../service/api/api";
 import { useHistory } from "react-router";
-import { RootStateOrAny, useDispatch, useSelector, useStore } from "react-redux";
+import {
+  RootStateOrAny,
+  useDispatch,
+  useSelector,
+  useStore,
+} from "react-redux";
 import { setDepot, setDepotsList } from "../../actions";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
@@ -173,7 +178,7 @@ const Header = ({
                         return (
                           <NavDropdown.Item
                             className="nav-dropdown-depot-item disable-select"
-                            key={"d1-" + depot.id}
+                            eventKey={"d1-" + depot.id}
                             active={selectedDepot === depot.id}
                             onClick={(e) => {
                               e.preventDefault();
@@ -194,6 +199,9 @@ const Header = ({
                   <Nav className="d-block d-lg-none me-auto">
                     <Nav.Link eventKey="11a" as={Link} to="/settings">
                       Settings{" "}
+                    </Nav.Link>
+                    <Nav.Link eventKey="12a" as={Link} to="/profile">
+                      Profile{" "}
                     </Nav.Link>
                   </Nav>
                   <Dropdown.Divider className="d-block d-lg-none me-auto" />
