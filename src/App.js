@@ -194,7 +194,7 @@ const App = () => {
             />
           </Route>
 
-          <Route path="/assets/:id">
+          <Route path="/assets/:uuid">
             <AssetPage
               isLoading={isLoading}
               setIsLoading={setIsLoading}

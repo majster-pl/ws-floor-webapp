@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { setActiveEventsCount } from "../../../../actions";
 import JobsTable from "../../../../components/JobsTable";
 
-const ActiveJobs = ({ toast, id }) => {
+const ActiveJobs = ({ toast, uuid }) => {
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
 
@@ -13,7 +13,9 @@ const ActiveJobs = ({ toast, id }) => {
     dispatch(setActiveEventsCount(0));
     const fetchEvents = async () => {
       try {
-        const result = await apiClient.get("/api/v1/asset_event_active/" + id);
+        const result = await apiClient.get(
+          "/api/v1/asset_event_active/" + uuid
+        );
         console.log("result");
         console.log(result);
         setData(result.data.data);
@@ -25,9 +27,11 @@ const ActiveJobs = ({ toast, id }) => {
     fetchEvents();
   }, []);
 
-  return <div>
+  return (
+    <div>
       <JobsTable data={data}></JobsTable>
-  </div>;
+    </div>
+  );
 };
 
 export default ActiveJobs;

@@ -25,7 +25,7 @@ function AssetPage({
 
   const [valid, setValid] = useState(true);
 
-  const { id } = useParams(); // parameter from url
+  const { uuid } = useParams(); // parameter from url
 
   const [formGeneral, setFormGeneral] = useState({
     id: "",
@@ -48,7 +48,7 @@ function AssetPage({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await apiClient.get("/api/v1/assets/" + id);
+        const result = await apiClient.get("/api/v1/assets/" + uuid);
         console.log(result.data.data);
         setFormGeneral({ ...result.data.data });
         // setIsLoading(false);
@@ -133,7 +133,7 @@ function AssetPage({
             >
               {valid ? (
                 <GeneralTab
-                  id={id}
+                  id={uuid}
                   toast={toast}
                   formGeneral={formGeneral}
                   setFormGeneral={setFormGeneral}
@@ -163,7 +163,7 @@ function AssetPage({
               disabled={!valid}
             >
               {valid ? (
-                <OpenJobs id={id} toast={toast} />
+                <OpenJobs uuid={uuid} toast={toast} />
               ) : (
                 <Container className="py-3">No data availabe</Container>
               )}
@@ -183,7 +183,7 @@ function AssetPage({
               disabled={!valid}
             >
               {valid ? (
-                <HistoryTab id={id} toast={toast} />
+                <HistoryTab id={uuid} toast={toast} />
               ) : (
                 <Container className="py-3">No data availabe</Container>
               )}
