@@ -17,6 +17,7 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
     breakdown,
     waiting,
     key_location,
+    uuid,
   } = props;
 
   const dispatch = useDispatch();

@@ -154,7 +154,8 @@ const Header = ({
                         return (
                           <NavDropdown.Item
                             className="nav-dropdown-depot-item disable-select"
-                            eventKey={"d1-" + depot.id}
+                            eventKey={"d2-" + depot.id}
+                            key={"d2-" + depot.id}
                             active={selectedDepot === depot.id}
                             onClick={(e) => {
                               e.preventDefault();

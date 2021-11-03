@@ -47,7 +47,7 @@ const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {
       apiClient
         .get(url)
         .then((response) => {
-          let data = response.data.data;
+          let data = response.data.event;
           // add/set notification to true
           data.notification = true;
           data.status = status;
