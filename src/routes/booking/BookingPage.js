@@ -175,7 +175,7 @@ const BookingPage = ({
               </Container>
 
               {/* Job ID */}
-              <Form.Group as={Col} md="4">
+              <Form.Group as={Col} md="2">
                 <Form.Label column className="text-md-end">
                   Job ID
                 </Form.Label>
@@ -183,8 +183,8 @@ const BookingPage = ({
                   name="id"
                   placeholder="Job ID"
                   readOnly={true}
-                  plaintext={true}
-                  disabled={!editToggled}
+                  // disabled={!editToggled}
+                  disabled={true}
                   type="text"
                   title="Job ID, not editable data"
                   onChange={props.handleChange("others")}
@@ -194,7 +194,7 @@ const BookingPage = ({
               </Form.Group>
 
               {/* Reg */}
-              <Form.Group as={Col} md="4" controlId="formReg">
+              <Form.Group as={Col} md="2" controlId="formReg">
                 <Form.Label column className="text-md-end">
                   Reg:
                 </Form.Label>
@@ -202,8 +202,6 @@ const BookingPage = ({
                 <Typeahead
                   id="asset-typeahead"
                   labelKey="reg"
-                  // disabled
-                  plaintext={!editToggled}
                   disabled={!editToggled}
                   onChange={(selected) => {
                     // check if selection made, if not update formik to throw error.
@@ -224,7 +222,7 @@ const BookingPage = ({
               </Form.Group>
 
               {/* Customer */}
-              <Form.Group as={Col} md="4" controlId="formCustomer">
+              <Form.Group as={Col} md="5" controlId="formCustomer">
                 <Form.Label column className="text-md-end">
                   Customer:
                 </Form.Label>
@@ -232,7 +230,6 @@ const BookingPage = ({
                 <Typeahead
                   id="customer-typeahead"
                   labelKey="customer_name"
-                  plaintext={!editToggled}
                   disabled={!editToggled}
                   onChange={(selected) => {
                     // check if selection made, if not update formik to throw error.
@@ -256,6 +253,38 @@ const BookingPage = ({
                 </Form.Text>
               </Form.Group>
 
+              {/* STATUS */}
+              <Form.Group as={Col} md="3">
+                <Form.Label column className="text-md-end">
+                  Status
+                </Form.Label>
+                <Form.Control
+                  required
+                  as="select"
+                  type="select"
+                  defaultValue={props.values.status}
+                  onChange={props.handleChange("status")}
+                  isInvalid={!!props.errors.status}
+                >
+                  <option disabled>-- select status --</option>
+                  <option value="booked">Booked</option>
+                  <option value="awaiting_labour">Awaiting Labour</option>
+                  <option value="planned">Planned</option>
+                  <option value="work_in_progress">Work in Progress</option>
+                  <option value="awaiting_estimates">Awaiting Estimates</option>
+                  <option value="awaiting_part">Awaiting Parts</option>
+                  <option value="awaiting_authorisation">
+                    Awaiting Authorisation
+                  </option>
+                  <option value="awaiting_qc">Awaiting QC</option>
+                  <option value="at_3rd_party">At 3rd party</option>
+                  <option value="completed">Completed</option>
+                </Form.Control>
+                <Form.Text className="text-danger ms-2">
+                  {props.touched.status && props.errors.status}
+                </Form.Text>
+              </Form.Group>
+
               {/* Description */}
               <Form.Group as={Col} md="8">
                 <Form.Label column className="text-md-end">
@@ -264,9 +293,7 @@ const BookingPage = ({
                 <Form.Control
                   name="description"
                   placeholder="Enter description of the booking. (eg. PMI)"
-                  // plaintext={!editToggled}
                   disabled={!editToggled}
-                  // type="text"
                   as="textarea"
                   rows={4}
                   onChange={props.handleChange("description")}
@@ -352,7 +379,7 @@ const BookingPage = ({
                         className="disable-select mt-1"
                         type="checkbox"
                         disabled={!editToggled}
-                        label={<span>Send confirmation email</span>}
+                        label={<span>Send notification email</span>}
                         title="Check this to send notification email to customer about new booking"
                         name="notification"
                         checked={props.values.notification}
@@ -389,7 +416,7 @@ const BookingPage = ({
               {/* BOOKED DATE */}
               <Form.Group as={Col} md="4">
                 <Form.Label column className="text-md-end">
-                  Booked date:
+                  Booked date
                 </Form.Label>
                 <DatePicker
                   style={{ display: "revert" }}
@@ -422,6 +449,44 @@ const BookingPage = ({
                 <Form.Text className="text-danger ms-2">
                   {props.touched.booked_date_time &&
                     props.errors.booked_date_time}
+                </Form.Text>
+              </Form.Group>
+
+              {/* UUID */}
+              <Form.Group as={Col} md="8">
+                <Form.Label column className="text-md-end">
+                  Job UUID
+                </Form.Label>
+                <Form.Control
+                  name="others"
+                  placeholder="Uniqal ID for a job."
+                  title="Job UUID, not editable data"
+                  onChange={props.handleChange("others")}
+                  readOnly={true}
+                  disabled={true}
+                  defaultValue={props.values.uuid}
+                  isInvalid={!!props.errors.uuid}
+                />
+                <Form.Text className="text-danger ms-2">
+                  {props.touched.uuid && props.errors.uuid}
+                </Form.Text>
+              </Form.Group>
+
+              {/* KEY LOCATION */}
+              <Form.Group as={Col} md="4">
+                <Form.Label column className="text-md-end">
+                  Key location
+                </Form.Label>
+                <Form.Control
+                  name="others"
+                  placeholder="Peg number"
+                  onChange={props.handleChange("others")}
+                  disabled={!editToggled}
+                  defaultValue={props.values.key_location}
+                  isInvalid={!!props.errors.key_location}
+                />
+                <Form.Text className="text-danger ms-2">
+                  {props.touched.key_location && props.errors.key_location}
                 </Form.Text>
               </Form.Group>
             </Row>
