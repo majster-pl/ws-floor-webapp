@@ -131,7 +131,7 @@ const BookingPage = ({
       {(props) => (
         <Container className="scroll">
           <Form onSubmit={props.handleSubmit}>
-            <Row className="row">
+            <Row>
               <Container className="scroll py-3">
                 <Row>
                   <Col className="col-8">
@@ -171,7 +171,6 @@ const BookingPage = ({
                     </Button>
                   </Col>
                 </Row>
-                Booking page for event id: {uuid}
               </Container>
 
               {/* Job ID */}
@@ -291,6 +290,7 @@ const BookingPage = ({
                   Job Description
                 </Form.Label>
                 <Form.Control
+                  className="mb-3d"
                   name="description"
                   placeholder="Enter description of the booking. (eg. PMI)"
                   disabled={!editToggled}
@@ -309,7 +309,7 @@ const BookingPage = ({
                 <Form.Label column className="text-md-end">
                   Additional
                 </Form.Label>
-                <Row>
+                <Col>
                   {/* WAITING */}
                   <Form.Group as={Row} controlId="formWaiting">
                     <Form.Label column className="text-md-end col-1 col-sm-3">
@@ -392,11 +392,11 @@ const BookingPage = ({
                       />
                     </Col>
                   </Form.Group>
-                </Row>
+                </Col>
               </Col>
 
               {/* OTHERS */}
-              <Form.Group as={Col} md="8">
+              <Form.Group as={Col} md="4">
                 <Form.Label column className="text-md-end">
                   Others
                 </Form.Label>
@@ -410,6 +410,36 @@ const BookingPage = ({
                 />
                 <Form.Text className="text-danger ms-2">
                   {props.touched.others && props.errors.others}
+                </Form.Text>
+              </Form.Group>
+
+              {/* ALLOWED TIME */}
+              <Form.Group as={Col} md="4" controlId="formAllowedTime">
+                <Form.Label column className="text-md-end">
+                  Allowed Time
+                </Form.Label>
+                <Row>
+                  <Col className="text-md-end col-2 col-sm-2 px-0">
+                    <Form.Label
+                      className={`text-${
+                        props.values.allowed_time > 0 ? "success" : "danger"
+                      }`}
+                    >
+                      {props.values.allowed_time > 0
+                        ? props.values.allowed_time + " h"
+                        : 0 + " h"}
+                    </Form.Label>
+                  </Col>
+                  <Col>
+                    <Form.Range
+                      defaultValue={props.values.allowed_time}
+                      onChange={props.handleChange("allowed_time")}
+                      max={20}
+                    />
+                  </Col>
+                </Row>
+                <Form.Text className="text-danger ms-2">
+                  {props.touched.allowed_time && props.errors.allowed_time}
                 </Form.Text>
               </Form.Group>
 
