@@ -32,6 +32,7 @@ const BookingPage = ({
   const [customers, setCustomers] = useState([]);
   const [editToggled, setEditToggled] = useState(false);
   const [selectedBookedDate, setSelectedBookedDate] = useState();
+  const [expandHistory, setExpandHistory] = useState(false);
 
   // when page oppened check if user logged in, if not redirect to login page
   const {} = IsLoggedInLogic(setLoginErrorMsg, setIsLoading, setLoggedIn);
@@ -704,7 +705,16 @@ const BookingPage = ({
 
                 <Card className="px-0 my-3">
                   <Card.Header>
-                    <h3>Job History</h3>
+                    <Stack direction="horizontal">
+                      <h3>Job History</h3>
+                      <i
+                        className={`cursor-pointer ms-auto fa-lg fas ${
+                          expandHistory ? "fa-compress-alt" : "fa-expand-alt"
+                        }`}
+                        // className="cursor-pointer ms-auto fas fa-expand-arrows-alt"
+                        onClick={() => setExpandHistory(!expandHistory)}
+                      ></i>
+                    </Stack>
                   </Card.Header>
                   <Card.Body>
                     <Container className="px-0" fluid>
@@ -712,7 +722,8 @@ const BookingPage = ({
                         <div
                           id="example-collapse-text"
                           className="overflow-auto"
-                          style={{ maxHeight: "12rem" }}
+                          style={expandHistory ? {} : { maxHeight: "12rem" }}
+                          // style={{ maxHeight: "12rem" }}
                         >
                           {initialValues.activities.map((element, i) => {
                             return (
