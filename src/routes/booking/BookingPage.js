@@ -384,7 +384,7 @@ const BookingPage = ({
                               <Card.Header>
                                 <h4>Job Type</h4>
                               </Card.Header>
-                              <Card.Body className="px-0">
+                              <Card.Body className="">
                                 <Row>
                                   <Col md="12">
                                     {/* WAITING */}
@@ -394,7 +394,7 @@ const BookingPage = ({
                                     >
                                       <Form.Label
                                         column
-                                        className="text-md-end col-1 col-sm-3"
+                                        className="text-md-end col-1"
                                       >
                                         <i
                                           className={`fas fa-clock ${
@@ -404,9 +404,9 @@ const BookingPage = ({
                                           }`}
                                         ></i>
                                       </Form.Label>
-                                      <Col className="col-11 col-sm-9">
+                                      <Col className="col-10">
                                         <Form.Check
-                                          className="disable-select mt-1"
+                                          className="disable-select mt-1 ms-2"
                                           type="checkbox"
                                           disabled={!editToggled}
                                           label="Waiting appointment"
@@ -431,7 +431,7 @@ const BookingPage = ({
                                     >
                                       <Form.Label
                                         column
-                                        className="text-md-end col-1 col-sm-3"
+                                        className="text-md-end col-1"
                                       >
                                         <i
                                           className={`fas fa-car-crash ${
@@ -441,7 +441,7 @@ const BookingPage = ({
                                           }`}
                                         ></i>
                                       </Form.Label>
-                                      <Col className="col-11 col-sm-9">
+                                      <Col className="col-10 ms-2">
                                         <Form.Check
                                           className={`disable-select mt-1 ${
                                             props.values.breakdown
