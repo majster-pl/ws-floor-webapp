@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
   Row,
@@ -311,6 +312,15 @@ const UpdateStatus = ({
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
+              <Button
+                className="fas fa-external-link-alt text-decoration-none link-info"
+                variant="link"
+                as={Link}
+                to={"/booking/" + props.values.uuid}
+                onClick={() => {
+                  handleCloseMainModal();
+                }}
+              ></Button>
               <Button variant="secondary" onClick={() => handleClose()}>
                 Close
               </Button>

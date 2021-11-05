@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useState, useEffect, Fragment, forwardRef } from "react";
 import {
   Row,
@@ -51,7 +52,10 @@ const UpdateStatus = ({
         0,
         "You must select customer from the list, if not present please create one first"
       ),
-    description: yup.string().min(3, "You must enter at least 3 characters").required(),
+    description: yup
+      .string()
+      .min(3, "You must enter at least 3 characters")
+      .required(),
     allowed_time: yup
       .number()
       .moreThan(0, "Allocated time need to be more then 0"),
@@ -492,7 +496,7 @@ const UpdateStatus = ({
                     {data.activities.map((element, i) => {
                       return (
                         <HistoryListItem
-                          key={"history-"+i}
+                          key={"history-" + i}
                           date={moment(element.updated_at).format(
                             "HH:mm:ss DD-MM-Y"
                           )}
@@ -512,6 +516,15 @@ const UpdateStatus = ({
                     ></Button>
                   </div>
                   <div className="col-6 text-end">
+                    <Button
+                      className="fas fa-external-link-alt text-decoration-none link-info"
+                      variant="link"
+                      as={Link}
+                      to={"/booking/" + props.values.uuid}
+                      onClick={() => {
+                        handleCloseMainModal();
+                      }}
+                    ></Button>
                     <Button
                       className="mx-1"
                       variant="secondary"
