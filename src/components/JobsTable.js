@@ -86,7 +86,7 @@ const JobsTable = ({ data }) => {
         Cell: ({ value, deleted }) => {
           return (
             <div className="fw-light text-capitalize text-white">
-              {deleted ? "Deleted" : value.replaceAll("_", " ")}
+              {deleted ? <span className="text-danger">Deleted</span> : value.replaceAll("_", " ")}
             </div>
           );
         },

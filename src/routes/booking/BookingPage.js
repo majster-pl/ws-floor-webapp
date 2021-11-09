@@ -168,6 +168,7 @@ const BookingPage = ({
   );
 
   useEffect(() => {
+    setIsLoading(true);
     getEventData();
     getAssets();
     getCustomers();
@@ -898,7 +899,7 @@ const BookingPage = ({
       )}
     </Formik>
   ) : (
-    <span></span>
+    !isLoading ? <Container className="my-3">Event not found!</Container> : ""
   );
 };
 
