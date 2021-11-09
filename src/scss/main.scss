@@ -36,6 +36,7 @@ $color-black: #000000;
 $color-gray: #2a2d30;
 $color-gray-dark: #1b2025;
 $color-gray-darker: #111314;
+$color-gray-light1: #686565;
 $color-gray-light: #a7a9ab;
 $color-pink: #f00fa6;
 $color-green: #39a883;
@@ -48,8 +49,9 @@ $color-green-light: #dfea87;
   --color-pink: #{$color-pink};
   --color-green: #{$color-green};
   --color-green-light: #{$color-green-light};
-
+  
   --color-gray-light: #{$color-gray-light};
+  --color-gray-light1: #{$color-gray-light1};
   --color-gray-dark: #{$color-gray};
   --color-gray-darker: #{$color-gray-dark};
 }
@@ -281,6 +283,10 @@ $btn-close-opacity: 1;
 
 .tr-dark {
   background-color: #212529;
+}
+
+.tr-deleted td div {
+  color: var(--color-gray-light1) !important;
 }
 
 // Import Bootstrap and its default variables

@@ -19,22 +19,22 @@ const JobsTable = ({ data }) => {
         accessor: "booked_date_time",
         Cell: ({ value }) => {
           return (
-            <span className="text-white fw-light text-capitalize">
+            <div className="text-white fw-light text-capitalize">
               {moment(value).format("DD-MM-YYYY")}
-            </span>
+            </div>
           );
         },
       },
       {
         Header: "Reg",
         accessor: "reg", // accessor is the "key" in the data
-        Cell: ({ value, id }) => {
+        Cell: ({ value, deleted }) => {
           return (
             <Row className="my-1">
               <Col className="my-auto text-uppercase">
-                <span className="text-white fw-light text-capitalize">
+                <div className="fw-light text-capitalize text-white">
                   {value}
-                </span>
+                </div>
               </Col>
             </Row>
           );
@@ -44,20 +44,20 @@ const JobsTable = ({ data }) => {
       {
         Header: "Description",
         accessor: "description",
-        Cell: ({ value }) => {
+        Cell: ({ value, deleted }) => {
           return (
-            <span className="text-white fw-light text-capitalize">
+            <div className="fw-light text-capitalize text-white text-start">
               {value.slice(0, 50)}...
-            </span>
+            </div>
           );
         },
       },
       {
         Header: "Branch",
         accessor: "owning_branch",
-        Cell: ({ value }) => {
+        Cell: ({ value, deleted }) => {
           return (
-            <span className="text-white fw-light text-capitalize">{value}</span>
+            <div className="fw-light text-capitalize text-white">{value}</div>
           );
         },
       },
@@ -68,7 +68,7 @@ const JobsTable = ({ data }) => {
           let current = moment().startOf("day");
           let given = moment(value, "YYYY-MM-DD");
           return (
-            <span
+            <div
               className="text-white fw-light text-capitalize"
               title={moment(value).format("DD-MM-YYYY HH:mm:ss")}
             >
@@ -76,17 +76,17 @@ const JobsTable = ({ data }) => {
                 Math.round(moment.duration(given.diff(current)).asDays())
               )}{" "}
               days
-            </span>
+            </div>
           );
         },
       },
       {
         Header: "Status",
         accessor: "status",
-        Cell: ({ value }) => {
+        Cell: ({ value, deleted }) => {
           return (
             <div className="fw-light text-capitalize text-white">
-              {value.replaceAll("_", " ")}
+              {deleted ? "Deleted" : value.replaceAll("_", " ")}
             </div>
           );
         },
@@ -94,7 +94,7 @@ const JobsTable = ({ data }) => {
       {
         Header: "",
         accessor: "uuid",
-        Cell: ({ value }) => {
+        Cell: ({ value, deleted }) => {
           return (
             <Dropdown className="">
               <Dropdown.Toggle
@@ -106,24 +106,40 @@ const JobsTable = ({ data }) => {
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item as={Link} to={"/booking/" + value}>
-                  Edit
-                </Dropdown.Item>
-                <Dropdown.Item
-                  onClick={() => alert("Not implemented yet!")}
-                  //   onClick={() => {
-                  //     console.log(reg);
-                  //     console.log(id);
-                  //     let data = {
-                  //       reg: reg,
-                  //       id: value,
-                  //       index: index,
-                  //     };
-                  //   }}
-                  className="text-danger"
-                >
-                  Remove
-                </Dropdown.Item>
+                {!deleted ? (
+                  <>
+                    <Dropdown.Item
+                      as={Link}
+                      disabled={deleted}
+                      to={"/booking/" + value}
+                    >
+                      Edit
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      disabled={deleted}
+                      onClick={() => alert("Not implemented yet!")}
+                      //   onClick={() => {
+                      //     console.log(reg);
+                      //     console.log(id);
+                      //     let data = {
+                      //       reg: reg,
+                      //       id: value,
+                      //       index: index,
+                      //     };
+                      //   }}
+                      className="text-danger"
+                    >
+                      Remove
+                    </Dropdown.Item>
+                  </>
+                ) : (
+                  <Dropdown.Item
+                    as={Link}
+                    to={"/removed_booking/" + value}
+                  >
+                    View
+                  </Dropdown.Item>
+                )}
               </Dropdown.Menu>
             </Dropdown>
           );
@@ -137,10 +153,7 @@ const JobsTable = ({ data }) => {
 
   return (
     <>
-      <Table
-        className="cutomers-table text-center table"
-        {...getTableProps()}
-      >
+      <Table className="cutomers-table text-center table" {...getTableProps()}>
         <thead className="ms-4 text-white">
           {headerGroups.map((headerGroup) => (
             <Tr {...headerGroup.getHeaderGroupProps()}>
@@ -187,7 +200,7 @@ const JobsTable = ({ data }) => {
               <Tr
                 className={`border trCustom ${
                   index % 2 === 0 ? "tr-dark" : "tr-light"
-                }`}
+                } ${row.original.deleted ? "tr-deleted" : ""}`}
                 key={"asset-row-" + row.id}
                 {...row.getRowProps()}
               >
@@ -200,6 +213,7 @@ const JobsTable = ({ data }) => {
                         index: row.id,
                         value: cell.value,
                         reg: row.original.reg,
+                        deleted: row.original.deleted,
                       })}
                     </Td>
                   );

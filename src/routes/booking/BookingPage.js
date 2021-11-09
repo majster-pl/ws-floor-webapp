@@ -1,5 +1,5 @@
 import { useEffect, useState, Fragment, forwardRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import {
   Container,
   Form,
@@ -23,6 +23,7 @@ import * as yup from "yup";
 
 const BookingPage = ({
   toast,
+  isLoading,
   setIsLoading,
   setLoggedIn,
   setLoginErrorMsg,
@@ -34,6 +35,7 @@ const BookingPage = ({
   const [editToggled, setEditToggled] = useState(false);
   const [selectedBookedDate, setSelectedBookedDate] = useState();
   const [expandHistory, setExpandHistory] = useState(false);
+  const history = useHistory();
 
   // when page oppened check if user logged in, if not redirect to login page
   const {} = IsLoggedInLogic(setLoginErrorMsg, setIsLoading, setLoggedIn);
@@ -112,6 +114,45 @@ const BookingPage = ({
       });
   };
 
+  // Remove function
+  const handleRemove = () => {
+    let url = "/api/v1/events/" + initialValues.event_id;
+
+    apiClient
+      .delete(url)
+      .then((response) => {
+        console.log(response);
+        toast.success("Booking removed.");
+        history.goBack();
+      })
+      .catch((err) => {
+        console.log(JSON.stringify(err));
+
+        toast.error(
+          <div className="toast_wrap">
+            Unable to remove booking! {JSON.stringify(err)}
+          </div>
+        );
+      });
+
+    // apiClient
+    //   .patch(url, values)
+    //   .then((response) => {
+    //     setEditToggled(false);
+    //     toast.success("Booking updated successfully");
+    //     setInitialValues(null);
+    //     setInitialValues(response.data.event);
+    //     actions.setSubmitting(false);
+    //     // actions.resetForm();
+    //   })
+    //   .catch((err) => {
+    //     console.log("error:", err);
+    //     actions.setSubmitting(false);
+    //     // setWaitingResponse(false);
+    //     toast.error(err.statusText + " - Event NOT updated!");
+    //   });
+  };
+
   // Date picker
   const CustomDateInput = forwardRef(
     ({ onClick, disabled_, selected }, ref) => (
@@ -173,6 +214,7 @@ const BookingPage = ({
         /^(\d{4})-(\d{2})-(\d{2}) (\d{1,2}):(\d{2})/,
         "Invalid date format,  'DD-MM-YYYY HH:MM'"
       ),
+    odometer_in: yup.number().nullable(),
   });
 
   return initialValues ? (
@@ -195,8 +237,21 @@ const BookingPage = ({
                     <Stack direction="horizontal" gap={3}>
                       <h2>Booking details:</h2>
                       <div className="ms-auto">
-                        <Row className="text-end">
+                        <Row className="text-end mt-1">
                           <Col md="12">
+                            <Button
+                              variant="danger"
+                              className="mx-2"
+                              onClick={() => {
+                                if (
+                                  window.confirm("Do you really want to leave?")
+                                ) {
+                                  handleRemove();
+                                }
+                              }}
+                            >
+                              Remove
+                            </Button>
                             <Button
                               disabled={props.isSubmitting}
                               variant={
@@ -237,7 +292,9 @@ const BookingPage = ({
                           </Col>
                           <Col>
                             <Form.Text className="text-danger">
-                              {!props.isValid ? "Error in the form, review form!" : ""}
+                              {!props.isValid
+                                ? "Error in the form, review form!"
+                                : ""}
                             </Form.Text>
                           </Col>
                         </Row>
@@ -245,7 +302,7 @@ const BookingPage = ({
                     </Stack>
                     {/* NOTIFICATION */}
                     <Stack direction="horizontal">
-                      <div className="ms-auto me-2">
+                      <div className="ms-auto me-2 mb-1">
                         <i
                           className={`fas ${
                             props.values.notification
@@ -300,15 +357,11 @@ const BookingPage = ({
                           </Form.Label>
                           <Form.Control
                             name="id"
-                            placeholder="Job ID"
                             readOnly={true}
-                            // disabled={!editToggled}
                             disabled={true}
                             type="text"
                             title="Job ID, not editable data"
-                            onChange={props.handleChange("others")}
                             defaultValue={props.values.id}
-                            isInvalid={!!props.errors.id}
                           />
                         </Form.Group>
 
@@ -382,6 +435,7 @@ const BookingPage = ({
                             Status
                           </Form.Label>
                           <Form.Control
+                            readOnly={false}
                             required
                             as="select"
                             type="select"
@@ -662,7 +716,9 @@ const BookingPage = ({
                           <Form.Control
                             name="others"
                             placeholder="Additional informations regarding booking provided when vehicle received from customer"
-                            onChange={props.handleChange("others")}
+                            onChange={props.handleChange(
+                              "special_instructions"
+                            )}
                             disabled={!editToggled}
                             defaultValue={props.values.special_instructions}
                             isInvalid={!!props.errors.special_instructions}
@@ -682,7 +738,7 @@ const BookingPage = ({
                             <Form.Control
                               name="others"
                               placeholder="Peg number"
-                              onChange={props.handleChange("others")}
+                              onChange={props.handleChange("key_location")}
                               disabled={!editToggled}
                               defaultValue={props.values.key_location}
                               isInvalid={!!props.errors.key_location}
@@ -710,6 +766,31 @@ const BookingPage = ({
                           />
                           <Form.Text className="text-danger ms-2">
                             {props.touched.uuid && props.errors.uuid}
+                          </Form.Text>
+                        </Form.Group>
+
+                        {/* Odometer reading */}
+                        <Form.Group as={Col} md="6">
+                          <Form.Label column className="text-md-end">
+                            Mileage In
+                          </Form.Label>
+                          <Form.Control
+                            maxLength={10}
+                            autoComplete="off"
+                            type="text"
+                            name="odometer_in"
+                            placeholder="Current mileage (km)"
+                            disabled={!editToggled}
+                            onChange={props.handleChange("odometer_in")}
+                            defaultValue={props.values.odometer_in}
+                            isInvalid={
+                              props.touched.odometer_in &&
+                              !!props.errors.odometer_in
+                            }
+                          />
+                          <Form.Text className="text-danger ms-2">
+                            {props.touched.odometer_in &&
+                              props.errors.odometer_in}
                           </Form.Text>
                         </Form.Group>
                       </Row>
@@ -817,7 +898,7 @@ const BookingPage = ({
       )}
     </Formik>
   ) : (
-    <span>loading...</span>
+    <span></span>
   );
 };
 

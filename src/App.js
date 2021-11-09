@@ -206,6 +206,7 @@ const App = () => {
 
           <Route path="/booking/:uuid">
             <BookingPage
+              isLoading={isLoading}
               setIsLoading={setIsLoading}
               setLoggedIn={setAuthenticated}
               setLoginErrorMsg={setLoginErrorMsg}
