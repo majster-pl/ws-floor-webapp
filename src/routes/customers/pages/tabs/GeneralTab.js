@@ -67,7 +67,7 @@ const GeneralTab = ({
 
   // function to remove customer
   const removeCustomer = () => {
-    let url = "/api/v1/customers/" + modalData.uuid;
+    let url = "/api/v1/customers/" + modalData.id;
     setIsLoading(true);
 
     apiClient
@@ -127,6 +127,7 @@ const GeneralTab = ({
                       const data = {
                         customer_name: props.values.customer_name,
                         id: props.values.id,
+                        uuid: props.values.uuid,
                       };
                       handleShowModal();
                       setModaldata(data);
