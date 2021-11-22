@@ -51,7 +51,7 @@ const UpdateStatus = ({
 
   const getCurrentDateTime = (init) => {
     let dateTime = moment(new Date()).format("DD-MM-yy H:mm");
-    return init ? `[ ${dateTime} ] - ` : `\n[ ${dateTime} ] - `;
+    return init ? `[ ${dateTime} ] - ` : `[ ${dateTime} ] - \n`;
   };
 
   // useEffect(() => {
@@ -174,7 +174,7 @@ const UpdateStatus = ({
                     onFocus={(e) =>
                       e.currentTarget.setSelectionRange(
                         e.currentTarget.value.length,
-                        e.currentTarget.value.length
+                        23
                       )
                     }
                     placeholder="Notes for a job (internal use)"
@@ -182,7 +182,7 @@ const UpdateStatus = ({
                     ref={focusDiv}
                     defaultValue={
                       props.values.free_text
-                        ? props.values.free_text + getCurrentDateTime(0)
+                        ? getCurrentDateTime(0) + props.values.free_text
                         : getCurrentDateTime(1)
                     }
                   />
