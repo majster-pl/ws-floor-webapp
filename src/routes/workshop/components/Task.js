@@ -42,6 +42,12 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
     handleShowMainModal(event_id, status);
   };
 
+  const handleUpdateClick = (e, event_id, status) => {
+    e.stopPropagation();
+    dispatch(setModal("update"));
+    handleShowMainModal(event_id, status);
+  };
+
   return (
     <Draggable
       draggableId={task.id}
@@ -60,7 +66,7 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
             }`}
         >
           <Card.Body className="m-1 mx-2 p-0">
-            <Stack direction="horizontal" gap={3}>
+            <Stack direction="horizontal" gap={2}>
               <div className="text-success h4 fw-bold my-auto" title="Vehicle reg">
                 {task.breakdown === 1 ? (
                   <i className="text-danger fas fa-car-crash pe-2"></i>
@@ -77,7 +83,23 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
                 )}
                 {task.reg}
               </div>
-              <div className="ms-auto">
+              {
+                task.status !== "booked" ?
+                  <div className="ms-auto">
+                    <Nav.Link
+                      className={`text-end p-0 m-0 h5 ${task.updated_at < today ? 'text-danger' : 'text-white' }`}
+                      title={`Last update: ${moment(task.updated_at).format("YYYY-MM-DD HH:mm")}`}
+                      onClick={(e) =>
+                        handleUpdateClick(e, task.event_id, task.status)
+                      }
+                    >
+                      <i class="fas fa-comments"></i>
+                    </Nav.Link>
+                  </div>
+                  :
+                  <div className="ms-auto"></div>
+              }
+              <div className="">
                 <Nav.Link
                   className="p-0 m-0 h5"
                   title="Get more info about the job"
@@ -88,7 +110,7 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
                   Info
                 </Nav.Link>
               </div>
-              <div className="border">
+              <div className="">
                 <Nav.Link
                   className="text-end p-0 m-0 text-info h5"
                   title="Edit booking"
