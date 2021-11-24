@@ -50,7 +50,7 @@ const UpdateStatus = ({
   };
 
   const getCurrentDateTime = (init) => {
-    let dateTime = moment(new Date()).format("DD-MM-yy H:mm");
+    let dateTime = moment(new Date()).format("DD-MM-yy HH:mm");
     return init ? `[ ${dateTime} ] - ` : `[ ${dateTime} ] - \n`;
   };
 

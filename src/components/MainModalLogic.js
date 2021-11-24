@@ -35,7 +35,7 @@ const MainModalLogic = ({ setIsLoading, toast, reloadCalendar }) => {
         others: "",
         status: "booked",
         breakdown: 0,
-        waiting: 0,
+        waiting: false,
         depot: selectedDepot,
         notification: 1,
       });

@@ -143,7 +143,7 @@ const UpdateStatus = ({
   return (
     <>
       <Formik
-        initialValues={{ ...data }}
+        initialValues={{ ...data, activities: "" }}
         validationSchema={reviewShema}
         onSubmit={(values, actions) => {
           console.log("RUNNING SUBMIT!");
