@@ -1,7 +1,8 @@
 import PropTypes from "prop-types";
-import { Row, Col, Nav } from "react-bootstrap";
+import { Row, Col, Nav, Stack } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { setModal } from "../../../actions";
+import moment from "moment";
 
 const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
   const {
@@ -17,6 +18,7 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
     breakdown,
     waiting,
     key_location,
+    updated_at,
     uuid,
   } = props;
 
@@ -98,42 +100,65 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
         style={{ minHeight: "8.5rem", maxHeight: "15rem" }}
       >
         <div className="card-header p-0 text-success">
-          <Row>
-            <Col>
-              <div
-                className={`card-text fw-bold ps-2  ${
-                  isNoShow() ? "text-light" : ""
-                }`}
-              >
-                {breakdown === 1 ? (
-                  <i className="me-1 text-danger fas fa-xs fa-car-crash text-end"></i>
-                ) : (
-                  <span></span>
-                )}
-                {waiting === 1 ? (
-                  <i className="me-1 text-info fa-xs far fa-clock"></i>
-                ) : (
-                  <span></span>
-                )}
-                <span className="h5 fw-bold">{reg}</span>
+          <Stack direction="horizontal" gap={2} className="mx-2">
+            <div
+              className="text-success h5 fw-bold my-auto"
+              title="Vehicle reg"
+            >
+              {breakdown === 1 ? (
+                <i className="text-danger fas fa-xs fa-car-crash pe-2"></i>
+              ) : (
+                <span></span>
+              )}
+              {waiting === 1 ? (
+                <i
+                  className="text-info far fa-xs fa-clock pe-2"
+                  title="Customer waiting"
+                ></i>
+              ) : (
+                <span></span>
+              )}
+              {reg}
+            </div>
+            {status !== "booked" ? (
+              <div className="ms-auto">
+                <Nav.Link
+                  className={`text-end p-0 m-0 h5 ${
+                    updated_at < today ? "text-danger" : "text-white"
+                  }`}
+                  title={`Last update: ${moment(updated_at).format(
+                    "YYYY-MM-DD HH:mm"
+                  )}`}
+                  onClick={
+                    (e) => console.log("test")
+                    // handleUpdateClick(e, event_id, status)
+                  }
+                >
+                  <i className="fas fa-comments"></i>
+                </Nav.Link>
               </div>
-            </Col>
-            <Col className="col-auto p-0 px-1">
-              <Nav.Link className="p-0 m-0" onClick={(e) => handleInfoClick(e)}>
+            ) : (
+              <div className="ms-auto"></div>
+            )}
+            <div className="">
+              <Nav.Link
+                className="p-0 m-0 h5"
+                title="Get more info about the job"
+                onClick={(e) => handleInfoClick(e)}
+              >
                 Info
               </Nav.Link>
-            </Col>
-            <Col className="col-auto p-0 px-2 pe-3">
+            </div>
+            <div className="">
               <Nav.Link
-                className={`text-end p-0 me-2 ${
-                  isNoShow() ? "text-light" : "text-info"
-                }`}
+                className="text-end p-0 m-0 text-info h5"
+                title="Edit booking"
                 onClick={handleEditClick}
               >
                 Edit
               </Nav.Link>
-            </Col>
-          </Row>
+            </div>
+          </Stack>
         </div>
         <div className="card-body p-0">
           <Row className="card-body-row">
