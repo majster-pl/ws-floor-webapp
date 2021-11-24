@@ -1,6 +1,6 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
-import { Card, Row, Col, Nav } from "react-bootstrap";
+import { Card, Row, Col, Nav, Stack } from "react-bootstrap";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 import { setModal } from "../../../actions";
@@ -54,59 +54,52 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
-          className={`m-1 disable-select  ${search(task) ? "d-none" : ""} ${
-            task.booked_date_time < today && task.status === "booked"
-              ? "bg-darker text-light"
-              : ""
-          }`}
+          className={`m-1 disable-select  ${search(task) ? "d-none" : ""} ${task.booked_date_time < today && task.status === "booked"
+            ? "bg-darker text-light"
+            : ""
+            }`}
         >
           <Card.Body className="m-1 mx-2 p-0">
-            <Row className="justify-content-between">
-              <Col className="col-md-6 col-xs-12 text-light h4 fw-bold mb-0">
-                <div className="text-success" title="Vehicle reg">
-                  {task.breakdown === 1 ? (
-                    <i className="text-danger fas fa-car-crash pe-2"></i>
-                  ) : (
-                    <span></span>
-                  )}
-                  {task.waiting === 1 ? (
-                    <i
-                      className="me-2 text-info far fa-clock pe-2"
-                      title="Customer waiting"
-                    ></i>
-                  ) : (
-                    <span></span>
-                  )}
-                  {task.reg}
-                </div>
-              </Col>
-              <Col className="col-md-6 col-xs-6 pe-1">
-                <Row className="justify-content-end p-0 m-0">
-                  <Col className="col-md-4 col-xs-6 px-0">
-                    <Nav.Link
-                      className="p-0 m-0 h5"
-                      title="Get more info about the job"
-                      onClick={(e) =>
-                        handleInfoClick(e, task.event_id, task.status)
-                      }
-                    >
-                      Info
-                    </Nav.Link>
-                  </Col>
-                  <Col className="col-md-8 col-xs-6 mx-0">
-                    <Nav.Link
-                      className="text-end p-0 m-0 text-info h5"
-                      title="Edit booking"
-                      onClick={(e) =>
-                        handleEditClick(e, task.event_id, task.status)
-                      }
-                    >
-                      Edit
-                    </Nav.Link>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
+            <Stack direction="horizontal" gap={3}>
+              <div className="text-success h4 fw-bold my-auto" title="Vehicle reg">
+                {task.breakdown === 1 ? (
+                  <i className="text-danger fas fa-car-crash pe-2"></i>
+                ) : (
+                  <span></span>
+                )}
+                {task.waiting === 1 ? (
+                  <i
+                    className="text-info far fa-clock pe-2"
+                    title="Customer waiting"
+                  ></i>
+                ) : (
+                  <span></span>
+                )}
+                {task.reg}
+              </div>
+              <div className="ms-auto">
+                <Nav.Link
+                  className="p-0 m-0 h5"
+                  title="Get more info about the job"
+                  onClick={(e) =>
+                    handleInfoClick(e, task.event_id, task.status)
+                  }
+                >
+                  Info
+                </Nav.Link>
+              </div>
+              <div className="border">
+                <Nav.Link
+                  className="text-end p-0 m-0 text-info h5"
+                  title="Edit booking"
+                  onClick={(e) =>
+                    handleEditClick(e, task.event_id, task.status)
+                  }
+                >
+                  Edit
+                </Nav.Link>
+              </div>
+            </Stack>
             <Row>
               <Col className="col-12 mt-1" title="Customer name">
                 <label className="text-white text-truncate-2 fw-normal m-0 h4">
@@ -131,9 +124,8 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
               <Col className={`col-12 ${task.key_location ? "" : "d-noned"}`}>
                 <Row className="justify-content-between">
                   <Col
-                    className={`col-auto text-truncate-2 h6 mb-0 fw-normal ${
-                      task.status === "booked" ? "d-none" : ""
-                    }  `}
+                    className={`col-auto text-truncate-2 h6 mb-0 fw-normal ${task.status === "booked" ? "d-none" : ""
+                      }  `}
                     title="Number of days from arrival date"
                   >
                     <label className="text-white">Age:</label>{" "}
@@ -144,9 +136,8 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
                     </label>
                   </Col>
                   <Col
-                    className={`col-auto text-truncate-2 h5 mb-0 fw-normal ${
-                      task.status === "booked" ? "d-none" : ""
-                    }  `}
+                    className={`col-auto text-truncate-2 h5 mb-0 fw-normal ${task.status === "booked" ? "d-none" : ""
+                      }  `}
                     title="Key location"
                   >
                     <label className="text-info">
@@ -159,16 +150,14 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
                 </Row>
               </Col>
               <Col
-                className={`col-12 text-truncate-2 h6 fw-normal mb-0 ${
-                  task.status !== "booked" ? "d-none" : ""
-                }  `}
+                className={`col-12 text-truncate-2 h6 fw-normal mb-0 ${task.status !== "booked" ? "d-none" : ""
+                  }  `}
                 title="Booked date"
               >
                 Booked:{" "}
                 <label
-                  className={`${
-                    task.booked_date_time < today ? "text-danger fw-bold" : ""
-                  }`}
+                  className={`${task.booked_date_time < today ? "text-danger fw-bold" : ""
+                    }`}
                 >
                   {moment(task.booked_date_time).format("DD-MM-YYYY")}
                 </label>
