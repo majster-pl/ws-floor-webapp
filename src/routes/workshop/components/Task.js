@@ -60,14 +60,18 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
-          className={`m-1 disable-select  ${search(task) ? "d-none" : ""} ${task.booked_date_time < today && task.status === "booked"
-            ? "bg-darker text-light"
-            : ""
-            }`}
+          className={`m-1 disable-select  ${search(task) ? "d-none" : ""} ${
+            task.booked_date_time < today && task.status === "booked"
+              ? "bg-darker text-light"
+              : ""
+          }`}
         >
           <Card.Body className="m-1 mx-2 p-0">
             <Stack direction="horizontal" gap={2}>
-              <div className="text-success h4 fw-bold my-auto" title="Vehicle reg">
+              <div
+                className="text-success h4 fw-bold my-auto"
+                title="Vehicle reg"
+              >
                 {task.breakdown === 1 ? (
                   <i className="text-danger fas fa-car-crash pe-2"></i>
                 ) : (
@@ -83,31 +87,34 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
                 )}
                 {task.reg}
               </div>
-              {
-                task.status !== "booked" ?
-                  <div className="ms-auto">
-                    <Nav.Link
-                      className={`text-end p-0 m-0 h5 ${task.updated_at < today ? 'text-danger' : 'text-white' }`}
-                      title={`Last update: ${moment(task.updated_at).format("YYYY-MM-DD HH:mm")}`}
-                      onClick={(e) =>
-                        handleUpdateClick(e, task.event_id, task.status)
-                      }
-                    >
-                      <i class="fas fa-comments"></i>
-                    </Nav.Link>
-                  </div>
-                  :
-                  <div className="ms-auto"></div>
-              }
+              {task.status !== "booked" ? (
+                <div className="ms-auto">
+                  <Nav.Link
+                    className={`text-end p-0 m-0 h5 ${
+                      task.updated_at < today ? "text-danger" : "text-white"
+                    }`}
+                    title={`Last update: ${moment(task.updated_at).format(
+                      "YYYY-MM-DD HH:mm"
+                    )}`}
+                    onClick={(e) =>
+                      handleUpdateClick(e, task.event_id, task.status)
+                    }
+                  >
+                    <i className="fas fa-comments"></i>
+                  </Nav.Link>
+                </div>
+              ) : (
+                <div className="ms-auto"></div>
+              )}
               <div className="">
                 <Nav.Link
                   className="p-0 m-0 h5"
-                  title="Get more info about the job"
+                  title="Job info"
                   onClick={(e) =>
                     handleInfoClick(e, task.event_id, task.status)
                   }
                 >
-                  Info
+                  <i className="fas fa-info-circle"></i>
                 </Nav.Link>
               </div>
               <div className="">
@@ -146,8 +153,9 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
               <Col className={`col-12 ${task.key_location ? "" : "d-noned"}`}>
                 <Row className="justify-content-between">
                   <Col
-                    className={`col-auto text-truncate-2 h6 mb-0 fw-normal ${task.status === "booked" ? "d-none" : ""
-                      }  `}
+                    className={`col-auto text-truncate-2 h6 mb-0 fw-normal ${
+                      task.status === "booked" ? "d-none" : ""
+                    }  `}
                     title="Number of days from arrival date"
                   >
                     <label className="text-white">Age:</label>{" "}
@@ -158,8 +166,9 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
                     </label>
                   </Col>
                   <Col
-                    className={`col-auto text-truncate-2 h5 mb-0 fw-normal ${task.status === "booked" ? "d-none" : ""
-                      }  `}
+                    className={`col-auto text-truncate-2 h5 mb-0 fw-normal ${
+                      task.status === "booked" ? "d-none" : ""
+                    }  `}
                     title="Key location"
                   >
                     <label className="text-info">
@@ -172,14 +181,16 @@ const Task = ({ task, index, options, searchQuery, handleShowMainModal }) => {
                 </Row>
               </Col>
               <Col
-                className={`col-12 text-truncate-2 h6 fw-normal mb-0 ${task.status !== "booked" ? "d-none" : ""
-                  }  `}
+                className={`col-12 text-truncate-2 h6 fw-normal mb-0 ${
+                  task.status !== "booked" ? "d-none" : ""
+                }  `}
                 title="Booked date"
               >
                 Booked:{" "}
                 <label
-                  className={`${task.booked_date_time < today ? "text-danger fw-bold" : ""
-                    }`}
+                  className={`${
+                    task.booked_date_time < today ? "text-danger fw-bold" : ""
+                  }`}
                 >
                   {moment(task.booked_date_time).format("DD-MM-YYYY")}
                 </label>

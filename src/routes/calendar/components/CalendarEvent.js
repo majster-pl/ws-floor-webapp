@@ -100,7 +100,7 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
         style={{ minHeight: "8.5rem", maxHeight: "15rem" }}
       >
         <div className="card-header p-0 text-success">
-          <Stack direction="horizontal" gap={2} className="mx-2">
+          <Stack direction="horizontal" gap={2} className="mx-2 my-1">
             <div
               className="text-success h5 fw-bold my-auto"
               title="Vehicle reg"
@@ -123,7 +123,7 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
             {status !== "booked" ? (
               <div className="ms-auto">
                 <Nav.Link
-                  className={`text-end p-0 m-0 h5 ${
+                  className={`p-0 m-0 h5 ${
                     updated_at < today ? "text-danger" : "text-white"
                   }`}
                   title={`Last update: ${moment(updated_at).format(
@@ -131,7 +131,6 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
                   )}`}
                   onClick={
                     (e) => console.log("test")
-                    // handleUpdateClick(e, event_id, status)
                   }
                 >
                   <i className="fas fa-comments"></i>
@@ -143,10 +142,10 @@ const CalendarEvent = ({ props, isHighlighted, handleShowMainModal }) => {
             <div className="">
               <Nav.Link
                 className="p-0 m-0 h5"
-                title="Get more info about the job"
+                title="Job info"
                 onClick={(e) => handleInfoClick(e)}
               >
-                Info
+                <i className="fas fa-info-circle"></i>
               </Nav.Link>
             </div>
             <div className="">
