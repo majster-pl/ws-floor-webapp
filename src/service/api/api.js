@@ -3,6 +3,7 @@ import axios from "axios";
 
 const apiClient = axios.create({
   baseURL: "http://localhost:8000",
+  // baseURL: "https://api-ws-floor2.waliczek.org/",
   // baseURL: "https://api-ws-floor.waliczek.org/",
   headers: {
     "Access-Control-Allow-Origin": "*",

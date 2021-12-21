@@ -74,6 +74,7 @@ const GeneralTab = ({
     apiClient
       .patch(url, values)
       .then((response) => {
+        console.log(response);       
         setToggleEditForm(true);
         toast.success("Asset data updated.");
         setFormGeneral({ ...response.data.data });

@@ -23,9 +23,9 @@ const CheckIn = ({ data, handleCloseMainModal, toast, reloadCalendar }) => {
       .required("Vehicle current mileage is required"),
 
     key_location: yup
-      .number()
+      .string()
       .required()
-      .typeError("You must enter valid key location! (only numbers allowed)"),
+      .typeError("You must enter key location!"),
   });
 
   // Submit function

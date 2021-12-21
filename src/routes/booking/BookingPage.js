@@ -245,7 +245,7 @@ const BookingPage = ({
                               className="mx-2"
                               onClick={() => {
                                 if (
-                                  window.confirm("Do you really want to leave?")
+                                  window.confirm("Do you really want to remove this event?")
                                 ) {
                                   handleRemove();
                                 }
